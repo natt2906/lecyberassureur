@@ -1,8 +1,89 @@
-import { ArrowRight, Phone } from 'lucide-react';
+import { ArrowRight, Phone, Volume2, VolumeX } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Hero() {
+  const videos = [
+    '/Le_cyberassureur_1.mp4',
+    '/Le_cyberassureur_2.mp4',
+    '/Le_cyberassureur_3.mp4',
+    '/Le_cyberassureur_4.mp4',
+    '/Le_cyberassureur_5.mp4',
+  ];
+  const FADE_DURATION_SECONDS = 0.6;
+  const [activeSlot, setActiveSlot] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [isFading, setIsFading] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isSticky, setIsSticky] = useState(false);
+  const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
+  const stickySentinelRef = useRef<HTMLDivElement | null>(null);
+  const stickyStartOffset = 24;
+
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const activeVideo = videoRefs[activeSlot].current;
+    if (activeVideo) {
+      activeVideo.muted = isMuted;
+      activeVideo.play().catch(() => {});
+    }
+  }, [activeSlot, isMuted]);
+
+  useEffect(() => {
+    const sentinel = stickySentinelRef.current;
+    if (!sentinel) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSticky(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+        rootMargin: `-${stickyStartOffset}px 0px 0px 0px`,
+      }
+    );
+
+    observer.observe(sentinel);
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  const handleTimeUpdate = (slot: number) => {
+    if (isFading) {
+      return;
+    }
+
+    const currentVideo = videoRefs[slot].current;
+    if (!currentVideo || !Number.isFinite(currentVideo.duration)) {
+      return;
+    }
+
+    const remaining = currentVideo.duration - currentVideo.currentTime;
+    if (remaining <= FADE_DURATION_SECONDS) {
+      const nextSlot = slot === 0 ? 1 : 0;
+      const nextVideo = videoRefs[nextSlot].current;
+      if (nextVideo) {
+        nextVideo.currentTime = 0;
+        nextVideo.muted = isMuted;
+        nextVideo.play().catch(() => {});
+      }
+
+      setIsFading(true);
+      setActiveSlot(nextSlot);
+      window.setTimeout(() => {
+        const followingIndex = (nextIndex + 1) % videos.length;
+        setCurrentIndex(nextIndex);
+        setNextIndex(followingIndex);
+        setIsFading(false);
+      }, FADE_DURATION_SECONDS * 1000);
+    }
   };
 
   return (
@@ -48,11 +129,42 @@ export default function Hero() {
 
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-3xl"></div>
-            <img
-              src="/hero-cyber.png"
-              alt="Protecteur de l'assurance cyber"
-              className="relative w-full h-auto rounded-2xl"
-            />
+            <div ref={stickySentinelRef} className="h-0 w-full"></div>
+            <div className="relative w-full aspect-video rounded-2xl">
+              <div
+                onClick={() => setIsMuted((value) => !value)}
+                className={`rounded-2xl overflow-hidden transition-shadow duration-300 cursor-pointer ${
+                  isSticky
+                    ? 'fixed top-24 right-6 z-50 w-64 sm:w-72 lg:w-80 aspect-video shadow-2xl border border-white/10 bg-slate-950/80'
+                    : 'relative h-full w-full'
+                }`}
+              >
+                {[0, 1].map((slot) => (
+                  <video
+                    key={slot}
+                    ref={videoRefs[slot]}
+                    className={`absolute inset-0 h-full w-full object-cover object-[50%_20%] transition-opacity duration-700 pointer-events-none ${
+                      slot === activeSlot ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    autoPlay
+                    muted={isMuted}
+                    playsInline
+                    poster="/hero-cyber.png"
+                    preload="metadata"
+                    onTimeUpdate={() => handleTimeUpdate(slot)}
+                  >
+                    <source src={videos[slot === activeSlot ? currentIndex : nextIndex]} type="video/mp4" />
+                    Votre navigateur ne supporte pas la lecture de la video.
+                  </video>
+                ))}
+                <div
+                  aria-label={isMuted ? 'Activer le son' : 'Couper le son'}
+                  className="absolute bottom-3 right-3 bg-slate-900/80 text-white p-2 rounded-full border border-white/10 transition"
+                >
+                  {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
