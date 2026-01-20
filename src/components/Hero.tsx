@@ -16,7 +16,6 @@ export default function Hero() {
   const [isFading, setIsFading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
   const stickySentinelRef = useRef<HTMLDivElement | null>(null);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -28,11 +27,19 @@ export default function Hero() {
 
   useEffect(() => {
     const activeVideo = videoRefs[activeSlot].current;
+    const inactiveVideo = videoRefs[activeSlot === 0 ? 1 : 0].current;
+
     if (activeVideo) {
       activeVideo.muted = isMuted;
       activeVideo.play().catch(() => {});
     }
-  }, [activeSlot, isMuted]);
+    if (inactiveVideo) {
+      inactiveVideo.muted = true;
+      if (!isFading) {
+        inactiveVideo.pause();
+      }
+    }
+  }, [activeSlot, isMuted, isFading]);
 
   useEffect(() => {
     if (!isMuted) {
@@ -40,26 +47,24 @@ export default function Hero() {
     }
 
     const enableSound = () => {
+      const activeVideo = videoRefs[activeSlot].current;
       setIsMuted(false);
+      if (activeVideo) {
+        activeVideo.muted = false;
+        activeVideo.play().catch(() => {});
+      }
       window.removeEventListener('scroll', enableSound);
+      window.removeEventListener('touchmove', enableSound);
     };
 
     window.addEventListener('scroll', enableSound, { passive: true });
+    window.addEventListener('touchmove', enableSound, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', enableSound);
+      window.removeEventListener('touchmove', enableSound);
     };
   }, [isMuted]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)');
-    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
-    updateIsMobile();
-    mediaQuery.addEventListener('change', updateIsMobile);
-    return () => {
-      mediaQuery.removeEventListener('change', updateIsMobile);
-    };
-  }, []);
 
   useEffect(() => {
     const sentinel = stickySentinelRef.current;
@@ -69,7 +74,7 @@ export default function Hero() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsSticky(!entry.isIntersecting && !isMobile);
+        setIsSticky(!entry.isIntersecting);
       },
       {
         root: null,
@@ -82,33 +87,7 @@ export default function Hero() {
     return () => {
       observer.disconnect();
     };
-  }, [isMobile]);
-
-  useEffect(() => {
-    const container = videoContainerRef.current;
-    if (!container || !isMobile) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          videoRefs.forEach((ref) => ref.current?.play().catch(() => {}));
-        } else {
-          videoRefs.forEach((ref) => ref.current?.pause());
-        }
-      },
-      {
-        root: null,
-        threshold: 0,
-      }
-    );
-
-    observer.observe(container);
-    return () => {
-      observer.disconnect();
-    };
-  }, [isMobile, videoRefs]);
+  }, []);
 
   const handleTimeUpdate = (slot: number) => {
     if (isFading) {
@@ -123,10 +102,11 @@ export default function Hero() {
     const remaining = currentVideo.duration - currentVideo.currentTime;
     if (remaining <= FADE_DURATION_SECONDS) {
       const nextSlot = slot === 0 ? 1 : 0;
+      const prevSlot = slot;
       const nextVideo = videoRefs[nextSlot].current;
       if (nextVideo) {
         nextVideo.currentTime = 0;
-        nextVideo.muted = isMuted;
+        nextVideo.muted = true;
         nextVideo.play().catch(() => {});
       }
 
@@ -137,6 +117,10 @@ export default function Hero() {
         setCurrentIndex(nextIndex);
         setNextIndex(followingIndex);
         setIsFading(false);
+        const previousVideo = videoRefs[prevSlot].current;
+        if (previousVideo) {
+          previousVideo.pause();
+        }
       }, FADE_DURATION_SECONDS * 1000);
     }
   };
