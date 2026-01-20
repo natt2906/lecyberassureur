@@ -16,8 +16,10 @@ export default function Hero() {
   const [isFading, setIsFading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
   const stickySentinelRef = useRef<HTMLDivElement | null>(null);
+  const videoContainerRef = useRef<HTMLDivElement | null>(null);
   const stickyStartOffset = 24;
 
   const scrollToForm = () => {
@@ -33,6 +35,33 @@ export default function Hero() {
   }, [activeSlot, isMuted]);
 
   useEffect(() => {
+    if (!isMuted) {
+      return;
+    }
+
+    const enableSound = () => {
+      setIsMuted(false);
+      window.removeEventListener('scroll', enableSound);
+    };
+
+    window.addEventListener('scroll', enableSound, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', enableSound);
+    };
+  }, [isMuted]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+    updateIsMobile();
+    mediaQuery.addEventListener('change', updateIsMobile);
+    return () => {
+      mediaQuery.removeEventListener('change', updateIsMobile);
+    };
+  }, []);
+
+  useEffect(() => {
     const sentinel = stickySentinelRef.current;
     if (!sentinel) {
       return;
@@ -40,7 +69,7 @@ export default function Hero() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsSticky(!entry.isIntersecting);
+        setIsSticky(!entry.isIntersecting && !isMobile);
       },
       {
         root: null,
@@ -53,7 +82,33 @@ export default function Hero() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [isMobile]);
+
+  useEffect(() => {
+    const container = videoContainerRef.current;
+    if (!container || !isMobile) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          videoRefs.forEach((ref) => ref.current?.play().catch(() => {}));
+        } else {
+          videoRefs.forEach((ref) => ref.current?.pause());
+        }
+      },
+      {
+        root: null,
+        threshold: 0,
+      }
+    );
+
+    observer.observe(container);
+    return () => {
+      observer.disconnect();
+    };
+  }, [isMobile, videoRefs]);
 
   const handleTimeUpdate = (slot: number) => {
     if (isFading) {
@@ -132,6 +187,7 @@ export default function Hero() {
             <div ref={stickySentinelRef} className="h-0 w-full"></div>
             <div className="relative w-full aspect-video rounded-2xl">
               <div
+                ref={videoContainerRef}
                 onClick={() => setIsMuted((value) => !value)}
                 className={`rounded-2xl overflow-hidden transition-shadow duration-300 cursor-pointer ${
                   isSticky
