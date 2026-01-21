@@ -47,7 +47,10 @@ export default function Hero() {
       return;
     }
 
-    const enableSound = () => {
+    const enableSound = (event: PointerEvent) => {
+      if (videoContainerRef.current?.contains(event.target as Node)) {
+        return;
+      }
       const activeVideo = videoRefs[activeSlot].current;
       setIsMuted(false);
       if (activeVideo) {
