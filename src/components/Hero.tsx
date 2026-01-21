@@ -82,9 +82,13 @@ export default function Hero() {
       return;
     }
 
+    if (isMobile) {
+      setIsSticky(false);
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsSticky(!entry.isIntersecting);
+        setIsSticky(!entry.isIntersecting && !isMobile);
       },
       {
         root: null,
@@ -97,7 +101,7 @@ export default function Hero() {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [isMobile]);
 
   const handleTimeUpdate = (slot: number) => {
     if (isFading) {
