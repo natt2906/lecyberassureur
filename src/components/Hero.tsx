@@ -16,6 +16,7 @@ export default function Hero() {
   const [isFading, setIsFading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [isSticky, setIsSticky] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
   const stickySentinelRef = useRef<HTMLDivElement | null>(null);
   const videoContainerRef = useRef<HTMLDivElement | null>(null);
@@ -54,17 +55,26 @@ export default function Hero() {
         activeVideo.play().catch(() => {});
       }
       window.removeEventListener('scroll', enableSound);
-      window.removeEventListener('touchmove', enableSound);
     };
 
-    window.addEventListener('scroll', enableSound, { passive: true });
-    window.addEventListener('touchmove', enableSound, { passive: true });
+    if (!isMobile) {
+      window.addEventListener('scroll', enableSound, { passive: true });
+    }
 
     return () => {
       window.removeEventListener('scroll', enableSound);
-      window.removeEventListener('touchmove', enableSound);
     };
-  }, [isMuted]);
+  }, [isMuted, isMobile, activeSlot]);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 767px)');
+    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+    updateIsMobile();
+    mediaQuery.addEventListener('change', updateIsMobile);
+    return () => {
+      mediaQuery.removeEventListener('change', updateIsMobile);
+    };
+  }, []);
 
   useEffect(() => {
     const sentinel = stickySentinelRef.current;
@@ -123,6 +133,15 @@ export default function Hero() {
         }
       }, FADE_DURATION_SECONDS * 1000);
     }
+  };
+
+  const handleLoadedData = (slot: number) => {
+    if (slot !== activeSlot) {
+      return;
+    }
+
+    const activeVideo = videoRefs[slot].current;
+    activeVideo?.play().catch(() => {});
   };
 
   return (
@@ -186,13 +205,14 @@ export default function Hero() {
                     className={`absolute inset-0 h-full w-full object-cover object-[50%_20%] transition-opacity duration-700 pointer-events-none ${
                       slot === activeSlot ? 'opacity-100' : 'opacity-0'
                     }`}
-                    autoPlay
-                    muted={isMuted}
-                    playsInline
-                    poster="/hero-cyber.png"
-                    preload="metadata"
-                    onTimeUpdate={() => handleTimeUpdate(slot)}
-                  >
+                  autoPlay
+                  muted={isMuted}
+                  playsInline
+                  poster="/hero-cyber.png"
+                  preload="metadata"
+                  onTimeUpdate={() => handleTimeUpdate(slot)}
+                  onLoadedData={() => handleLoadedData(slot)}
+                >
                     <source src={videos[slot === activeSlot ? currentIndex : nextIndex]} type="video/mp4" />
                     Votre navigateur ne supporte pas la lecture de la video.
                   </video>
