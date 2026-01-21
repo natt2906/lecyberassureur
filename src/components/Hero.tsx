@@ -57,12 +57,17 @@ export default function Hero() {
       window.removeEventListener('scroll', enableSound);
     };
 
-    if (!isMobile) {
+    if (isMobile) {
       window.addEventListener('scroll', enableSound, { passive: true });
+      window.addEventListener('touchmove', enableSound, { passive: true });
+    } else {
+      window.addEventListener('pointerdown', enableSound, { passive: true });
     }
 
     return () => {
       window.removeEventListener('scroll', enableSound);
+      window.removeEventListener('touchmove', enableSound);
+      window.removeEventListener('pointerdown', enableSound);
     };
   }, [isMuted, isMobile, activeSlot]);
 
