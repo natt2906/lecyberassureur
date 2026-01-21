@@ -15,6 +15,7 @@ export default function Hero() {
   const [nextIndex, setNextIndex] = useState(1);
   const [isFading, setIsFading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [hasAutoEnabledSound, setHasAutoEnabledSound] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
@@ -43,7 +44,7 @@ export default function Hero() {
   }, [activeSlot, isMuted, isFading]);
 
   useEffect(() => {
-    if (!isMuted) {
+    if (!isMuted || hasAutoEnabledSound) {
       return;
     }
 
@@ -53,6 +54,7 @@ export default function Hero() {
       }
       const activeVideo = videoRefs[activeSlot].current;
       setIsMuted(false);
+      setHasAutoEnabledSound(true);
       if (activeVideo) {
         activeVideo.muted = false;
         activeVideo.play().catch(() => {});
@@ -65,7 +67,7 @@ export default function Hero() {
     return () => {
       window.removeEventListener('pointerdown', enableSound);
     };
-  }, [isMuted, isMobile, activeSlot]);
+  }, [isMuted, hasAutoEnabledSound, isMobile, activeSlot]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 767px)');
@@ -196,7 +198,10 @@ export default function Hero() {
             <div className="relative w-full aspect-video rounded-2xl">
               <div
                 ref={videoContainerRef}
-                onClick={() => setIsMuted((value) => !value)}
+                onClick={() => {
+                  setHasAutoEnabledSound(true);
+                  setIsMuted((value) => !value);
+                }}
                 className={`rounded-2xl overflow-hidden transition-shadow duration-300 cursor-pointer ${
                   isSticky
                     ? 'fixed top-24 right-6 z-50 w-64 sm:w-72 lg:w-80 aspect-video shadow-2xl border border-white/10 bg-slate-950/80'
