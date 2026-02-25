@@ -15,7 +15,7 @@ export default function ContactForm() {
     setTimeout(() => setSubmitted(false), 5000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -92,23 +92,16 @@ export default function ContactForm() {
               <label htmlFor="industry" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wider">
                 Secteur d'activité *
               </label>
-              <select
+              <input
+                type="text"
                 id="industry"
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg px-4 py-3.5 text-white focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
-              >
-                <option value="">Sélectionner un secteur</option>
-                <option value="technology">Technologie & services informatiques</option>
-                <option value="finance">Finance & assurance</option>
-                <option value="healthcare">Santé</option>
-                <option value="retail">Commerce & e-commerce</option>
-                <option value="manufacturing">Industrie</option>
-                <option value="professional">Services professionnels</option>
-                <option value="other">Autre</option>
-              </select>
+                className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
+                placeholder="Ex: Technologie, santé, commerce"
+              />
             </div>
 
             <button

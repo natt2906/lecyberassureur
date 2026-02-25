@@ -35,10 +35,10 @@ export default function WhySpecialistSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Pourquoi un assureur cyber spécialisé
+            Pourquoi un courtier cyber spécialisé
           </h2>
           <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-            Les assurances généralistes ne comprennent pas le risque cyber. Nous, si. Nos contrats, nos experts et nos protocoles de réponse sont conçus pour les réalités financières et opérationnelles des incidents cyber.
+            Le Cyberassureur est un courtier dédié à la cyberassurance. Il parle clair, sans masque, et vous accompagne dans chaque situation, avant et après un incident.
           </p>
           <div className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6">
             <p className="text-lg text-cyan-400 font-semibold mb-2">Contrairement aux assureurs traditionnels :</p>

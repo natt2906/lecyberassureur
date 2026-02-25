@@ -8,10 +8,10 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <Shield className="w-8 h-8 text-cyan-400" strokeWidth={2} />
-              <span className="text-xl font-bold text-white">CyberGuard Assurance</span>
+              <span className="text-xl font-bold text-white">Le Cyberassureur</span>
             </div>
             <p className="text-gray-400 leading-relaxed max-w-md">
-              Assurance cyber spécialisée conçue pour absorber les pertes financières et protéger votre entreprise après un incident cyber.
+              Courtier spécialisé en cyberassurance, Le Cyberassureur accompagne ses clients quelle que soit la situation.
             </p>
           </div>
 
@@ -46,7 +46,7 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-cyan-500/20 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; 2024 CyberGuard Assurance. Tous droits réservés.
+            &copy; 2024 Le Cyberassureur. Tous droits réservés.
           </p>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Politique de confidentialité</a>

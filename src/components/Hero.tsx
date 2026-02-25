@@ -2,30 +2,23 @@ import { ArrowRight, Phone, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Hero() {
-  const videos = [
-    '/Le_cyberassureur_1.mp4',
-    '/Le_cyberassureur_2.mp4',
-    '/Le_cyberassureur_3.mp4',
-    '/Le_cyberassureur_4.mp4',
-    '/Le_cyberassureur_5.mp4',
-  ];
-  const FADE_DURATION_SECONDS = 0.6;
+  const videos = ['/question1.mp4', '/question2.mp4', '/question3.mp4', '/question4.mp4'];
+  const FADE_DURATION_SECONDS = 0.7;
   const [activeSlot, setActiveSlot] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [isFading, setIsFading] = useState(false);
+  const [slotIndices, setSlotIndices] = useState([0, 1]);
+  const [isCrossfading, setIsCrossfading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [hasAutoEnabledSound, setHasAutoEnabledSound] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
-  const stickySentinelRef = useRef<HTMLDivElement | null>(null);
-  const videoContainerRef = useRef<HTMLDivElement | null>(null);
-  const stickyStartOffset = 24;
+  const slotIndicesRef = useRef([0, 1]);
+  const crossfadeTimeoutRef = useRef<number | null>(null);
 
   const scrollToForm = () => {
     document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    slotIndicesRef.current = slotIndices;
+  }, [slotIndices]);
 
   useEffect(() => {
     const activeVideo = videoRefs[activeSlot].current;
@@ -37,77 +30,14 @@ export default function Hero() {
     }
     if (inactiveVideo) {
       inactiveVideo.muted = true;
-      if (!isFading) {
+      if (!isCrossfading) {
         inactiveVideo.pause();
       }
     }
-  }, [activeSlot, isMuted, isFading]);
-
-  useEffect(() => {
-    if (!isMuted || hasAutoEnabledSound) {
-      return;
-    }
-
-    const enableSound = (event: PointerEvent) => {
-      if (videoContainerRef.current?.contains(event.target as Node)) {
-        return;
-      }
-      const activeVideo = videoRefs[activeSlot].current;
-      setIsMuted(false);
-      setHasAutoEnabledSound(true);
-      if (activeVideo) {
-        activeVideo.muted = false;
-        activeVideo.play().catch(() => {});
-      }
-      window.removeEventListener('scroll', enableSound);
-    };
-
-    window.addEventListener('pointerdown', enableSound, { passive: true });
-
-    return () => {
-      window.removeEventListener('pointerdown', enableSound);
-    };
-  }, [isMuted, hasAutoEnabledSound, isMobile, activeSlot]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)');
-    const updateIsMobile = () => setIsMobile(mediaQuery.matches);
-    updateIsMobile();
-    mediaQuery.addEventListener('change', updateIsMobile);
-    return () => {
-      mediaQuery.removeEventListener('change', updateIsMobile);
-    };
-  }, []);
-
-  useEffect(() => {
-    const sentinel = stickySentinelRef.current;
-    if (!sentinel) {
-      return;
-    }
-
-    if (isMobile) {
-      setIsSticky(false);
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsSticky(!entry.isIntersecting && !isMobile);
-      },
-      {
-        root: null,
-        threshold: 0,
-        rootMargin: `-${stickyStartOffset}px 0px 0px 0px`,
-      }
-    );
-
-    observer.observe(sentinel);
-    return () => {
-      observer.disconnect();
-    };
-  }, [isMobile]);
+  }, [activeSlot, isMuted, isCrossfading, videoRefs]);
 
   const handleTimeUpdate = (slot: number) => {
-    if (isFading) {
+    if (isCrossfading || slot !== activeSlot) {
       return;
     }
 
@@ -119,7 +49,6 @@ export default function Hero() {
     const remaining = currentVideo.duration - currentVideo.currentTime;
     if (remaining <= FADE_DURATION_SECONDS) {
       const nextSlot = slot === 0 ? 1 : 0;
-      const prevSlot = slot;
       const nextVideo = videoRefs[nextSlot].current;
       if (nextVideo) {
         nextVideo.currentTime = 0;
@@ -127,28 +56,26 @@ export default function Hero() {
         nextVideo.play().catch(() => {});
       }
 
-      setIsFading(true);
+      setIsCrossfading(true);
       setActiveSlot(nextSlot);
-      window.setTimeout(() => {
-        const followingIndex = (nextIndex + 1) % videos.length;
-        setCurrentIndex(nextIndex);
-        setNextIndex(followingIndex);
-        setIsFading(false);
-        const previousVideo = videoRefs[prevSlot].current;
-        if (previousVideo) {
-          previousVideo.pause();
+
+      if (crossfadeTimeoutRef.current !== null) {
+        window.clearTimeout(crossfadeTimeoutRef.current);
+      }
+      crossfadeTimeoutRef.current = window.setTimeout(() => {
+        setSlotIndices((current) => {
+          const updated = [...current];
+          const followingIndex = (slotIndicesRef.current[nextSlot] + 1) % videos.length;
+          updated[slot] = followingIndex;
+          return updated;
+        });
+        setIsCrossfading(false);
+        const prevVideo = videoRefs[slot].current;
+        if (prevVideo) {
+          prevVideo.pause();
         }
       }, FADE_DURATION_SECONDS * 1000);
     }
-  };
-
-  const handleLoadedData = (slot: number) => {
-    if (slot !== activeSlot) {
-      return;
-    }
-
-    const activeVideo = videoRefs[slot].current;
-    activeVideo?.play().catch(() => {});
   };
 
   return (
@@ -160,17 +87,17 @@ export default function Hero() {
           <div className="space-y-8">
             <div className="inline-block">
               <span className="text-cyan-400 text-sm font-semibold tracking-wider uppercase bg-cyan-400/10 px-4 py-2 rounded-full border border-cyan-400/20">
-                Spécialiste de l'assurance cyber
+                Le Cyberassureur, hero sans masque
               </span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-              Les cyberattaques sont inévitables.
-              <span className="block text-cyan-400 mt-2">Les pertes financières ne le sont pas.</span>
+              Le courtier spécialisé en cyberassurance
+              <span className="block text-cyan-400 mt-2">qui accompagne ses clients quelle que soit la situation.</span>
             </h1>
 
             <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-              Une assurance cyber conçue pour absorber les pertes financières, protéger votre activité et sécuriser votre entreprise après un incident cyber.
+              Le Cyberassureur est un hero transparent : pas de masque, pas de jargon. Il vous guide avant, pendant et après un incident pour protéger votre activité et vos finances.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -194,45 +121,29 @@ export default function Hero() {
 
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-3xl"></div>
-            <div ref={stickySentinelRef} className="h-0 w-full"></div>
-            <div className="relative w-full aspect-video rounded-2xl">
-              <div
-                ref={videoContainerRef}
-                onClick={() => {
-                  setHasAutoEnabledSound(true);
-                  setIsMuted((value) => !value);
-                }}
-                className={`rounded-2xl overflow-hidden transition-shadow duration-300 cursor-pointer ${
-                  isSticky
-                    ? 'fixed top-24 right-6 z-50 w-64 sm:w-72 lg:w-80 aspect-video shadow-2xl border border-white/10 bg-slate-950/80'
-                    : 'relative h-full w-full'
-                }`}
-              >
-                {[0, 1].map((slot) => (
-                  <video
-                    key={slot}
-                    ref={videoRefs[slot]}
-                    className={`absolute inset-0 h-full w-full object-cover object-[50%_20%] transition-opacity duration-700 pointer-events-none ${
-                      slot === activeSlot ? 'opacity-100' : 'opacity-0'
-                    }`}
+            <div
+              className="relative w-full max-w-xs lg:max-w-sm aspect-[9/16] rounded-2xl bg-slate-900/60 border border-white/5 overflow-hidden mx-auto lg:ml-auto"
+              onClick={() => setIsMuted((value) => !value)}
+            >
+              {[0, 1].map((slot) => (
+                <video
+                  key={`${slot}-${slotIndices[slot]}`}
+                  ref={videoRefs[slot]}
+                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                    slot === activeSlot ? 'opacity-100' : 'opacity-0'
+                  }`}
                   autoPlay
                   muted={isMuted}
                   playsInline
-                  poster="/hero-cyber.png"
                   preload="metadata"
                   onTimeUpdate={() => handleTimeUpdate(slot)}
-                  onLoadedData={() => handleLoadedData(slot)}
                 >
-                    <source src={videos[slot === activeSlot ? currentIndex : nextIndex]} type="video/mp4" />
-                    Votre navigateur ne supporte pas la lecture de la video.
-                  </video>
-                ))}
-                <div
-                  aria-label={isMuted ? 'Activer le son' : 'Couper le son'}
-                  className="absolute bottom-3 right-3 bg-slate-900/80 text-white p-2 rounded-full border border-white/10 transition"
-                >
-                  {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                </div>
+                  <source src={videos[slotIndices[slot]]} type="video/mp4" />
+                  Votre navigateur ne supporte pas la lecture de la video.
+                </video>
+              ))}
+              <div className="absolute bottom-3 right-3 bg-slate-900/80 text-white p-2 rounded-full border border-white/10 transition">
+                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </div>
             </div>
           </div>
