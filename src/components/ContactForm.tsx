@@ -8,11 +8,53 @@ export default function ContactForm() {
     phone: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [honeypot, setHoneypot] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
+    setSubmitError('');
+    setIsSubmitting(true);
+
+    try {
+      const payload = {
+        content: 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
+        hp: honeypot,
+        embeds: [
+          {
+            title: 'Nouveau lead',
+            color: 65535,
+            fields: [
+              { name: 'Entreprise', value: formData.companyName, inline: false },
+              { name: 'Telephone', value: formData.phone, inline: false },
+              { name: "Secteur d'activite", value: formData.industry, inline: false },
+            ],
+            timestamp: new Date().toISOString(),
+          },
+        ],
+      };
+
+      const response = await fetch('/api/discord-webhook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Webhook Discord en erreur (${response.status})`);
+      }
+
+      setSubmitted(true);
+      setFormData({ companyName: '', industry: '', phone: '' });
+      setHoneypot('');
+      window.setTimeout(() => setSubmitted(false), 5000);
+    } catch (error) {
+      console.error(error);
+      setSubmitError("Impossible d'envoyer votre demande pour le moment. Merci de reessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +98,17 @@ export default function ContactForm() {
 
         <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-cyan-500/20 rounded-2xl p-8 lg:p-12 shadow-2xl shadow-cyan-500/10">
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6 md:gap-8">
+            <input
+              type="text"
+              name="website"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              autoComplete="off"
+              tabIndex={-1}
+              className="hidden"
+              aria-hidden="true"
+            />
+
             <div className="md:col-span-1">
               <label htmlFor="companyName" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wider">
                 Nom de l'entreprise *
@@ -106,11 +159,16 @@ export default function ContactForm() {
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="md:col-span-2 w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
             >
-              <span>Recevoir mon analyse du risque et de l'exposition cyber</span>
+              <span>{isSubmitting ? 'Envoi en cours...' : "Recevoir mon analyse du risque et de l'exposition cyber"}</span>
               <Send className="w-5 h-5" />
             </button>
+
+            {submitError && (
+              <p className="md:col-span-2 text-center text-sm text-red-400">{submitError}</p>
+            )}
 
             <p className="md:col-span-2 text-center text-sm text-gray-400">
               En soumettant ce formulaire, vous acceptez d'être contacté par nos experts en assurance cyber. Nous respectons votre vie privée et ne partagerons jamais vos informations.

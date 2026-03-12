@@ -20,7 +20,7 @@ export default function Header() {
               href="/#contact-form"
               className="bg-cyan-500 hover:bg-cyan-600 text-slate-950 px-6 py-2.5 rounded-lg font-semibold transition-all"
             >
-              Obtenir un diagnostic
+              Obtenir une expertise
             </a>
           </nav>
         </div>

@@ -42,7 +42,7 @@ export default function StickyCTA() {
           </div>
           <div className="flex-1">
             <h3 className="text-white font-bold mb-1">Protégez votre entreprise</h3>
-            <p className="text-sm text-gray-400 mb-3">Obtenez votre diagnostic de risque cyber gratuit</p>
+            <p className="text-sm text-gray-400 mb-3">Obtenez votre expertise de risque cyber gratuit</p>
             <button
               onClick={scrollToForm}
               className="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 px-4 py-2 rounded-lg font-semibold text-sm transition-all"

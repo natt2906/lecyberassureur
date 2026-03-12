@@ -92,12 +92,11 @@ export default function Hero() {
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
-              Le courtier spécialisé en cyberassurance
-              <span className="block text-cyan-400 mt-2">qui accompagne ses clients quelle que soit la situation.</span>
+              Ne laissez pas une cyberattaque couler votre entreprise.
             </h1>
 
             <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
-              Le Cyberassureur est un hero transparent : pas de masque, pas de jargon. Il vous guide avant, pendant et après un incident pour protéger votre activité et vos finances.
+              L'assurance qui rembourse vos pertes d'exploitation et finance votre remise en état. Une protection 100% financière pour les TPE/PME.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
@@ -105,7 +104,7 @@ export default function Hero() {
                 onClick={scrollToForm}
                 className="group bg-cyan-500 hover:bg-cyan-600 text-slate-950 px-8 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
               >
-                <span>Obtenir mon diagnostic d'exposition cyber</span>
+                <span>Estimer ma protection financière</span>
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
 
