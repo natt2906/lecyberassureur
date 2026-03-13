@@ -18,10 +18,34 @@ export default async function handler(req: any, res: any) {
       return res.status(200).json({ ok: true, skipped: true });
     }
 
+    const companyName = String(payload?.lead?.companyName || '').trim();
+    const phone = String(payload?.lead?.phone || '').trim();
+    const industry = String(payload?.lead?.industry || '').trim();
+
+    if (!companyName || !phone || !industry) {
+      return res.status(400).json({ error: 'Champs lead manquants' });
+    }
+
+    const discordPayload = {
+      content: 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
+      embeds: [
+        {
+          title: 'Nouveau lead',
+          color: 65535,
+          fields: [
+            { name: 'Entreprise', value: companyName, inline: false },
+            { name: 'Telephone', value: phone, inline: false },
+            { name: "Secteur d'activite", value: industry, inline: false },
+          ],
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    };
+
     const discordResponse = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(discordPayload),
     });
 
     if (!discordResponse.ok) {

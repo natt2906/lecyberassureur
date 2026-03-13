@@ -18,21 +18,14 @@ export default function ContactForm() {
     setIsSubmitting(true);
 
     try {
+      const sheetsWebhookUrl = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
       const payload = {
-        content: 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
         hp: honeypot,
-        embeds: [
-          {
-            title: 'Nouveau lead',
-            color: 65535,
-            fields: [
-              { name: 'Entreprise', value: formData.companyName, inline: false },
-              { name: 'Telephone', value: formData.phone, inline: false },
-              { name: "Secteur d'activite", value: formData.industry, inline: false },
-            ],
-            timestamp: new Date().toISOString(),
-          },
-        ],
+        lead: {
+          companyName: formData.companyName,
+          phone: formData.phone,
+          industry: formData.industry,
+        },
       };
 
       const response = await fetch('/api/discord-webhook', {
@@ -43,6 +36,21 @@ export default function ContactForm() {
 
       if (!response.ok) {
         throw new Error(`Webhook Discord en erreur (${response.status})`);
+      }
+
+      if (sheetsWebhookUrl) {
+        await fetch(sheetsWebhookUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            companyName: formData.companyName,
+            phone: formData.phone,
+            industry: formData.industry,
+            source: 'lecyberassureur.fr',
+            createdAt: new Date().toISOString(),
+          }),
+        });
       }
 
       setSubmitted(true);
