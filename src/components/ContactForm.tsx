@@ -79,7 +79,20 @@ export default function ContactForm() {
       const response = await fetch(leadWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(discordPayload),
+        body: JSON.stringify({
+          hp: honeypot,
+          lead: {
+            companyName: formData.companyName,
+            phone: formData.phone,
+            industry: formData.industry,
+            source: 'lecyberassureur.fr',
+            createdAt,
+            submission_page: submissionPage,
+            page_url: window.location.href,
+            ...attribution,
+          },
+          discord: discordPayload,
+        }),
       });
 
       if (!response.ok) {
