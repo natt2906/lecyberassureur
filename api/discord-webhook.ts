@@ -31,6 +31,27 @@ type LeadPayload = {
   last_seen_at?: string;
 };
 
+type NormalizedLeadPayload = {
+  companyName: string;
+  phone: string;
+  industry: string;
+  source: string;
+  createdAt: string;
+  submission_page: string;
+  page_url: string;
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  utm_content: string;
+  utm_term: string;
+  gclid: string;
+  fbclid: string;
+  landing_page: string;
+  referrer: string;
+  first_seen_at: string;
+  last_seen_at: string;
+};
+
 type DiscordEmbedField = {
   name: string;
   value: string;
@@ -82,7 +103,32 @@ function toDiscordValue(value: unknown) {
   return normalized ? normalized.slice(0, 1000) : '-';
 }
 
-function buildDiscordPayload(lead: LeadPayload, fallback?: DiscordPayload): DiscordPayload {
+function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
+  const createdAt = text(lead.createdAt) || new Date().toISOString();
+
+  return {
+    companyName: text(lead.companyName),
+    phone: text(lead.phone),
+    industry: text(lead.industry),
+    source: text(lead.source) || 'lecyberassureur.fr',
+    createdAt,
+    submission_page: text(lead.submission_page),
+    page_url: text(lead.page_url),
+    utm_source: text(lead.utm_source),
+    utm_medium: text(lead.utm_medium),
+    utm_campaign: text(lead.utm_campaign),
+    utm_content: text(lead.utm_content),
+    utm_term: text(lead.utm_term),
+    gclid: text(lead.gclid),
+    fbclid: text(lead.fbclid),
+    landing_page: text(lead.landing_page),
+    referrer: text(lead.referrer),
+    first_seen_at: text(lead.first_seen_at),
+    last_seen_at: text(lead.last_seen_at),
+  };
+}
+
+function buildDiscordPayload(lead: NormalizedLeadPayload, fallback?: DiscordPayload): DiscordPayload {
   if (fallback?.embeds?.length) {
     return fallback;
   }
@@ -133,16 +179,16 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     }
 
     const lead = payload.lead || {};
-    const companyName = text(lead.companyName);
-    const phone = text(lead.phone);
-    const industry = text(lead.industry);
+    const normalizedLead = normalizeLeadPayload(lead);
+    const { companyName, phone, industry } = normalizedLead;
 
     if (!companyName || !phone || !industry) {
       return res.status(400).json({ error: 'Champs lead manquants' });
     }
 
     const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    const sheetsWebhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+    const sheetsWebhookUrl =
+      process.env.GOOGLE_SHEETS_WEBHOOK_URL || process.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL;
 
     if (!discordWebhookUrl && !sheetsWebhookUrl) {
       return res.status(500).json({ error: 'Aucune destination webhook configuree cote serveur' });
@@ -151,15 +197,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     const tasks: Promise<{ target: string; ok: boolean; status?: number; body?: string }>[] = [];
 
     if (discordWebhookUrl) {
-      const discordPayload = buildDiscordPayload(
-        {
-          ...lead,
-          companyName,
-          phone,
-          industry,
-        },
-        payload.discord,
-      );
+      const discordPayload = buildDiscordPayload(normalizedLead, payload.discord);
 
       tasks.push(
         fetch(discordWebhookUrl, {
@@ -180,12 +218,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
         fetch(sheetsWebhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            ...lead,
-            companyName,
-            phone,
-            industry,
-          }),
+          body: JSON.stringify(normalizedLead),
         }).then(async (response) => ({
           target: 'sheets',
           ok: response.ok,
