@@ -57,7 +57,7 @@ export default function ProblemSection() {
 
         <div className="mt-12 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-8 text-center">
           <p className="text-xl text-gray-300">
-            <span className="font-bold text-white">Le coût moyen d'une attaque par rançongiciel</span> pour une entreprise de taille moyenne dépasse <span className="text-cyan-400 font-bold">200 000 €</span>, incluant l'arrêt d'activité, la remise en état et les pertes de revenus.
+            <span className="font-bold text-white">Le coût moyen d'une attaque par rançongiciel</span> pour une entreprise de taille moyenne dépasse <span className="text-cyan-400 font-bold">200 000 EUR</span>, incluant l'arrêt d'activité, la remise en etat et les pertes de revenus.
           </p>
         </div>
       </div>

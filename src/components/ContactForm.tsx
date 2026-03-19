@@ -1,13 +1,24 @@
 import { useState } from 'react';
-import { Send, Shield, CheckCircle } from 'lucide-react';
+import { Send, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { captureLeadAttribution } from '../lib/leadAttribution';
+
+function toDiscordValue(value: string) {
+  const normalized = value.trim();
+  if (!normalized) {
+    return '-';
+  }
+
+  return normalized.slice(0, 1000);
+}
 
 export default function ContactForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     companyName: '',
     industry: '',
     phone: ''
   });
-  const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [honeypot, setHoneypot] = useState('');
@@ -17,46 +28,67 @@ export default function ContactForm() {
     setSubmitError('');
     setIsSubmitting(true);
 
-    try {
-      const sheetsWebhookUrl = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
-      const payload = {
-        hp: honeypot,
-        lead: {
-          companyName: formData.companyName,
-          phone: formData.phone,
-          industry: formData.industry,
-        },
-      };
+    if (honeypot.trim()) {
+      setIsSubmitting(false);
+      return;
+    }
 
-      const response = await fetch('/api/discord-webhook', {
+    try {
+      const leadWebhookUrl =
+        (import.meta.env.VITE_LEAD_WEBHOOK_URL as string | undefined) ||
+        '/api/discord-webhook';
+
+      if (!leadWebhookUrl) {
+        throw new Error('VITE_LEAD_WEBHOOK_URL manquant');
+      }
+
+      const createdAt = new Date().toISOString();
+      const attribution = captureLeadAttribution();
+      const submissionPage = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const embedFields = [
+        { name: 'Entreprise', value: toDiscordValue(formData.companyName), inline: true },
+        { name: 'Telephone', value: toDiscordValue(formData.phone), inline: true },
+        { name: 'Secteur', value: toDiscordValue(formData.industry), inline: true },
+        { name: 'UTM Source', value: toDiscordValue(attribution.utm_source), inline: true },
+        { name: 'UTM Medium', value: toDiscordValue(attribution.utm_medium), inline: true },
+        { name: 'UTM Campaign', value: toDiscordValue(attribution.utm_campaign), inline: true },
+        { name: 'UTM Content', value: toDiscordValue(attribution.utm_content), inline: true },
+        { name: 'UTM Term', value: toDiscordValue(attribution.utm_term), inline: true },
+        { name: 'GCLID', value: toDiscordValue(attribution.gclid), inline: false },
+        { name: 'FBCLID', value: toDiscordValue(attribution.fbclid), inline: false },
+        { name: 'Landing Page', value: toDiscordValue(attribution.landing_page), inline: false },
+        { name: 'Referrer', value: toDiscordValue(attribution.referrer), inline: false },
+        { name: 'Page URL', value: toDiscordValue(window.location.href), inline: false },
+        { name: 'First Seen', value: toDiscordValue(attribution.first_seen_at), inline: true },
+        { name: 'Last Seen', value: toDiscordValue(attribution.last_seen_at), inline: true },
+      ];
+      const discordPayload = {
+        content: null,
+        embeds: [
+          {
+            title: 'Nouveau lead Le Cyberassureur',
+            color: 65535,
+            fields: embedFields,
+            footer: {
+              text: `Source: lecyberassureur.fr | Page: ${submissionPage.slice(0, 120)}`,
+            },
+            timestamp: createdAt,
+          },
+        ],
+      };
+      const response = await fetch(leadWebhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(discordPayload),
       });
 
       if (!response.ok) {
-        throw new Error(`Webhook Discord en erreur (${response.status})`);
+        throw new Error(`Webhook lead en erreur (${response.status})`);
       }
 
-      if (sheetsWebhookUrl) {
-        await fetch(sheetsWebhookUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({
-            companyName: formData.companyName,
-            phone: formData.phone,
-            industry: formData.industry,
-            source: 'lecyberassureur.fr',
-            createdAt: new Date().toISOString(),
-          }),
-        });
-      }
-
-      setSubmitted(true);
       setFormData({ companyName: '', industry: '', phone: '' });
       setHoneypot('');
-      window.setTimeout(() => setSubmitted(false), 5000);
+      navigate('/merci');
     } catch (error) {
       console.error(error);
       setSubmitError("Impossible d'envoyer votre demande pour le moment. Merci de reessayer.");
@@ -71,22 +103,6 @@ export default function ContactForm() {
       [e.target.name]: e.target.value
     });
   };
-
-  if (submitted) {
-    return (
-      <section id="contact-form" className="bg-slate-950 py-20 lg:py-28">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/50 rounded-2xl p-12 text-center">
-            <CheckCircle className="w-16 h-16 text-cyan-400 mx-auto mb-6" />
-            <h3 className="text-3xl font-bold text-white mb-4">Merci pour votre demande</h3>
-            <p className="text-xl text-gray-300">
-              Un expert en assurance cyber vous contactera sous 24 heures pour évaluer votre exposition et discuter de vos options de couverture.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="contact-form" className="bg-slate-950 py-20 lg:py-28">

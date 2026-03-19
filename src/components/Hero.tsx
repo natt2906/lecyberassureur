@@ -8,7 +8,7 @@ export default function Hero() {
   const [slotIndices, setSlotIndices] = useState([0, 1]);
   const [isCrossfading, setIsCrossfading] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const videoRefs = [useRef<HTMLVideoElement | null>(null), useRef<HTMLVideoElement | null>(null)];
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([null, null]);
   const slotIndicesRef = useRef([0, 1]);
   const crossfadeTimeoutRef = useRef<number | null>(null);
 
@@ -21,8 +21,8 @@ export default function Hero() {
   }, [slotIndices]);
 
   useEffect(() => {
-    const activeVideo = videoRefs[activeSlot].current;
-    const inactiveVideo = videoRefs[activeSlot === 0 ? 1 : 0].current;
+    const activeVideo = videoRefs.current[activeSlot];
+    const inactiveVideo = videoRefs.current[activeSlot === 0 ? 1 : 0];
 
     if (activeVideo) {
       activeVideo.muted = isMuted;
@@ -34,14 +34,14 @@ export default function Hero() {
         inactiveVideo.pause();
       }
     }
-  }, [activeSlot, isMuted, isCrossfading, videoRefs]);
+  }, [activeSlot, isMuted, isCrossfading]);
 
   const handleTimeUpdate = (slot: number) => {
     if (isCrossfading || slot !== activeSlot) {
       return;
     }
 
-    const currentVideo = videoRefs[slot].current;
+    const currentVideo = videoRefs.current[slot];
     if (!currentVideo || !Number.isFinite(currentVideo.duration)) {
       return;
     }
@@ -49,7 +49,7 @@ export default function Hero() {
     const remaining = currentVideo.duration - currentVideo.currentTime;
     if (remaining <= FADE_DURATION_SECONDS) {
       const nextSlot = slot === 0 ? 1 : 0;
-      const nextVideo = videoRefs[nextSlot].current;
+      const nextVideo = videoRefs.current[nextSlot];
       if (nextVideo) {
         nextVideo.currentTime = 0;
         nextVideo.muted = true;
@@ -70,7 +70,7 @@ export default function Hero() {
           return updated;
         });
         setIsCrossfading(false);
-        const prevVideo = videoRefs[slot].current;
+        const prevVideo = videoRefs.current[slot];
         if (prevVideo) {
           prevVideo.pause();
         }
@@ -127,7 +127,9 @@ export default function Hero() {
               {[0, 1].map((slot) => (
                 <video
                   key={`${slot}-${slotIndices[slot]}`}
-                  ref={videoRefs[slot]}
+                  ref={(node) => {
+                    videoRefs.current[slot] = node;
+                  }}
                   className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
                     slot === activeSlot ? 'opacity-100' : 'opacity-0'
                   }`}

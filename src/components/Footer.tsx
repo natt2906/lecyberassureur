@@ -1,4 +1,5 @@
 import { Shield, Phone, Mail, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -18,10 +19,10 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">Liens rapides</h3>
             <ul className="space-y-2">
-              <li><a href="#coverage" className="text-gray-400 hover:text-cyan-400 transition-colors">Garanties</a></li>
-              <li><a href="#who-for" className="text-gray-400 hover:text-cyan-400 transition-colors">Pour qui</a></li>
-              <li><a href="#faq" className="text-gray-400 hover:text-cyan-400 transition-colors">FAQ</a></li>
-              <li><a href="#contact-form" className="text-gray-400 hover:text-cyan-400 transition-colors">Contact</a></li>
+              <li><a href="/#coverage" className="text-gray-400 hover:text-cyan-400 transition-colors">Garanties</a></li>
+              <li><a href="/#who-for" className="text-gray-400 hover:text-cyan-400 transition-colors">Pour qui</a></li>
+              <li><a href="/#faq" className="text-gray-400 hover:text-cyan-400 transition-colors">FAQ</a></li>
+              <li><a href="/#contact-form" className="text-gray-400 hover:text-cyan-400 transition-colors">Contact</a></li>
             </ul>
           </div>
 
@@ -30,11 +31,13 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-start space-x-2 text-gray-400">
                 <Phone className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
-                <span>Ligne d'urgence 24/7</span>
+                <span>Rappel sous 24h ouvrées</span>
               </li>
               <li className="flex items-start space-x-2 text-gray-400">
                 <Mail className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
-                <span>contact@cyberguard.com</span>
+                <a href="mailto:contact@lecyberassureur.fr" className="hover:text-cyan-400 transition-colors">
+                  contact@lecyberassureur.fr
+                </a>
               </li>
               <li className="flex items-start space-x-2 text-gray-400">
                 <MapPin className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
@@ -46,12 +49,12 @@ export default function Footer() {
 
         <div className="pt-8 border-t border-cyan-500/20 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; 2024 Le Cyberassureur. Tous droits réservés.
+            &copy; 2026 Le Cyberassureur. Tous droits réservés.
           </p>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Politique de confidentialité</a>
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Conditions d'utilisation</a>
-            <a href="#" className="text-gray-400 hover:text-cyan-400 transition-colors">Mentions légales</a>
+            <Link to="/politique-confidentialite" className="text-gray-400 hover:text-cyan-400 transition-colors">Politique de confidentialité</Link>
+            <Link to="/conditions-utilisation" className="text-gray-400 hover:text-cyan-400 transition-colors">Conditions d'utilisation</Link>
+            <Link to="/mentions-legales" className="text-gray-400 hover:text-cyan-400 transition-colors">Mentions légales</Link>
           </div>
         </div>
       </div>
