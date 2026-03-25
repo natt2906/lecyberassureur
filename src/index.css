@@ -37,7 +37,8 @@ html[data-theme='light'] {
   --text-strong: #0f172a;
   --text-body: #334155;
   --text-muted: #475569;
-  --accent: #2563eb;
+  --accent: #1d4ed8;
+  --accent-hover: #1e40af;
   --accent-soft: rgba(59, 130, 246, 0.08);
   --border-soft: rgba(59, 130, 246, 0.16);
   --border-strong: rgba(59, 130, 246, 0.32);
@@ -124,6 +125,14 @@ html[data-theme='light'] {
     background-color: var(--accent-soft) !important;
   }
 
+  html[data-theme='light'] .bg-cyan-500 {
+    background-color: var(--accent) !important;
+  }
+
+  html[data-theme='light'] .bg-cyan-500.text-slate-950 {
+    color: #ffffff !important;
+  }
+
   html[data-theme='light'] .border-cyan-500\/20 {
     border-color: var(--border-soft) !important;
   }
@@ -159,7 +168,7 @@ html[data-theme='light'] {
   }
 
   html[data-theme='light'] .text-cyan-200 {
-    color: #1d4ed8 !important;
+    color: var(--accent) !important;
   }
 
   html[data-theme='light'] .shadow-cyan-500\/10,
@@ -184,6 +193,37 @@ html[data-theme='light'] {
 
   html[data-theme='light'] .placeholder-gray-500::placeholder {
     color: #64748b !important;
+  }
+
+  html[data-theme='light'] .hover\:bg-cyan-600:hover {
+    background-color: var(--accent-hover) !important;
+  }
+
+  html[data-theme='light'] .hover\:bg-cyan-600:hover.text-slate-950 {
+    color: #ffffff !important;
+  }
+
+  html[data-theme='light'] .hover\:text-cyan-300:hover,
+  html[data-theme='light'] .hover\:text-cyan-400:hover {
+    color: var(--accent) !important;
+  }
+
+  html[data-theme='light'] .hover\:border-cyan-300:hover,
+  html[data-theme='light'] .hover\:border-cyan-400:hover,
+  html[data-theme='light'] .group:hover .group-hover\:bg-cyan-500\/20 {
+    border-color: var(--border-strong) !important;
+  }
+
+  html[data-theme='light'] .group:hover .group-hover\:bg-cyan-500\/20 {
+    background-color: rgba(59, 130, 246, 0.12) !important;
+  }
+
+  html[data-theme='light'] .focus\:border-cyan-400:focus {
+    border-color: var(--accent) !important;
+  }
+
+  html[data-theme='light'] .focus\:ring-cyan-400\/20:focus {
+    --tw-ring-color: rgba(59, 130, 246, 0.18) !important;
   }
 }
 
