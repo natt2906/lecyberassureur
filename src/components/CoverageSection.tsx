@@ -1,31 +1,37 @@
 import { DollarSign, Search, Scale, Megaphone, Users, ShieldCheck } from 'lucide-react';
+import DigitalSignalVisual from './DigitalSignalVisual';
 
 export default function CoverageSection() {
   const coverages = [
     {
       icon: DollarSign,
       title: 'Pertes financières & perte de revenus',
-      description: "Couverture des pertes financières directes, de l'interruption d'activité et des revenus perdus pendant la reprise."
+      description: "Couverture des pertes financières directes, de l'interruption d'activité et des revenus perdus pendant la reprise.",
+      visual: 'revenue-cover' as const,
     },
     {
       icon: Search,
       title: 'Experts en réponse aux incidents',
-      description: 'Accès immédiat à des spécialistes en informatique légale, en récupération de données et en cybersécurité.'
+      description: 'Accès immédiat à des spécialistes en informatique légale, en récupération de données et en cybersécurité.',
+      visual: 'incident-experts' as const,
     },
     {
       icon: Scale,
       title: 'Défense juridique & coûts réglementaires',
-      description: 'Représentation juridique, accompagnement conformité et coûts liés aux notifications de violation de données.'
+      description: 'Représentation juridique, accompagnement conformité et coûts liés aux notifications de violation de données.',
+      visual: 'legal-defense' as const,
     },
     {
       icon: Megaphone,
       title: 'Communication de crise & réputation',
-      description: 'Gestion de crise RP, campagnes de rétablissement de réputation et support de communication client.'
+      description: 'Gestion de crise RP, campagnes de rétablissement de réputation et support de communication client.',
+      visual: 'crisis-comms' as const,
     },
     {
       icon: Users,
       title: 'Dommages aux tiers',
-      description: "Indemnisation des dommages subis par les clients, partenaires et tiers affectés par votre incident cyber."
+      description: "Indemnisation des dommages subis par les clients, partenaires et tiers affectés par votre incident cyber.",
+      visual: 'third-party' as const,
     }
   ];
 
@@ -51,6 +57,7 @@ export default function CoverageSection() {
               key={index}
               className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all group"
             >
+              <DigitalSignalVisual preset={coverage.visual} />
               <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-5 border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-colors">
                 <coverage.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
               </div>

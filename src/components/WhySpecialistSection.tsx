@@ -1,31 +1,37 @@
 import { Award, Headphones, Network, Zap, FileCheck } from 'lucide-react';
+import DigitalSignalVisual from './DigitalSignalVisual';
 
 export default function WhySpecialistSection() {
   const differentiators = [
     {
       icon: Award,
       title: "Spécialiste de l'assurance cyber",
-      description: "Nous nous concentrons exclusivement sur la couverture des risques cyber, pas sur l'assurance généraliste"
+      description: "Nous nous concentrons exclusivement sur la couverture des risques cyber, pas sur l'assurance généraliste",
+      visual: 'specialist-focus' as const,
     },
     {
       icon: Headphones,
       title: 'Assistance humaine 24/7',
-      description: "Accès immédiat à un support expert lorsqu'un incident survient"
+      description: "Accès immédiat à un support expert lorsqu'un incident survient",
+      visual: 'support-247' as const,
     },
     {
       icon: Network,
       title: "Réseau d'experts",
-      description: 'Professionnels certifiés en cyber, juridique, forensic et communication de crise'
+      description: 'Professionnels certifiés en cyber, juridique, forensic et communication de crise',
+      visual: 'expert-network' as const,
     },
     {
       icon: Zap,
       title: 'Activation rapide',
-      description: "Réponse rapide et mobilisation des ressources après détection d'un incident"
+      description: "Réponse rapide et mobilisation des ressources après détection d'un incident",
+      visual: 'rapid-response' as const,
     },
     {
       icon: FileCheck,
       title: "Priorité à la continuité d'activité",
-      description: "Couverture conçue pour minimiser l'arrêt et protéger vos opérations"
+      description: "Couverture conçue pour minimiser l'arrêt et protéger vos opérations",
+      visual: 'continuity-core' as const,
     }
   ];
 
@@ -54,6 +60,7 @@ export default function WhySpecialistSection() {
                 key={index}
                 className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all"
               >
+                <DigitalSignalVisual preset={item.visual} />
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center border border-cyan-500/20">

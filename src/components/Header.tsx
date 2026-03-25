@@ -35,7 +35,6 @@ export default function Header() {
               aria-label={theme === 'dark' ? 'Activer le theme clair' : 'Activer le theme sombre'}
             >
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              <span className="hidden sm:inline">{theme === 'dark' ? 'Clair' : 'Sombre'}</span>
             </button>
           </div>
         </div>
