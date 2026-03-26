@@ -1,5 +1,5 @@
 import { DollarSign, Clock, Scale, TrendingDown, AlertTriangle } from 'lucide-react';
-import DigitalSignalVisual from './DigitalSignalVisual';
+import CardIllustration from './CardIllustration';
 
 export default function ProblemSection() {
   const impacts = [
@@ -7,25 +7,25 @@ export default function ProblemSection() {
       icon: DollarSign,
       title: 'Pertes financières',
       description: "Coûts directs et perturbation de trésorerie qui menacent l'activité",
-      visual: 'finance-impact' as const,
+      illustration: 'finance-impact' as const,
     },
     {
       icon: Clock,
       title: "Interruption d'activité",
       description: "Perte de chiffre d'affaires pendant l'arrêt et la reprise",
-      visual: 'downtime-impact' as const,
+      illustration: 'downtime-impact' as const,
     },
     {
       icon: Scale,
       title: 'Exposition juridique et réglementaire',
       description: 'Amendes, pénalités et coûts de conformité liés aux violations de données',
-      visual: 'legal-impact' as const,
+      illustration: 'legal-impact' as const,
     },
     {
       icon: TrendingDown,
       title: 'Atteinte à la réputation',
       description: 'Perte de confiance des clients et impact durable sur la marque',
-      visual: 'reputation-impact' as const,
+      illustration: 'reputation-impact' as const,
     }
   ];
 
@@ -51,7 +51,7 @@ export default function ProblemSection() {
               key={index}
               className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all"
             >
-              <DigitalSignalVisual preset={impact.visual} />
+              <CardIllustration variant={impact.illustration} />
               <div className="w-14 h-14 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-6 border border-cyan-500/20">
                 <impact.icon className="w-7 h-7 text-cyan-400" strokeWidth={2} />
               </div>

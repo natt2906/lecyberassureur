@@ -1,5 +1,5 @@
 import { Building2, Building, Briefcase } from 'lucide-react';
-import DigitalSignalVisual from './DigitalSignalVisual';
+import CardIllustration from './CardIllustration';
 
 export default function WhoForSection() {
   const audiences = [
@@ -8,21 +8,21 @@ export default function WhoForSection() {
       title: 'TPE & Startups',
       description: "Utilisation de l'email, d'outils cloud et de transactions numériques",
       risks: 'Exposées au phishing, aux rançongiciels et à la fraude aux paiements',
-      visual: 'startup-stack' as const,
+      illustration: 'startup-stack' as const,
     },
     {
       icon: Building2,
       title: 'PME',
       description: 'Gestion des bases clients, des données RH et des opérations numériques',
       risks: "Vulnérables aux fuites de données, à l'interruption d'activité et aux amendes réglementaires",
-      visual: 'sme-ops' as const,
+      illustration: 'sme-ops' as const,
     },
     {
       icon: Building,
       title: 'ETI & Grandes entreprises',
       description: 'Infrastructures IT complexes, prestataires tiers et données à forte valeur',
       risks: 'Exposition réglementaire élevée, impact réputationnel et pertes financières',
-      visual: 'enterprise-grid' as const,
+      illustration: 'enterprise-grid' as const,
     }
   ];
 
@@ -44,7 +44,7 @@ export default function WhoForSection() {
               key={index}
               className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all"
             >
-              <DigitalSignalVisual preset={audience.visual} />
+              <CardIllustration variant={audience.illustration} />
               <div className="w-16 h-16 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20">
                 <audience.icon className="w-8 h-8 text-cyan-400" strokeWidth={2} />
               </div>
