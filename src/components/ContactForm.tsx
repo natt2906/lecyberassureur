@@ -1,7 +1,56 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Send, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { captureLeadAttribution } from '../lib/leadAttribution';
+
+const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
+const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
+
+const EMPTY_FORM_DATA = {
+  companyName: '',
+  industry: '',
+  phone: ''
+};
+
+function readStoredFormDraft() {
+  if (typeof window === 'undefined') {
+    return EMPTY_FORM_DATA;
+  }
+
+  try {
+    const storedDraft = window.localStorage.getItem(FORM_DRAFT_STORAGE_KEY);
+
+    if (!storedDraft) {
+      return EMPTY_FORM_DATA;
+    }
+
+    const parsedDraft = JSON.parse(storedDraft) as Partial<typeof EMPTY_FORM_DATA>;
+
+    return {
+      companyName: typeof parsedDraft.companyName === 'string' ? parsedDraft.companyName : '',
+      industry: typeof parsedDraft.industry === 'string' ? parsedDraft.industry : '',
+      phone: typeof parsedDraft.phone === 'string' ? parsedDraft.phone : ''
+    };
+  } catch {
+    return EMPTY_FORM_DATA;
+  }
+}
+
+function normalizeFormDataDraft(formData: typeof EMPTY_FORM_DATA) {
+  return {
+    companyName: formData.companyName.trim(),
+    industry: formData.industry.trim(),
+    phone: formData.phone.trim()
+  };
+}
+
+function getFormDraftSignature(formData: typeof EMPTY_FORM_DATA) {
+  return JSON.stringify(normalizeFormDataDraft(formData));
+}
+
+function hasMeaningfulFormData(formData: typeof EMPTY_FORM_DATA) {
+  return Object.values(normalizeFormDataDraft(formData)).some((value) => value.length > 0);
+}
 
 function toDiscordValue(value: string) {
   const normalized = value.trim();
@@ -14,21 +63,120 @@ function toDiscordValue(value: string) {
 
 export default function ContactForm() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    companyName: '',
-    industry: '',
-    phone: ''
-  });
+  const [formData, setFormData] = useState(readStoredFormDraft);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [honeypot, setHoneypot] = useState('');
+  const formDataRef = useRef(formData);
+  const honeypotRef = useRef(honeypot);
+  const isSubmittingRef = useRef(false);
+  const hasSubmittedRef = useRef(false);
+
+  useEffect(() => {
+    formDataRef.current = formData;
+
+    const isFormEmpty = !hasMeaningfulFormData(formData);
+
+    if (isFormEmpty) {
+      window.localStorage.removeItem(FORM_DRAFT_STORAGE_KEY);
+      window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
+      return;
+    }
+
+    window.localStorage.setItem(FORM_DRAFT_STORAGE_KEY, JSON.stringify(formData));
+  }, [formData]);
+
+  useEffect(() => {
+    honeypotRef.current = honeypot;
+  }, [honeypot]);
+
+  useEffect(() => {
+    isSubmittingRef.current = isSubmitting;
+  }, [isSubmitting]);
+
+  useEffect(() => {
+    const handlePageHide = () => {
+      if (isSubmittingRef.current || hasSubmittedRef.current || honeypotRef.current.trim()) {
+        return;
+      }
+
+      const currentFormData = formDataRef.current;
+
+      if (!hasMeaningfulFormData(currentFormData)) {
+        return;
+      }
+
+      const normalizedDraft = normalizeFormDataDraft(currentFormData);
+      const signature = getFormDraftSignature(currentFormData);
+      const lastAbandonedSignature = window.localStorage.getItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
+
+      if (lastAbandonedSignature === signature) {
+        return;
+      }
+
+      window.localStorage.setItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY, signature);
+
+      const leadWebhookUrl =
+        (import.meta.env.VITE_LEAD_WEBHOOK_URL as string | undefined) ||
+        '/api/discord-webhook';
+
+      if (!leadWebhookUrl) {
+        return;
+      }
+
+      const abandonedAt = new Date().toISOString();
+      const attribution = captureLeadAttribution();
+      const submissionPage = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+      const payload = {
+        hp: honeypotRef.current,
+        lead: {
+          ...normalizedDraft,
+          source: 'lecyberassureur.fr',
+          createdAt: abandonedAt,
+          status_label: 'Formulaire non soumis',
+          submission_status: 'not_submitted',
+          abandoned_at: abandonedAt,
+          submission_page: submissionPage,
+          page_url: window.location.href,
+          ...attribution,
+        },
+      };
+      const body = JSON.stringify(payload);
+
+      if (typeof navigator !== 'undefined' && typeof navigator.sendBeacon === 'function') {
+        const beaconSent = navigator.sendBeacon(
+          leadWebhookUrl,
+          new Blob([body], { type: 'application/json' }),
+        );
+
+        if (beaconSent) {
+          return;
+        }
+      }
+
+      void fetch(leadWebhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        keepalive: true,
+      }).catch(() => undefined);
+    };
+
+    window.addEventListener('pagehide', handlePageHide);
+
+    return () => {
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
+    isSubmittingRef.current = true;
     setIsSubmitting(true);
 
     if (honeypot.trim()) {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
       return;
     }
@@ -87,6 +235,9 @@ export default function ContactForm() {
             industry: formData.industry,
             source: 'lecyberassureur.fr',
             createdAt,
+            status_label: 'Formulaire soumis',
+            submission_status: 'submitted',
+            submitted_at: createdAt,
             submission_page: submissionPage,
             page_url: window.location.href,
             ...attribution,
@@ -99,13 +250,17 @@ export default function ContactForm() {
         throw new Error(`Webhook lead en erreur (${response.status})`);
       }
 
-      setFormData({ companyName: '', industry: '', phone: '' });
+      hasSubmittedRef.current = true;
+      window.localStorage.removeItem(FORM_DRAFT_STORAGE_KEY);
+      window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
+      setFormData(EMPTY_FORM_DATA);
       setHoneypot('');
       navigate('/merci');
     } catch (error) {
       console.error(error);
       setSubmitError("Impossible d'envoyer votre demande pour le moment. Merci de reessayer.");
     } finally {
+      isSubmittingRef.current = false;
       setIsSubmitting(false);
     }
   };

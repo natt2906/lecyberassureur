@@ -16,6 +16,10 @@ type LeadPayload = {
   industry?: string;
   source?: string;
   createdAt?: string;
+  status_label?: string;
+  submission_status?: string;
+  submitted_at?: string;
+  abandoned_at?: string;
   submission_page?: string;
   page_url?: string;
   utm_source?: string;
@@ -37,6 +41,10 @@ type NormalizedLeadPayload = {
   industry: string;
   source: string;
   createdAt: string;
+  status_label: string;
+  submission_status: string;
+  submitted_at: string;
+  abandoned_at: string;
   submission_page: string;
   page_url: string;
   utm_source: string;
@@ -105,6 +113,8 @@ function toDiscordValue(value: unknown) {
 
 function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
   const createdAt = text(lead.createdAt) || new Date().toISOString();
+  const submissionStatus = text(lead.submission_status) || 'submitted';
+  const isAbandoned = submissionStatus === 'not_submitted';
 
   return {
     companyName: text(lead.companyName),
@@ -112,6 +122,10 @@ function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
     industry: text(lead.industry),
     source: text(lead.source) || 'lecyberassureur.fr',
     createdAt,
+    status_label: text(lead.status_label) || (isAbandoned ? 'Formulaire non soumis' : 'Formulaire soumis'),
+    submission_status: submissionStatus,
+    submitted_at: text(lead.submitted_at) || (isAbandoned ? '' : createdAt),
+    abandoned_at: text(lead.abandoned_at) || (isAbandoned ? createdAt : ''),
     submission_page: text(lead.submission_page),
     page_url: text(lead.page_url),
     utm_source: text(lead.utm_source),
@@ -128,26 +142,38 @@ function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
   };
 }
 
-function buildDiscordPayload(lead: NormalizedLeadPayload, fallback?: DiscordPayload): DiscordPayload {
-  if (fallback?.embeds?.length) {
-    return fallback;
-  }
+function buildDiscordPayload(lead: NormalizedLeadPayload): DiscordPayload {
+  const isAbandoned = lead.submission_status === 'not_submitted';
 
   return {
-    content: 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
+    content: isAbandoned
+      ? 'Brouillon detecte: formulaire non soumis sur lecyberassureur.fr'
+      : 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
     embeds: [
       {
-        title: 'Nouveau lead Le Cyberassureur',
-        color: 65535,
+        title: isAbandoned ? 'Formulaire non soumis Le Cyberassureur' : 'Nouveau lead Le Cyberassureur',
+        color: isAbandoned ? 16753920 : 65535,
         fields: [
+          { name: 'Statut', value: toDiscordValue(lead.status_label), inline: true },
           { name: 'Entreprise', value: toDiscordValue(lead.companyName), inline: true },
           { name: 'Telephone', value: toDiscordValue(lead.phone), inline: true },
           { name: 'Secteur', value: toDiscordValue(lead.industry), inline: true },
           { name: 'UTM Source', value: toDiscordValue(lead.utm_source), inline: true },
           { name: 'UTM Medium', value: toDiscordValue(lead.utm_medium), inline: true },
           { name: 'UTM Campaign', value: toDiscordValue(lead.utm_campaign), inline: true },
+          { name: 'UTM Content', value: toDiscordValue(lead.utm_content), inline: true },
+          { name: 'UTM Term', value: toDiscordValue(lead.utm_term), inline: true },
+          { name: 'GCLID', value: toDiscordValue(lead.gclid), inline: false },
+          { name: 'FBCLID', value: toDiscordValue(lead.fbclid), inline: false },
           { name: 'Landing Page', value: toDiscordValue(lead.landing_page), inline: false },
           { name: 'Referrer', value: toDiscordValue(lead.referrer), inline: false },
+          { name: 'Page URL', value: toDiscordValue(lead.page_url), inline: false },
+          ...(lead.abandoned_at
+            ? [{ name: 'Abandonne le', value: toDiscordValue(lead.abandoned_at), inline: true }]
+            : []),
+          ...(lead.submitted_at
+            ? [{ name: 'Soumis le', value: toDiscordValue(lead.submitted_at), inline: true }]
+            : []),
         ],
         footer: {
           text: `Source: ${toDiscordValue(lead.source)} | Page: ${toDiscordValue(lead.submission_page)}`,
@@ -180,10 +206,15 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     const lead = payload.lead || {};
     const normalizedLead = normalizeLeadPayload(lead);
-    const { companyName, phone, industry } = normalizedLead;
+    const { companyName, phone, industry, submission_status: submissionStatus } = normalizedLead;
+    const isAbandoned = submissionStatus === 'not_submitted';
 
-    if (!companyName || !phone || !industry) {
+    if ((!companyName || !phone || !industry) && !isAbandoned) {
       return res.status(400).json({ error: 'Champs lead manquants' });
+    }
+
+    if (isAbandoned && !companyName && !phone && !industry) {
+      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon vide' });
     }
 
     const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
@@ -197,7 +228,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     const tasks: Promise<{ target: string; ok: boolean; status?: number; body?: string }>[] = [];
 
     if (discordWebhookUrl) {
-      const discordPayload = buildDiscordPayload(normalizedLead, payload.discord);
+      const discordPayload = buildDiscordPayload(normalizedLead);
 
       tasks.push(
         fetch(discordWebhookUrl, {
