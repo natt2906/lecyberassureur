@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Send, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { captureLeadAttribution } from '../lib/leadAttribution';
+import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
 
 const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
 const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
@@ -116,9 +117,7 @@ export default function ContactForm() {
 
       window.localStorage.setItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY, signature);
 
-      const leadWebhookUrl =
-        (import.meta.env.VITE_LEAD_WEBHOOK_URL as string | undefined) ||
-        '/api/discord-webhook';
+      const leadWebhookUrl = resolveLeadWebhookUrl();
 
       if (!leadWebhookUrl) {
         return;
@@ -182,12 +181,11 @@ export default function ContactForm() {
     }
 
     try {
-      const leadWebhookUrl =
-        (import.meta.env.VITE_LEAD_WEBHOOK_URL as string | undefined) ||
-        '/api/discord-webhook';
+      const leadWebhookUrl = resolveLeadWebhookUrl();
+      const leadWebhookHint = getLeadWebhookHint();
 
-      if (!leadWebhookUrl) {
-        throw new Error('VITE_LEAD_WEBHOOK_URL manquant');
+      if (!leadWebhookUrl || (import.meta.env.DEV && !import.meta.env.VITE_LEAD_WEBHOOK_URL)) {
+        throw new Error(leadWebhookHint || 'VITE_LEAD_WEBHOOK_URL manquant');
       }
 
       const createdAt = new Date().toISOString();
@@ -247,7 +245,8 @@ export default function ContactForm() {
       });
 
       if (!response.ok) {
-        throw new Error(`Webhook lead en erreur (${response.status})`);
+        const responseText = await response.text();
+        throw new Error(responseText || `Webhook lead en erreur (${response.status})`);
       }
 
       hasSubmittedRef.current = true;
@@ -258,7 +257,11 @@ export default function ContactForm() {
       navigate('/merci');
     } catch (error) {
       console.error(error);
-      setSubmitError("Impossible d'envoyer votre demande pour le moment. Merci de reessayer.");
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Impossible d'envoyer votre demande pour le moment. Merci de reessayer.";
+      setSubmitError(message);
     } finally {
       isSubmittingRef.current = false;
       setIsSubmitting(false);

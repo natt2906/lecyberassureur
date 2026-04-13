@@ -116,6 +116,16 @@ html[data-theme='light'] {
     background-color: var(--surface-soft) !important;
   }
 
+  html[data-theme='light'] .bg-slate-950\/70,
+  html[data-theme='light'] .bg-slate-950\/55,
+  html[data-theme='light'] .bg-slate-950\/50 {
+    background-color: rgba(241, 245, 249, 0.94) !important;
+  }
+
+  html[data-theme='light'] .bg-slate-950\/40 {
+    background-color: rgba(255, 255, 255, 0.82) !important;
+  }
+
   html[data-theme='light'] .bg-slate-800 {
     background-color: var(--surface-muted) !important;
   }
@@ -152,6 +162,10 @@ html[data-theme='light'] {
 
   html[data-theme='light'] .text-white {
     color: var(--text-strong) !important;
+  }
+
+  html[data-theme='light'] .text-gray-200 {
+    color: #1e293b !important;
   }
 
   html[data-theme='light'] .text-gray-300 {
