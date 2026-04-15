@@ -1,6 +1,6 @@
 import { Award, Headphones, Network, Zap, FileCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getArticleByTitle } from '../data/articles';
+import { getArticleLinkByTitle } from '../data/articleLinks';
 import CardIllustration from './CardIllustration';
 
 export default function WhySpecialistSection() {
@@ -39,7 +39,7 @@ export default function WhySpecialistSection() {
 
   const linkedDifferentiators = differentiators
     .map((item) => {
-      const article = getArticleByTitle(item.title);
+      const article = getArticleLinkByTitle(item.title);
 
       if (!article) {
         return null;
@@ -61,56 +61,52 @@ export default function WhySpecialistSection() {
       key={item.title}
       to={`/articles/${item.slug}`}
       aria-label={`Lire l'article complet : ${item.title}`}
-      className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all block hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+      className="site-card site-card--interactive"
     >
       <CardIllustration variant={item.illustration} />
-      <div className="flex items-start space-x-4">
-        <div className="flex-shrink-0">
-          <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center border border-cyan-500/20">
-            <item.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
-          </div>
+      <div className="site-card__inline">
+        <div className="site-card__icon site-card__icon--small">
+          <item.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-          <p className="text-gray-400">{item.description}</p>
+        <div className="site-card__copy">
+          <h3 className="site-card__title">{item.title}</h3>
+          <p className="site-card__body">{item.description}</p>
         </div>
       </div>
     </Link>
   );
 
   return (
-    <section className="bg-slate-900 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Pourquoi un courtier cyber spécialisé
-          </h2>
-          <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+    <section className="site-section site-section--muted site-section--deferred">
+      <div className="site-section__container">
+        <div className="site-section__header">
+          <h2 className="site-section__title">Pourquoi un courtier cyber spécialisé</h2>
+          <p className="site-section__intro">
             Le Cyberassureur est un courtier dédié à la cyberassurance. Il parle clair, sans masque, et vous accompagne dans chaque situation, avant et après un incident.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mb-8">
+        <div className="site-card-grid site-card-grid--two">
           {firstRow.map(renderCard)}
         </div>
 
-        <div className="bg-slate-950 border border-cyan-500/20 rounded-xl p-8 mb-8 lg:p-10">
-          <p className="text-lg text-cyan-400 font-semibold mb-3">
+        <div className="site-panel mt-8">
+          <p className="site-panel__eyebrow">
             Contrairement aux assureurs traditionnels :
           </p>
-          <p className="text-gray-300 leading-relaxed text-lg">
+          <p className="site-panel__body">
             Nous comprenons que les incidents cyber exigent une réponse immédiate technique,
             juridique et communicationnelle, pas un expert des sinistres des semaines plus tard.
             Notre réseau est prêt quand vous en avez le plus besoin.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8 mb-8">
+        <div className="site-card-grid site-card-grid--two mt-8">
           {secondRow.map(renderCard)}
         </div>
 
         {finalCard && (
-          <div className="max-w-3xl mx-auto">
+          <div className="mx-auto mt-8 max-w-3xl">
             {renderCard(finalCard)}
           </div>
         )}

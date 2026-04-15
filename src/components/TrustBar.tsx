@@ -17,17 +17,15 @@ export default function TrustBar() {
   ];
 
   return (
-    <section className="bg-slate-900 border-y border-cyan-500/20 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-8">
+    <section className="site-section site-section--muted site-section--bordered site-section--compact">
+      <div className="site-section__container">
+        <div className="trust-strip__grid">
           {features.map((feature, index) => (
-            <div key={index} className="flex items-center space-x-4">
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center border border-cyan-500/20">
-                  <feature.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
-                </div>
+            <div key={index} className="trust-strip__item">
+              <div className="site-card__icon site-card__icon--small">
+                <feature.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
               </div>
-              <p className="text-gray-300 font-medium">{feature.text}</p>
+              <p className="trust-strip__text">{feature.text}</p>
             </div>
           ))}
         </div>

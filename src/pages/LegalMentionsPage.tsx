@@ -1,6 +1,14 @@
 import LegalPageLayout from '../components/LegalPageLayout';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export default function LegalMentionsPage() {
+  usePageMeta({
+    title: 'Mentions légales | Le Cyberassureur',
+    description:
+      "Consultez les mentions légales du site Le Cyberassureur, les informations d'identification de l'éditeur et les éléments d'hébergement du service.",
+    path: '/mentions-legales',
+  });
+
   return (
     <LegalPageLayout
       title="Mentions legales"

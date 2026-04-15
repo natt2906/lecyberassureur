@@ -4,16 +4,55 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import { getArticleBySlug } from '../data/articles';
 import { cardImages } from '../data/cardImages';
+import { siteMeta, usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlePage() {
   const { slug = '' } = useParams();
   const article = getArticleBySlug(slug);
 
+  usePageMeta(
+    article
+      ? {
+          title: `${article.title} | Le Cyberassureur`,
+          description: article.excerpt,
+          path: `/articles/${article.slug}`,
+          image: cardImages[article.variant].src,
+          type: 'article',
+          structuredData: {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: article.title,
+            description: article.excerpt,
+            image: [new URL(cardImages[article.variant].src, siteMeta.siteUrl).toString()],
+            mainEntityOfPage: new URL(`/articles/${article.slug}`, siteMeta.siteUrl).toString(),
+            author: {
+              '@type': 'Organization',
+              name: siteMeta.siteName,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: siteMeta.siteName,
+              logo: {
+                '@type': 'ImageObject',
+                url: new URL(siteMeta.logoUrl, siteMeta.siteUrl).toString(),
+              },
+            },
+          },
+        }
+      : {
+          title: 'Article introuvable | Le Cyberassureur',
+          description:
+            "L'article demandé n'est plus disponible. Retrouvez l'ensemble de nos contenus cyberassurance dans la rubrique articles.",
+          path: `/articles/${slug}`,
+          robots: 'noindex,follow',
+        },
+  );
+
   if (!article) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="page-shell">
         <Header />
-        <main className="px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+        <main className="page-main page-main--spacious">
           <section className="mx-auto max-w-3xl rounded-3xl border border-cyan-500/20 bg-slate-900/70 p-8 text-center shadow-2xl shadow-cyan-500/10 sm:p-12">
             <div className="mb-6 inline-flex rounded-full border border-cyan-500/20 bg-cyan-500/10 p-4 text-cyan-400">
               <BookOpen className="h-6 w-6" />
@@ -39,9 +78,9 @@ export default function ArticlePage() {
   const image = cardImages[article.variant];
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="page-shell">
       <Header />
-      <main className="px-4 pb-20 pt-32 sm:px-6 lg:px-8">
+      <main className="page-main page-main--spacious">
         <article className="mx-auto max-w-5xl">
           <Link
             to="/articles"

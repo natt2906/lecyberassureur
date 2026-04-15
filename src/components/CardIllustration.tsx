@@ -4,10 +4,10 @@ export default function CardIllustration({ variant }: { variant: CardIllustratio
   const image = cardImages[variant];
 
   return (
-    <div className="relative mb-6 aspect-[16/8.5] overflow-hidden rounded-2xl border border-cyan-500/20 bg-slate-950/80">
+    <div className="site-card__media">
       <img
         alt={image.alt}
-        className="h-full w-full object-cover"
+        className="site-card__media-image"
         decoding="async"
         loading="lazy"
         src={image.src}
@@ -17,7 +17,7 @@ export default function CardIllustration({ variant }: { variant: CardIllustratio
         }}
       />
       <div
-        className="absolute inset-0"
+        className="site-card__media-overlay"
         style={{
           background: `linear-gradient(to top, rgba(2, 6, 23, ${image.overlayOpacity ?? 0.2}), rgba(2, 6, 23, 0.02) 48%, rgba(2, 6, 23, 0))`,
         }}

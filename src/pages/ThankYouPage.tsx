@@ -2,13 +2,22 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export default function ThankYouPage() {
+  usePageMeta({
+    title: 'Merci pour votre demande | Le Cyberassureur',
+    description:
+      "Votre demande d'analyse de risque cyber a bien été transmise. Un expert revient vers vous pour qualifier votre besoin et la suite à donner.",
+    path: '/merci',
+    robots: 'noindex,follow',
+  });
+
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="page-shell">
       <Header />
-      <main className="px-4 pb-20 pt-32 sm:px-6 lg:px-8">
-        <section className="mx-auto max-w-4xl rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-8 text-center shadow-2xl shadow-cyan-500/10 sm:p-12">
+      <main className="page-main page-main--spacious">
+        <section className="site-panel site-panel--center mx-auto max-w-4xl bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-8 shadow-2xl shadow-cyan-500/10 sm:p-12">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl border border-cyan-400/30 bg-cyan-500/10">
             <CheckCircle className="h-10 w-10 text-cyan-400" />
           </div>
@@ -19,13 +28,13 @@ export default function ThankYouPage() {
             Votre demande d'analyse de risque cyber est en cours de traitement. Un expert revient vers vous sous 24 heures ouvrees.
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               to="/"
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-cyan-500 px-8 py-4 text-lg font-bold text-slate-950 transition-all hover:bg-cyan-600"
+              className="final-cta__button"
             >
               Retour a l'accueil
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="final-cta__button-icon" />
             </Link>
             <Link
               to="/temoignages"

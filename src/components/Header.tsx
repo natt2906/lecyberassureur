@@ -39,7 +39,7 @@ export default function Header() {
         <div className="site-header__bar">
           <Link to="/" className="site-header__brand">
             <img
-              src="/brand-assets/logo-cropped.png"
+              src="/brand-assets/logo-cropped-384.png"
               alt=""
               aria-hidden="true"
               className={logoClassName}

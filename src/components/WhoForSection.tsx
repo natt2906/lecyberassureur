@@ -1,6 +1,6 @@
 import { Building2, Building, Briefcase } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getArticleByTitle } from '../data/articles';
+import { getArticleLinkByTitle } from '../data/articleLinks';
 import CardIllustration from './CardIllustration';
 
 export default function WhoForSection() {
@@ -29,20 +29,18 @@ export default function WhoForSection() {
   ];
 
   return (
-    <section id="who-for" className="bg-slate-950 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Pour qui c'est fait
-          </h2>
-          <p className="text-xl text-gray-400">
+    <section id="who-for" className="site-section site-section--strong site-section--deferred">
+      <div className="site-section__container">
+        <div className="site-section__header">
+          <h2 className="site-section__title">Pour qui c'est fait</h2>
+          <p className="site-section__intro">
             Si votre entreprise utilise des outils numériques, elle est exposée.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="site-card-grid site-card-grid--three">
           {audiences.map((audience) => {
-            const article = getArticleByTitle(audience.title);
+            const article = getArticleLinkByTitle(audience.title);
 
             if (!article) {
               return null;
@@ -53,27 +51,27 @@ export default function WhoForSection() {
                 key={audience.title}
                 to={`/articles/${article.slug}`}
                 aria-label={`Lire l'article complet : ${audience.title}`}
-                className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all block hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+                className="site-card site-card--interactive"
               >
                 <CardIllustration variant={audience.illustration} />
-                <div className="w-16 h-16 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20">
+                <div className="site-card__icon">
                   <audience.icon className="w-8 h-8 text-cyan-400" strokeWidth={2} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{audience.title}</h3>
-                <p className="text-gray-300 mb-4 leading-relaxed">{audience.description}</p>
-                <div className="pt-4 border-t border-cyan-500/20">
-                  <p className="text-sm text-cyan-400 font-medium">{audience.risks}</p>
+                <h3 className="site-card__title">{audience.title}</h3>
+                <p className="site-card__body">{audience.description}</p>
+                <div className="site-card__divider">
+                  <p className="site-card__meta">{audience.risks}</p>
                 </div>
               </Link>
             );
           })}
         </div>
 
-        <div className="mt-16 text-center bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-10">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+        <div className="site-panel site-panel--accent site-panel--center mt-8">
+          <h3 className="site-panel__title">
             Toute entreprise numérique a besoin d'une assurance cyber
           </h3>
-          <p className="text-lg text-gray-300 max-w-3xl mx-auto">
+          <p className="site-panel__body mx-auto max-w-3xl">
             De l'email au cloud, des systèmes de paiement aux bases clients, si votre entreprise dépend d'outils numériques, un incident cyber peut tout perturber. L'assurance cyber garantit votre capacité à vous relever financièrement.
           </p>
         </div>

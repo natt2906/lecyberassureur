@@ -1,6 +1,14 @@
 import LegalPageLayout from '../components/LegalPageLayout';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export default function PrivacyPage() {
+  usePageMeta({
+    title: 'Politique de confidentialité | Le Cyberassureur',
+    description:
+      "Consultez la politique de confidentialité du site Le Cyberassureur, les données collectées via le formulaire et la gestion du consentement cookies.",
+    path: '/politique-confidentialite',
+  });
+
   return (
     <LegalPageLayout
       title="Politique de confidentialite"

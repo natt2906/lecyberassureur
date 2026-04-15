@@ -215,7 +215,7 @@ export default function StickyCTA() {
         >
           <span className="sticky-cta__logo-face sticky-cta__logo-face--front">
             <img
-              src="/brand-assets/logo-cropped.png"
+              src="/brand-assets/logo-cropped-384.png"
               alt=""
               aria-hidden="true"
               className={logoClassName}
@@ -223,7 +223,7 @@ export default function StickyCTA() {
           </span>
           <span className="sticky-cta__logo-face sticky-cta__logo-face--back">
             <img
-              src="/brand-assets/logo-cropped.png"
+              src="/brand-assets/logo-cropped-384.png"
               alt=""
               aria-hidden="true"
               className={logoClassName}

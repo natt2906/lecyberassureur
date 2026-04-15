@@ -10,13 +10,15 @@ type LegalPageLayoutProps = {
 
 export default function LegalPageLayout({ title, intro, children }: LegalPageLayoutProps) {
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="page-shell">
       <Header />
-      <main className="px-4 pb-20 pt-32 sm:px-6 lg:px-8">
-        <article className="mx-auto max-w-4xl rounded-3xl border border-cyan-500/20 bg-slate-900/70 p-8 shadow-2xl shadow-cyan-500/10 sm:p-12">
-          <h1 className="mb-4 text-4xl font-bold text-white sm:text-5xl">{title}</h1>
-          <p className="mb-10 max-w-3xl text-lg text-gray-300">{intro}</p>
-          <div className="space-y-8 text-gray-300">{children}</div>
+      <main className="page-main page-main--spacious">
+        <article className="site-panel legal-page mx-auto max-w-4xl p-8 shadow-2xl shadow-cyan-500/10 sm:p-12">
+          <header className="legal-page__header">
+            <h1 className="legal-page__title">{title}</h1>
+            <p className="legal-page__intro">{intro}</p>
+          </header>
+          <div className="legal-page__content">{children}</div>
         </article>
       </main>
       <Footer />

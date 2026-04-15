@@ -35,22 +35,22 @@ export default function Testimonials() {
   };
 
   return (
-    <section id="testimonials" className="bg-slate-950 py-20 lg:py-28">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 text-cyan-400 mb-5">
-            <Quote className="w-5 h-5" />
-            <span className="text-sm font-semibold tracking-wider uppercase">Temoignages clients</span>
+    <section id="testimonials" className="site-section site-section--strong site-section--bordered">
+      <div className="site-section__container">
+        <div className="site-section__header">
+          <div className="site-section__eyebrow">
+            <Quote className="site-section__eyebrow-icon" />
+            <span className="site-section__eyebrow-text">Temoignages clients</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="site-section__title">
             Ils racontent leur experience
           </h2>
-          <p className="text-lg text-gray-400">
+          <p className="site-section__intro">
             Des retours concrets de dirigeants assures apres incident.
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-cyan-500/20 rounded-2xl p-6 md:p-10 shadow-2xl shadow-cyan-500/10">
+        <div className="site-panel bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 md:p-10 shadow-2xl shadow-cyan-500/10">
           <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900/60 border border-white/5 flex items-center justify-center text-center p-6">
               <div className="space-y-3">

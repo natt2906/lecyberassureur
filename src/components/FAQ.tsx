@@ -20,40 +20,36 @@ export default function FAQ({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id={sectionId} className="bg-slate-900 py-20 lg:py-28">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center space-x-2 text-cyan-400 mb-6">
-            <HelpCircle className="w-5 h-5" />
-            <span className="text-sm font-semibold tracking-wider uppercase">{eyebrow}</span>
+    <section id={sectionId} className="site-section site-section--muted site-section--deferred">
+      <div className="site-section__container">
+        <div className="site-section__header">
+          <div className="site-section__eyebrow">
+            <HelpCircle className="site-section__eyebrow-icon" />
+            <span className="site-section__eyebrow-text">{eyebrow}</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {title}
-          </h2>
-          {intro ? <p className="mx-auto max-w-3xl text-lg text-gray-300">{intro}</p> : null}
+          <h2 className="site-section__title">{title}</h2>
+          {intro ? <p className="site-section__intro">{intro}</p> : null}
         </div>
 
-        <div className="space-y-4">
+        <div className="faq-list">
           {items.map((faq, index) => (
             <div
               key={index}
-              className="bg-slate-950 border border-cyan-500/20 rounded-xl overflow-hidden hover:border-cyan-500/40 transition-all"
+              className="faq-list__item"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full flex items-center justify-between p-6 text-left"
+                className="faq-list__button"
               >
-                <span className="text-lg font-semibold text-white pr-8">{faq.question}</span>
+                <span className="faq-list__question">{faq.question}</span>
                 <ChevronDown
-                  className={`w-5 h-5 text-cyan-400 flex-shrink-0 transition-transform ${
-                    openIndex === index ? 'rotate-180' : ''
+                  className={`faq-list__icon ${
+                    openIndex === index ? 'faq-list__icon--open' : ''
                   }`}
                 />
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-6">
-                  <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
-                </div>
+                <p className="faq-list__answer">{faq.answer}</p>
               )}
             </div>
           ))}

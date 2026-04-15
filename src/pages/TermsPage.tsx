@@ -1,6 +1,14 @@
 import LegalPageLayout from '../components/LegalPageLayout';
+import { usePageMeta } from '../lib/usePageMeta';
 
 export default function TermsPage() {
+  usePageMeta({
+    title: "Conditions d'utilisation | Le Cyberassureur",
+    description:
+      "Consultez les conditions d'utilisation du site Le Cyberassureur et le cadre d'usage du contenu et du formulaire de contact.",
+    path: '/conditions-utilisation',
+  });
+
   return (
     <LegalPageLayout
       title="Conditions d'utilisation"

@@ -1,6 +1,6 @@
 import { DollarSign, Clock, Scale, TrendingDown, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { getArticleByTitle } from '../data/articles';
+import { getArticleLinkByTitle } from '../data/articleLinks';
 import CardIllustration from './CardIllustration';
 
 export default function ProblemSection() {
@@ -32,24 +32,22 @@ export default function ProblemSection() {
   ];
 
   return (
-    <section className="bg-slate-950 py-20 lg:py-28">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center space-x-2 text-cyan-400 mb-6">
-            <AlertTriangle className="w-5 h-5" />
-            <span className="text-sm font-semibold tracking-wider uppercase">Le vrai coût des incidents cyber</span>
+    <section className="site-section site-section--strong site-section--deferred">
+      <div className="site-section__container">
+        <div className="site-section__header">
+          <div className="site-section__eyebrow">
+            <AlertTriangle className="site-section__eyebrow-icon" />
+            <span className="site-section__eyebrow-text">Le vrai coût des incidents cyber</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Les incidents cyber génèrent toujours des coûts
-          </h2>
-          <p className="text-xl text-gray-400">
+          <h2 className="site-section__title">Les incidents cyber génèrent toujours des coûts</h2>
+          <p className="site-section__intro">
             La question n'est pas de savoir si un incident va arriver, mais si votre entreprise peut en absorber l'impact financier.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="site-card-grid site-card-grid--two">
           {impacts.map((impact) => {
-            const article = getArticleByTitle(impact.title);
+            const article = getArticleLinkByTitle(impact.title);
 
             if (!article) {
               return null;
@@ -60,22 +58,22 @@ export default function ProblemSection() {
                 key={impact.title}
                 to={`/articles/${article.slug}`}
                 aria-label={`Lire l'article complet : ${impact.title}`}
-                className="block bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+                className="site-card site-card--interactive"
               >
                 <CardIllustration variant={impact.illustration} />
-                <div className="w-14 h-14 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-6 border border-cyan-500/20">
+                <div className="site-card__icon">
                   <impact.icon className="w-7 h-7 text-cyan-400" strokeWidth={2} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">{impact.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{impact.description}</p>
+                <h3 className="site-card__title">{impact.title}</h3>
+                <p className="site-card__body">{impact.description}</p>
               </Link>
             );
           })}
         </div>
 
-        <div className="mt-12 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-8 text-center">
-          <p className="text-xl text-gray-300">
-            <span className="font-bold text-white">Le coût moyen d'une attaque par rançongiciel</span> pour une entreprise de taille moyenne dépasse <span className="text-cyan-400 font-bold">200 000 EUR</span>, incluant l'arrêt d'activité, la remise en etat et les pertes de revenus.
+        <div className="site-panel site-panel--accent site-panel--center mt-8">
+          <p className="site-panel__body">
+            <span className="font-bold text-[color:var(--text-strong)]">Le coût moyen d'une attaque par rançongiciel</span> pour une entreprise de taille moyenne dépasse <span className="font-bold text-[color:var(--accent)]">200 000 EUR</span>, incluant l'arrêt d'activité, la remise en etat et les pertes de revenus.
           </p>
         </div>
       </div>

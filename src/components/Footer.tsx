@@ -1,67 +1,72 @@
-import { Shield, Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { openCookiePreferences } from '../lib/cookieConsent';
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950 border-t border-cyan-500/20 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          <div className="md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <Shield className="w-8 h-8 text-cyan-400" strokeWidth={2} />
-              <span className="text-xl font-bold text-white">Le Cyberassureur</span>
-            </div>
-            <p className="text-gray-400 leading-relaxed max-w-md">
+    <footer className="site-section site-section--strong site-section--compact site-footer">
+      <div className="site-section__container">
+        <div className="site-footer__grid">
+          <div className="site-footer__brand">
+            <Link to="/" className="site-footer__brand-link" aria-label="Retour à l'accueil">
+              <img
+                src="/brand-assets/logo-cropped-384.png"
+                alt=""
+                aria-hidden="true"
+                className="site-footer__brand-logo"
+              />
+              <span className="site-footer__brand-title">Le Cyberassureur</span>
+            </Link>
+            <p className="site-footer__brand-text">
               Courtier spécialisé en cyberassurance, Le Cyberassureur accompagne ses clients quelle que soit la situation.
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Liens rapides</h3>
-            <ul className="space-y-2">
-              <li><a href="/#coverage" className="text-gray-400 hover:text-cyan-400 transition-colors">Garanties</a></li>
-              <li><Link to="/offres" className="text-gray-400 hover:text-cyan-400 transition-colors">Offres</Link></li>
-              <li><a href="/#who-for" className="text-gray-400 hover:text-cyan-400 transition-colors">Pour qui</a></li>
-              <li><Link to="/articles" className="text-gray-400 hover:text-cyan-400 transition-colors">Articles</Link></li>
-              <li><Link to="/faq" className="text-gray-400 hover:text-cyan-400 transition-colors">FAQ</Link></li>
-              <li><a href="/#contact-form" className="text-gray-400 hover:text-cyan-400 transition-colors">Contact</a></li>
+            <h3 className="site-footer__heading">Liens rapides</h3>
+            <ul className="site-footer__list site-footer__list--two-columns">
+              <li><a href="/#coverage" className="site-footer__link">Garanties</a></li>
+              <li><Link to="/offres" className="site-footer__link">Offres</Link></li>
+              <li><a href="/#who-for" className="site-footer__link">Pour qui</a></li>
+              <li><Link to="/articles" className="site-footer__link">Articles</Link></li>
+              <li><Link to="/faq" className="site-footer__link">FAQ</Link></li>
+              <li><a href="/#contact-form" className="site-footer__link">Contact</a></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Contact</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start space-x-2 text-gray-400">
-                <Phone className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
+            <h3 className="site-footer__heading">Contact</h3>
+            <ul className="site-footer__list">
+              <li className="site-footer__contact-item">
+                <Phone className="site-footer__contact-icon" strokeWidth={2} />
                 <span>Rappel sous 24h ouvrées</span>
               </li>
-              <li className="flex items-start space-x-2 text-gray-400">
-                <Mail className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
-                <a href="mailto:contact@lecyberassureur.fr" className="hover:text-cyan-400 transition-colors">
+              <li className="site-footer__contact-item">
+                <Mail className="site-footer__contact-icon" strokeWidth={2} />
+                <a href="mailto:contact@lecyberassureur.fr" className="site-footer__link">
                   contact@lecyberassureur.fr
                 </a>
               </li>
-              <li className="flex items-start space-x-2 text-gray-400">
-                <MapPin className="w-5 h-5 mt-0.5 text-cyan-400" strokeWidth={2} />
+              <li className="site-footer__contact-item">
+                <MapPin className="site-footer__contact-icon" strokeWidth={2} />
                 <span>Paris, France</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="pt-8 border-t border-cyan-500/20 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+        <div className="site-footer__bottom">
+          <p className="site-footer__copyright">
             &copy; 2026 Le Cyberassureur. Tous droits réservés.
           </p>
-          <div className="flex space-x-6 text-sm">
-            <Link to="/politique-confidentialite" className="text-gray-400 hover:text-cyan-400 transition-colors">Politique de confidentialité</Link>
-            <Link to="/conditions-utilisation" className="text-gray-400 hover:text-cyan-400 transition-colors">Conditions d'utilisation</Link>
-            <Link to="/mentions-legales" className="text-gray-400 hover:text-cyan-400 transition-colors">Mentions légales</Link>
+          <div className="site-footer__legal">
+            <Link to="/politique-confidentialite" className="site-footer__link">Politique de confidentialité</Link>
+            <Link to="/conditions-utilisation" className="site-footer__link">Conditions d'utilisation</Link>
+            <Link to="/mentions-legales" className="site-footer__link">Mentions légales</Link>
             <button
               type="button"
               onClick={openCookiePreferences}
-              className="border-0 bg-transparent p-0 text-gray-400 hover:text-cyan-400 transition-colors"
+              className="site-footer__legal-button"
             >
               Gérer les cookies
             </button>

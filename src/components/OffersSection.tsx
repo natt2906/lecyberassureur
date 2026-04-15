@@ -47,7 +47,7 @@ export default function OffersSection() {
 
               <div className="offers-section__plan-head">
                 <img
-                  src="/brand-assets/logo-cropped.png"
+                  src="/brand-assets/logo-cropped-384.png"
                   alt=""
                   aria-hidden="true"
                   className={offer.logoClassName}
