@@ -19,6 +19,19 @@ export default function PrivacyPage() {
       </section>
 
       <section>
+        <h2 className="mb-3 text-2xl font-semibold text-white">Cookies et consentement</h2>
+        <p>
+          Le site utilise des cookies strictement necessaires a son fonctionnement, notamment pour conserver certains choix d&apos;interface et
+          de consentement. Les cookies non essentiels, comme la mesure d&apos;audience, la personnalisation ou le marketing, ne doivent etre
+          actives qu&apos;apres votre accord explicite.
+        </p>
+        <p className="mt-3">
+          Vous pouvez accepter, refuser ou parametrer vos choix a tout moment depuis le bandeau initial ou via le lien &quot;Gerer les cookies&quot;
+          disponible en pied de page.
+        </p>
+      </section>
+
+      <section>
         <h2 className="mb-3 text-2xl font-semibold text-white">Finalites</h2>
         <p>
           Ces donnees sont utilisees pour recontacter les prospects ayant demande une analyse de risque cyber, qualifier la demande et mesurer

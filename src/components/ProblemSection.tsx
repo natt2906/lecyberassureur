@@ -1,4 +1,6 @@
 import { DollarSign, Clock, Scale, TrendingDown, AlertTriangle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getArticleByTitle } from '../data/articles';
 import CardIllustration from './CardIllustration';
 
 export default function ProblemSection() {
@@ -46,19 +48,29 @@ export default function ProblemSection() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
-          {impacts.map((impact, index) => (
-            <div
-              key={index}
-              className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all"
-            >
-              <CardIllustration variant={impact.illustration} />
-              <div className="w-14 h-14 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-6 border border-cyan-500/20">
-                <impact.icon className="w-7 h-7 text-cyan-400" strokeWidth={2} />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-3">{impact.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{impact.description}</p>
-            </div>
-          ))}
+          {impacts.map((impact) => {
+            const article = getArticleByTitle(impact.title);
+
+            if (!article) {
+              return null;
+            }
+
+            return (
+              <Link
+                key={impact.title}
+                to={`/articles/${article.slug}`}
+                aria-label={`Lire l'article complet : ${impact.title}`}
+                className="block bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+              >
+                <CardIllustration variant={impact.illustration} />
+                <div className="w-14 h-14 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-6 border border-cyan-500/20">
+                  <impact.icon className="w-7 h-7 text-cyan-400" strokeWidth={2} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">{impact.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{impact.description}</p>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="mt-12 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-8 text-center">

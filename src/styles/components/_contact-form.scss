@@ -131,6 +131,11 @@
   }
 }
 
+.contact-form-field__select {
+  cursor: pointer;
+  padding-right: 2.75rem;
+}
+
 .contact-form-grid__submit {
   align-items: center;
   background: var(--accent);

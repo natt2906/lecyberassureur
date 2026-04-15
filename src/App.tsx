@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import CookieConsent from './components/CookieConsent';
 import StickyCTA from './components/StickyCTA';
 import Home from './pages/Home';
 import ArticlePage from './pages/ArticlePage';
@@ -27,6 +28,7 @@ function App() {
         <Route path="/temoignages" element={<TestimonialsPage />} />
       </Routes>
       <StickyCTA />
+      <CookieConsent />
     </>
   );
 }

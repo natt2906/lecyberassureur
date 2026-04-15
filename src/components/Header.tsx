@@ -1,10 +1,12 @@
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelectedOffer } from '../lib/selectedOffer';
 import { useTheme } from './theme-context';
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
+  const selectedOffer = useSelectedOffer();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -24,6 +26,12 @@ export default function Header() {
   const secondaryLinkClassName = 'site-header__cta';
   const navLinkClassName =
     'site-header__nav-link';
+  const logoClassName = [
+    'site-header__logo',
+    selectedOffer ? `site-header__logo--${selectedOffer}` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <header className="site-header">
@@ -31,10 +39,10 @@ export default function Header() {
         <div className="site-header__bar">
           <Link to="/" className="site-header__brand">
             <img
-              src="/acces-documentaire-prive/assets/logo-cropped.png"
+              src="/brand-assets/logo-cropped.png"
               alt=""
               aria-hidden="true"
-              className="site-header__logo"
+              className={logoClassName}
             />
             <span className="site-header__brand-text">Le Cyberassureur</span>
           </Link>

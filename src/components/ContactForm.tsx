@@ -1,17 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { Send, Shield } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { captureLeadAttribution } from '../lib/leadAttribution';
 import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
+import { readSelectedOffer, writeSelectedOffer } from '../lib/selectedOffer';
+import { isOfferId, offerLabelById } from '../data/offers';
 
 const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
 const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
+const FORM_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
 
 const EMPTY_FORM_DATA = {
   companyName: '',
   industry: '',
-  phone: ''
+  phone: '',
+  offer: '',
 };
+
+type FormDraftData = Partial<typeof EMPTY_FORM_DATA>;
+type StoredFormDraft = FormDraftData | { savedAt?: string; data?: FormDraftData };
 
 function readStoredFormDraft() {
   if (typeof window === 'undefined') {
@@ -25,12 +32,31 @@ function readStoredFormDraft() {
       return EMPTY_FORM_DATA;
     }
 
-    const parsedDraft = JSON.parse(storedDraft) as Partial<typeof EMPTY_FORM_DATA>;
+    const parsedDraft = JSON.parse(storedDraft) as StoredFormDraft;
+    const draftSavedAt =
+      typeof parsedDraft === 'object' && parsedDraft && 'savedAt' in parsedDraft
+        ? parsedDraft.savedAt
+        : '';
+    const draftData: FormDraftData =
+      typeof parsedDraft === 'object' && parsedDraft && 'data' in parsedDraft
+        ? parsedDraft.data || {}
+        : (parsedDraft as FormDraftData);
+
+    if (
+      typeof draftSavedAt === 'string' &&
+      draftSavedAt &&
+      Date.now() - new Date(draftSavedAt).getTime() > FORM_DRAFT_TTL_MS
+    ) {
+      window.localStorage.removeItem(FORM_DRAFT_STORAGE_KEY);
+      window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
+      return EMPTY_FORM_DATA;
+    }
 
     return {
-      companyName: typeof parsedDraft.companyName === 'string' ? parsedDraft.companyName : '',
-      industry: typeof parsedDraft.industry === 'string' ? parsedDraft.industry : '',
-      phone: typeof parsedDraft.phone === 'string' ? parsedDraft.phone : ''
+      companyName: typeof draftData?.companyName === 'string' ? draftData.companyName : '',
+      industry: typeof draftData?.industry === 'string' ? draftData.industry : '',
+      phone: typeof draftData?.phone === 'string' ? draftData.phone : '',
+      offer: typeof draftData?.offer === 'string' ? draftData.offer : '',
     };
   } catch {
     return EMPTY_FORM_DATA;
@@ -41,7 +67,8 @@ function normalizeFormDataDraft(formData: typeof EMPTY_FORM_DATA) {
   return {
     companyName: formData.companyName.trim(),
     industry: formData.industry.trim(),
-    phone: formData.phone.trim()
+    phone: formData.phone.trim(),
+    offer: formData.offer.trim(),
   };
 }
 
@@ -50,7 +77,15 @@ function getFormDraftSignature(formData: typeof EMPTY_FORM_DATA) {
 }
 
 function hasMeaningfulFormData(formData: typeof EMPTY_FORM_DATA) {
-  return Object.values(normalizeFormDataDraft(formData)).some((value) => value.length > 0);
+  return [
+    formData.companyName.trim(),
+    formData.industry.trim(),
+    formData.phone.trim(),
+  ].some((value) => value.length > 0);
+}
+
+function getOfferLabel(value: string) {
+  return isOfferId(value) ? offerLabelById[value] : value;
 }
 
 function toDiscordValue(value: string) {
@@ -64,6 +99,7 @@ function toDiscordValue(value: string) {
 
 export default function ContactForm() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState(readStoredFormDraft);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -84,12 +120,51 @@ export default function ContactForm() {
       return;
     }
 
-    window.localStorage.setItem(FORM_DRAFT_STORAGE_KEY, JSON.stringify(formData));
+    window.localStorage.setItem(
+      FORM_DRAFT_STORAGE_KEY,
+      JSON.stringify({
+        savedAt: new Date().toISOString(),
+        data: formData,
+      }),
+    );
   }, [formData]);
 
   useEffect(() => {
     honeypotRef.current = honeypot;
   }, [honeypot]);
+
+  useEffect(() => {
+    if (!formData.offer || !isOfferId(formData.offer)) {
+      return;
+    }
+
+    if (readSelectedOffer()) {
+      return;
+    }
+
+    writeSelectedOffer(formData.offer);
+  }, [formData.offer]);
+
+  useEffect(() => {
+    const offerParam = new URLSearchParams(location.search).get('offer');
+
+    if (!offerParam || !isOfferId(offerParam)) {
+      return;
+    }
+
+    writeSelectedOffer(offerParam);
+
+    setFormData((current) => {
+      if (current.offer === offerParam) {
+        return current;
+      }
+
+      return {
+        ...current,
+        offer: offerParam,
+      };
+    });
+  }, [location.search]);
 
   useEffect(() => {
     isSubmittingRef.current = isSubmitting;
@@ -130,6 +205,7 @@ export default function ContactForm() {
         hp: honeypotRef.current,
         lead: {
           ...normalizedDraft,
+          offer_label: normalizedDraft.offer ? getOfferLabel(normalizedDraft.offer) : '',
           source: 'lecyberassureur.fr',
           createdAt: abandonedAt,
           status_label: 'Formulaire non soumis',
@@ -195,6 +271,7 @@ export default function ContactForm() {
         { name: 'Entreprise', value: toDiscordValue(formData.companyName), inline: true },
         { name: 'Telephone', value: toDiscordValue(formData.phone), inline: true },
         { name: 'Secteur', value: toDiscordValue(formData.industry), inline: true },
+        { name: 'Offre', value: toDiscordValue(formData.offer ? getOfferLabel(formData.offer) : ''), inline: true },
         { name: 'UTM Source', value: toDiscordValue(attribution.utm_source), inline: true },
         { name: 'UTM Medium', value: toDiscordValue(attribution.utm_medium), inline: true },
         { name: 'UTM Campaign', value: toDiscordValue(attribution.utm_campaign), inline: true },
@@ -231,6 +308,8 @@ export default function ContactForm() {
             companyName: formData.companyName,
             phone: formData.phone,
             industry: formData.industry,
+            offer: formData.offer,
+            offer_label: formData.offer ? getOfferLabel(formData.offer) : '',
             source: 'lecyberassureur.fr',
             createdAt,
             status_label: 'Formulaire soumis',
@@ -268,10 +347,14 @@ export default function ContactForm() {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.name === 'offer') {
+      writeSelectedOffer(e.target.value);
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -350,6 +433,24 @@ export default function ContactForm() {
                 className="contact-form-field__input"
                 placeholder="Ex: Technologie, santé, commerce"
               />
+            </div>
+
+            <div className="contact-form-field contact-form-field--full">
+              <label htmlFor="offer" className="contact-form-field__label">
+                Choisir une offre
+              </label>
+              <select
+                id="offer"
+                name="offer"
+                value={formData.offer}
+                onChange={handleChange}
+                className="contact-form-field__input contact-form-field__select"
+              >
+                <option value="">Selectionnez une offre</option>
+                <option value="basic">Basic</option>
+                <option value="silver">Silver</option>
+                <option value="gold">Gold</option>
+              </select>
             </div>
 
             <button

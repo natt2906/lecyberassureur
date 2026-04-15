@@ -28,30 +28,20 @@ export default function ArticlesPage() {
 
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {articles.map((article) => (
-              <article
+              <Link
                 key={article.slug}
-                className="group flex h-full flex-col rounded-2xl border border-cyan-500/20 bg-slate-900 p-6 shadow-xl shadow-cyan-500/5 transition-all hover:border-cyan-500/40"
+                to={`/articles/${article.slug}`}
+                aria-label={`Lire l'article complet : ${article.title}`}
+                className="group flex h-full flex-col rounded-2xl border border-cyan-500/20 bg-slate-900 p-6 shadow-xl shadow-cyan-500/5 transition-all hover:-translate-y-0.5 hover:border-cyan-500/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
               >
                 <CardIllustration variant={article.variant} />
-                <div className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-cyan-400">
-                  <span>{article.category}</span>
-                  <span className="h-1 w-1 rounded-full bg-cyan-400" />
-                  <span>{article.readTime}</span>
-                </div>
-                <h2 className="mb-3 text-2xl font-bold text-white">
-                  <Link to={`/articles/${article.slug}`} className="focus-visible:outline-none">
-                    {article.title}
-                  </Link>
-                </h2>
+                <h2 className="mb-3 text-2xl font-bold text-white">{article.title}</h2>
                 <p className="mb-6 flex-1 leading-relaxed text-gray-400">{article.excerpt}</p>
-                <Link
-                  to={`/articles/${article.slug}`}
-                  className="inline-flex items-center gap-2 font-semibold text-cyan-400 transition-colors hover:text-cyan-300 focus-visible:outline-none"
-                >
+                <span className="inline-flex items-center gap-2 font-semibold text-cyan-400 transition-colors group-hover:text-cyan-300">
                   Lire l&apos;article
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-              </article>
+                </span>
+              </Link>
             ))}
           </div>
         </section>

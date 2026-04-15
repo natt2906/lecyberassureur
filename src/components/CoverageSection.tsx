@@ -1,4 +1,6 @@
 import { DollarSign, Search, Scale, Megaphone, Users, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getArticleByTitle } from '../data/articles';
 import CardIllustration from './CardIllustration';
 
 export default function CoverageSection() {
@@ -52,19 +54,29 @@ export default function CoverageSection() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {coverages.map((coverage, index) => (
-            <div
-              key={index}
-              className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all group"
-            >
-              <CardIllustration variant={coverage.illustration} />
-              <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-5 border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-colors">
-                <coverage.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-3">{coverage.title}</h3>
-              <p className="text-gray-400 leading-relaxed">{coverage.description}</p>
-            </div>
-          ))}
+          {coverages.map((coverage) => {
+            const article = getArticleByTitle(coverage.title);
+
+            if (!article) {
+              return null;
+            }
+
+            return (
+              <Link
+                key={coverage.title}
+                to={`/articles/${article.slug}`}
+                aria-label={`Lire l'article complet : ${coverage.title}`}
+                className="bg-slate-950 border border-cyan-500/20 rounded-xl p-6 hover:border-cyan-500/40 transition-all group block hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+              >
+                <CardIllustration variant={coverage.illustration} />
+                <div className="w-12 h-12 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-5 border border-cyan-500/20 group-hover:bg-cyan-500/20 transition-colors">
+                  <coverage.icon className="w-6 h-6 text-cyan-400" strokeWidth={2} />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{coverage.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{coverage.description}</p>
+              </Link>
+            );
+          })}
 
           <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border-2 border-cyan-400/50 rounded-xl p-6 flex items-center justify-center md:col-span-2 lg:col-span-1">
             <div className="text-center">

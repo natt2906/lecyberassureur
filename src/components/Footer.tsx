@@ -1,5 +1,6 @@
 import { Shield, Phone, Mail, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { openCookiePreferences } from '../lib/cookieConsent';
 
 export default function Footer() {
   return (
@@ -57,6 +58,13 @@ export default function Footer() {
             <Link to="/politique-confidentialite" className="text-gray-400 hover:text-cyan-400 transition-colors">Politique de confidentialité</Link>
             <Link to="/conditions-utilisation" className="text-gray-400 hover:text-cyan-400 transition-colors">Conditions d'utilisation</Link>
             <Link to="/mentions-legales" className="text-gray-400 hover:text-cyan-400 transition-colors">Mentions légales</Link>
+            <button
+              type="button"
+              onClick={openCookiePreferences}
+              className="border-0 bg-transparent p-0 text-gray-400 hover:text-cyan-400 transition-colors"
+            >
+              Gérer les cookies
+            </button>
           </div>
         </div>
       </div>

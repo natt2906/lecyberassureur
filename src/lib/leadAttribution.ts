@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'lead-attribution';
+const ATTRIBUTION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 const TRACKED_QUERY_PARAMS = [
   'utm_source',
@@ -65,9 +66,17 @@ export function readLeadAttribution(): LeadAttribution {
       return { ...EMPTY_ATTRIBUTION };
     }
 
+    const parsed = JSON.parse(stored) as Partial<LeadAttribution>;
+    const lastSeenAt = typeof parsed.last_seen_at === 'string' ? parsed.last_seen_at : '';
+
+    if (lastSeenAt && Date.now() - new Date(lastSeenAt).getTime() > ATTRIBUTION_TTL_MS) {
+      window.localStorage.removeItem(STORAGE_KEY);
+      return { ...EMPTY_ATTRIBUTION };
+    }
+
     return {
       ...EMPTY_ATTRIBUTION,
-      ...JSON.parse(stored),
+      ...parsed,
     };
   } catch {
     return { ...EMPTY_ATTRIBUTION };

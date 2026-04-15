@@ -1,4 +1,6 @@
 import { Building2, Building, Briefcase } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { getArticleByTitle } from '../data/articles';
 import CardIllustration from './CardIllustration';
 
 export default function WhoForSection() {
@@ -39,22 +41,32 @@ export default function WhoForSection() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {audiences.map((audience, index) => (
-            <div
-              key={index}
-              className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all"
-            >
-              <CardIllustration variant={audience.illustration} />
-              <div className="w-16 h-16 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20">
-                <audience.icon className="w-8 h-8 text-cyan-400" strokeWidth={2} />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-4">{audience.title}</h3>
-              <p className="text-gray-300 mb-4 leading-relaxed">{audience.description}</p>
-              <div className="pt-4 border-t border-cyan-500/20">
-                <p className="text-sm text-cyan-400 font-medium">{audience.risks}</p>
-              </div>
-            </div>
-          ))}
+          {audiences.map((audience) => {
+            const article = getArticleByTitle(audience.title);
+
+            if (!article) {
+              return null;
+            }
+
+            return (
+              <Link
+                key={audience.title}
+                to={`/articles/${article.slug}`}
+                aria-label={`Lire l'article complet : ${audience.title}`}
+                className="bg-slate-900 border border-cyan-500/20 rounded-xl p-8 hover:border-cyan-500/40 transition-all block hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50"
+              >
+                <CardIllustration variant={audience.illustration} />
+                <div className="w-16 h-16 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 border border-cyan-500/20">
+                  <audience.icon className="w-8 h-8 text-cyan-400" strokeWidth={2} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-4">{audience.title}</h3>
+                <p className="text-gray-300 mb-4 leading-relaxed">{audience.description}</p>
+                <div className="pt-4 border-t border-cyan-500/20">
+                  <p className="text-sm text-cyan-400 font-medium">{audience.risks}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         <div className="mt-16 text-center bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 rounded-xl p-10">
