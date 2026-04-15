@@ -118,8 +118,8 @@
     drop-shadow(0 14px 30px rgba(34, 211, 238, 0.3));
 }
 
-.sticky-cta__button--active .sticky-cta__logo-image,
-.sticky-cta__button--settling .sticky-cta__logo-image {
+.sticky-cta__button--active .sticky-cta__logo-image:not(.sticky-cta__logo-image--basic):not(.sticky-cta__logo-image--silver):not(.sticky-cta__logo-image--gold),
+.sticky-cta__button--settling .sticky-cta__logo-image:not(.sticky-cta__logo-image--basic):not(.sticky-cta__logo-image--silver):not(.sticky-cta__logo-image--gold) {
   filter: drop-shadow(0 14px 30px rgba(34, 211, 238, 0.3));
 }
 
