@@ -20,8 +20,10 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">Liens rapides</h3>
             <ul className="space-y-2">
               <li><a href="/#coverage" className="text-gray-400 hover:text-cyan-400 transition-colors">Garanties</a></li>
+              <li><Link to="/offres" className="text-gray-400 hover:text-cyan-400 transition-colors">Offres</Link></li>
               <li><a href="/#who-for" className="text-gray-400 hover:text-cyan-400 transition-colors">Pour qui</a></li>
-              <li><a href="/#faq" className="text-gray-400 hover:text-cyan-400 transition-colors">FAQ</a></li>
+              <li><Link to="/articles" className="text-gray-400 hover:text-cyan-400 transition-colors">Articles</Link></li>
+              <li><Link to="/faq" className="text-gray-400 hover:text-cyan-400 transition-colors">FAQ</Link></li>
               <li><a href="/#contact-form" className="text-gray-400 hover:text-cyan-400 transition-colors">Contact</a></li>
             </ul>
           </div>

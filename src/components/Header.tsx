@@ -1,4 +1,4 @@
-import { Menu, Moon, Shield, Sun, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from './theme-context';
@@ -14,27 +14,33 @@ export default function Header() {
 
   const navigationItems = [
     { href: '/#coverage', label: 'Garanties' },
+    { to: '/offres', label: 'Offres' },
     { href: '/#who-for', label: 'Pour qui' },
+    { to: '/articles', label: 'Articles' },
     { to: '/temoignages', label: 'Temoignages' },
-    { href: '/#faq', label: 'FAQ' },
+    { to: '/faq', label: 'FAQ' },
   ] as const;
 
-  const secondaryLinkClassName =
-    'inline-flex items-center justify-center rounded-lg border border-cyan-400/30 px-5 py-2.5 font-semibold text-white transition-all hover:border-cyan-300 hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30';
+  const secondaryLinkClassName = 'site-header__cta';
   const navLinkClassName =
-    'font-semibold text-gray-300 transition-colors hover:text-cyan-400 focus-visible:outline-none focus-visible:text-cyan-300';
+    'site-header__nav-link';
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/95 backdrop-blur-sm border-b border-cyan-500/20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center space-x-3">
-            <Shield className="w-8 h-8 text-cyan-400" strokeWidth={2} />
-            <span className="hidden text-xl font-semibold text-white sm:inline">Le Cyberassureur</span>
+    <header className="site-header">
+      <div className="site-header__container">
+        <div className="site-header__bar">
+          <Link to="/" className="site-header__brand">
+            <img
+              src="/acces-documentaire-prive/assets/logo-cropped.png"
+              alt=""
+              aria-hidden="true"
+              className="site-header__logo"
+            />
+            <span className="site-header__brand-text">Le Cyberassureur</span>
           </Link>
 
-          <div className="flex items-center gap-3">
-            <nav className="hidden md:flex items-center space-x-8">
+          <div className="site-header__actions">
+            <nav className="site-header__nav">
               {navigationItems.map((item) =>
                 'to' in item ? (
                   <Link key={item.label} to={item.to} className={navLinkClassName}>
@@ -63,7 +69,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen((current) => !current)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-500/20 bg-slate-900/70 text-white transition-colors hover:border-cyan-400/40 hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/30 md:hidden"
+              className="site-header__menu-button"
               aria-controls="mobile-navigation"
               aria-expanded={isMobileMenuOpen}
               aria-label={isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
@@ -76,15 +82,15 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div
             id="mobile-navigation"
-            className="border-t border-cyan-500/20 py-4 md:hidden"
+            className="site-header__mobile"
           >
-            <nav className="flex flex-col gap-3">
+            <nav className="site-header__mobile-nav">
               {navigationItems.map((item) =>
                 'to' in item ? (
                   <Link
                     key={item.label}
                     to={item.to}
-                    className="rounded-lg px-3 py-2 text-base font-semibold text-gray-300 transition-colors hover:bg-cyan-500/10 hover:text-cyan-300"
+                    className="site-header__mobile-link"
                   >
                     {item.label}
                   </Link>
@@ -92,14 +98,14 @@ export default function Header() {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="rounded-lg px-3 py-2 text-base font-semibold text-gray-300 transition-colors hover:bg-cyan-500/10 hover:text-cyan-300"
+                    className="site-header__mobile-link"
                   >
                     {item.label}
                   </a>
                 ),
               )}
 
-              <div className="grid gap-3 pt-2">
+              <div className="site-header__mobile-actions">
                 <a href="/#contact-form" className={secondaryLinkClassName}>
                   Obtenir une expertise
                 </a>

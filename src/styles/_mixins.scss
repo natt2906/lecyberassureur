@@ -1,0 +1,44 @@
+@use 'sass:map';
+
+$breakpoints: (
+  tablet: 48rem,
+  desktop: 64rem,
+  wide: 80rem,
+);
+
+@mixin respond-up($breakpoint) {
+  $value: map.get($breakpoints, $breakpoint);
+
+  @if $value == null {
+    @error "Unknown breakpoint `#{$breakpoint}`.";
+  }
+
+  @media (min-width: $value) {
+    @content;
+  }
+}
+
+@mixin focus-ring($color: rgba(34, 211, 238, 0.3), $offset: 0) {
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px $color;
+
+    @if $offset != 0 {
+      outline-offset: $offset;
+    }
+  }
+}
+
+@mixin section-container {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding-inline: 1rem;
+
+  @include respond-up(tablet) {
+    padding-inline: 1.5rem;
+  }
+
+  @include respond-up(desktop) {
+    padding-inline: 2rem;
+  }
+}

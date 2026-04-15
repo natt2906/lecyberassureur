@@ -79,49 +79,49 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 pt-20">
-      <div className="hero-grid-overlay absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjA1KSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-40"></div>
+    <section className="hero-section">
+      <div className="hero-grid-overlay hero-section__grid-overlay"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="inline-block">
-              <span className="text-cyan-400 text-sm font-semibold tracking-wider uppercase bg-cyan-400/10 px-4 py-2 rounded-full border border-cyan-400/20">
+      <div className="hero-section__container">
+        <div className="hero-section__grid">
+          <div className="hero-section__content">
+            <div className="hero-section__eyebrow-wrap">
+              <span className="hero-section__eyebrow">
                 Le Cyberassureur, hero sans masque
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+            <h1 className="hero-section__title">
               Ne laissez pas une cyberattaque couler votre entreprise.
             </h1>
 
-            <p className="text-xl text-gray-300 leading-relaxed max-w-2xl">
+            <p className="hero-section__description">
               L'assurance qui rembourse vos pertes d'exploitation et finance votre remise en état. Une protection 100% financière pour les TPE/PME.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="hero-section__actions">
               <button
                 onClick={scrollToForm}
-                className="group bg-cyan-500 hover:bg-cyan-600 text-slate-950 px-8 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
+                className="hero-section__primary-button"
               >
                 <span>Estimer ma protection financière</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="hero-section__button-icon hero-section__button-icon--shift" />
               </button>
 
               <button
                 onClick={scrollToForm}
-                className="border-2 border-cyan-400/50 hover:border-cyan-400 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center space-x-2"
+                className="hero-section__secondary-button"
               >
-                <Phone className="w-5 h-5" />
+                <Phone className="hero-section__button-icon" />
                 <span>Parler avec un expert</span>
               </button>
             </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 blur-3xl"></div>
+          <div className="hero-section__media">
+            <div className="hero-section__media-glow"></div>
             <div
-              className="relative w-full max-w-xs lg:max-w-sm aspect-[9/16] rounded-2xl bg-slate-900/60 border border-white/5 overflow-hidden mx-auto lg:ml-auto"
+              className="hero-section__video-shell"
               onClick={() => setIsMuted((value) => !value)}
             >
               {[0, 1].map((slot) => (
@@ -130,8 +130,8 @@ export default function Hero() {
                   ref={(node) => {
                     videoRefs.current[slot] = node;
                   }}
-                  className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
-                    slot === activeSlot ? 'opacity-100' : 'opacity-0'
+                  className={`hero-section__video ${
+                    slot === activeSlot ? 'hero-section__video--active' : ''
                   }`}
                   autoPlay
                   muted={isMuted}
@@ -143,7 +143,7 @@ export default function Hero() {
                   Votre navigateur ne supporte pas la lecture de la video.
                 </video>
               ))}
-              <div className="absolute bottom-3 right-3 bg-slate-900/80 text-white p-2 rounded-full border border-white/10 transition">
+              <div className="hero-section__mute-indicator">
                 {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </div>
             </div>

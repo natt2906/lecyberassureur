@@ -276,23 +276,23 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact-form" className="bg-slate-950 py-20 lg:py-28">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center space-x-2 text-cyan-400 mb-6">
+    <section id="contact-form" className="contact-form-section">
+      <div className="contact-form-section__container">
+        <div className="contact-form-section__heading">
+          <div className="contact-form-section__eyebrow">
             <Shield className="w-5 h-5" />
-            <span className="text-sm font-semibold tracking-wider uppercase">Protégez-vous dès aujourd'hui</span>
+            <span className="contact-form-section__eyebrow-text">Protégez-vous dès aujourd'hui</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="contact-form-section__title">
             Recevez votre analyse de risque cyber
           </h2>
-          <p className="text-lg text-gray-400">
+          <p className="contact-form-section__description">
             Pas de spam. Sans engagement. Contact d'experts uniquement.
           </p>
         </div>
 
-        <div className="bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 border border-cyan-500/20 rounded-2xl p-8 lg:p-12 shadow-2xl shadow-cyan-500/10">
-          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6 md:gap-8">
+        <div className="contact-form-card">
+          <form onSubmit={handleSubmit} className="contact-form-grid">
             <input
               type="text"
               name="website"
@@ -300,12 +300,12 @@ export default function ContactForm() {
               onChange={(e) => setHoneypot(e.target.value)}
               autoComplete="off"
               tabIndex={-1}
-              className="hidden"
+              className="contact-form-grid__honeypot"
               aria-hidden="true"
             />
 
-            <div className="md:col-span-1">
-              <label htmlFor="companyName" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wider">
+            <div className="contact-form-field">
+              <label htmlFor="companyName" className="contact-form-field__label">
                 Nom de l'entreprise *
               </label>
               <input
@@ -315,13 +315,13 @@ export default function ContactForm() {
                 value={formData.companyName}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
+                className="contact-form-field__input"
                 placeholder="Nom de votre entreprise"
               />
             </div>
 
-            <div className="md:col-span-1">
-              <label htmlFor="phone" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wider">
+            <div className="contact-form-field">
+              <label htmlFor="phone" className="contact-form-field__label">
                 Téléphone *
               </label>
               <input
@@ -331,13 +331,13 @@ export default function ContactForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
+                className="contact-form-field__input"
                 placeholder="+33 6 12 34 56 78"
               />
             </div>
 
-            <div className="md:col-span-2">
-              <label htmlFor="industry" className="block text-xs font-semibold text-gray-300 mb-2 uppercase tracking-wider">
+            <div className="contact-form-field contact-form-field--full">
+              <label htmlFor="industry" className="contact-form-field__label">
                 Secteur d'activité *
               </label>
               <input
@@ -347,7 +347,7 @@ export default function ContactForm() {
                 value={formData.industry}
                 onChange={handleChange}
                 required
-                className="w-full bg-slate-950 border border-cyan-500/20 rounded-lg px-4 py-3.5 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-colors"
+                className="contact-form-field__input"
                 placeholder="Ex: Technologie, santé, commerce"
               />
             </div>
@@ -355,17 +355,17 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="md:col-span-2 w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40"
+              className="contact-form-grid__submit"
             >
               <span>{isSubmitting ? 'Envoi en cours...' : "Recevoir mon analyse du risque et de l'exposition cyber"}</span>
               <Send className="w-5 h-5" />
             </button>
 
             {submitError && (
-              <p className="md:col-span-2 text-center text-sm text-red-400">{submitError}</p>
+              <p className="contact-form-grid__error">{submitError}</p>
             )}
 
-            <p className="md:col-span-2 text-center text-sm text-gray-400">
+            <p className="contact-form-grid__privacy">
               En soumettant ce formulaire, vous acceptez d'être contacté par nos experts en assurance cyber. Nous respectons votre vie privée et ne partagerons jamais vos informations.
             </p>
           </form>
