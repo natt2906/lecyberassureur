@@ -8,18 +8,14 @@ declare global {
   }
 }
 
-const GOOGLE_ADS_ID = import.meta.env.VITE_GOOGLE_ADS_ID || 'AW-11278008764';
-const GOOGLE_ANALYTICS_ID =
-  import.meta.env.VITE_GOOGLE_ANALYTICS_ID || 'G-94V9TT7R08';
-const GOOGLE_TAG_IDS = [GOOGLE_ANALYTICS_ID, GOOGLE_ADS_ID].filter(Boolean);
+const GOOGLE_TAG_ID = import.meta.env.VITE_GOOGLE_TAG_ID || 'GT-WBTNPQ2P';
 
-function trackPageView(sendTo: string) {
+function trackPageView() {
   if (typeof window === 'undefined' || !window.gtag) {
     return;
   }
 
   window.gtag('event', 'page_view', {
-    send_to: sendTo,
     page_title: document.title,
     page_location: window.location.href,
     page_path: `${window.location.pathname}${window.location.search}${window.location.hash}`,
@@ -68,9 +64,8 @@ export default function GoogleAdsTag() {
     lastTrackedPathRef.current = pagePath;
 
     return runWhenGtagReady(() => {
-      GOOGLE_TAG_IDS.forEach((tagId) => {
-        trackPageView(tagId);
-      });
+      window.gtag?.('config', GOOGLE_TAG_ID, { send_page_view: false });
+      trackPageView();
     });
   }, [location.pathname, location.search, location.hash]);
 
