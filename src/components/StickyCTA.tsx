@@ -175,18 +175,18 @@ export default function StickyCTA() {
   };
 
   const scrollToForm = () => {
-    const contactForm = document.getElementById('contact-form');
+    const contactForm = document.getElementById('devis-cyber');
 
     if (contactForm) {
       contactForm.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
-    if (location.pathname === '/' && location.hash === '#contact-form') {
+    if (location.pathname === '/' && location.hash === '#devis-cyber') {
       return;
     }
 
-    navigate('/#contact-form');
+    navigate('/#devis-cyber');
   };
 
   return (
@@ -206,7 +206,7 @@ export default function StickyCTA() {
         ]
           .filter(Boolean)
           .join(' ')}
-        aria-label="Acceder au formulaire de contact"
+        aria-label="Acceder au formulaire de devis cyber"
       >
         <span
           ref={logoRef}

@@ -153,7 +153,7 @@ export default function ArticlePage() {
                   niveau de protection pertinent pour votre entreprise ?
                 </p>
                 <a
-                  href="/#contact-form"
+                  href="/#devis-cyber"
                   className="inline-flex items-center gap-2 font-semibold text-cyan-400 transition-colors hover:text-cyan-300"
                 >
                   Demander une analyse

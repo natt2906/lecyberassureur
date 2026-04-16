@@ -10,7 +10,7 @@ export default function OffersSection() {
     navigate({
       pathname: '/',
       search: `?offer=${offerId}`,
-      hash: '#contact-form',
+      hash: '#devis-cyber',
     });
   };
 

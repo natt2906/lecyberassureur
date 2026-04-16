@@ -4,7 +4,7 @@ import { useSelectedOffer } from '../lib/selectedOffer';
 export default function FinalCTA() {
   const selectedOffer = useSelectedOffer();
   const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('devis-cyber')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const logoClassName = [

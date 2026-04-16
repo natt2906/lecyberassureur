@@ -13,7 +13,7 @@ export default function Hero() {
   const crossfadeTimeoutRef = useRef<number | null>(null);
 
   const scrollToForm = () => {
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('devis-cyber')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {

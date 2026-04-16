@@ -60,7 +60,7 @@ export default function Header() {
                   </a>
                 ),
               )}
-              <a href="/#contact-form" className={secondaryLinkClassName}>
+              <a href="/#devis-cyber" className={secondaryLinkClassName}>
                 Obtenir une expertise
               </a>
             </nav>
@@ -114,7 +114,7 @@ export default function Header() {
               )}
 
               <div className="site-header__mobile-actions">
-                <a href="/#contact-form" className={secondaryLinkClassName}>
+                <a href="/#devis-cyber" className={secondaryLinkClassName}>
                   Obtenir une expertise
                 </a>
               </div>

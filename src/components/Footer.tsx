@@ -30,7 +30,7 @@ export default function Footer() {
               <li><a href="/#who-for" className="site-footer__link">Pour qui</a></li>
               <li><Link to="/articles" className="site-footer__link">Articles</Link></li>
               <li><Link to="/faq" className="site-footer__link">FAQ</Link></li>
-              <li><a href="/#contact-form" className="site-footer__link">Contact</a></li>
+              <li><a href="/#devis-cyber" className="site-footer__link">Contact</a></li>
             </ul>
           </div>
 
