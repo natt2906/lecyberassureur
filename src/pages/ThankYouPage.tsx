@@ -1,10 +1,19 @@
+import { useEffect } from 'react';
 import { CheckCircle, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { usePageMeta } from '../lib/usePageMeta';
 
+declare global {
+  interface Window {
+    gtag_report_conversion?: (url?: string) => boolean;
+  }
+}
+
 export default function ThankYouPage() {
+  const location = useLocation();
+
   usePageMeta({
     title: 'Merci pour votre demande | Le Cyberassureur',
     description:
@@ -12,6 +21,31 @@ export default function ThankYouPage() {
     path: '/merci',
     robots: 'noindex,follow',
   });
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const state = location.state as
+      | { trackConversion?: boolean; conversionKey?: string }
+      | null;
+
+    if (!state?.trackConversion) {
+      return;
+    }
+
+    const conversionKey = state.conversionKey || 'default';
+    const storageKey = 'lecyberassureur-google-ads-conversion';
+    const lastTrackedKey = window.sessionStorage.getItem(storageKey);
+
+    if (lastTrackedKey === conversionKey) {
+      return;
+    }
+
+    window.sessionStorage.setItem(storageKey, conversionKey);
+    window.gtag_report_conversion?.();
+  }, [location.state]);
 
   return (
     <div className="page-shell">

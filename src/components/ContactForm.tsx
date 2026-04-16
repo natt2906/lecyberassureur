@@ -333,7 +333,12 @@ export default function ContactForm() {
       window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
       setFormData(EMPTY_FORM_DATA);
       setHoneypot('');
-      navigate('/merci');
+      navigate('/merci', {
+        state: {
+          trackConversion: true,
+          conversionKey: createdAt,
+        },
+      });
     } catch (error) {
       console.error(error);
       const message =
