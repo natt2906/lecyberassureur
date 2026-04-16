@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CookieConsent from './components/CookieConsent';
+import GoogleAdsTag from './components/GoogleAdsTag';
 import StickyCTA from './components/StickyCTA';
 import Home from './pages/Home';
 
@@ -17,6 +18,7 @@ const OffersPage = lazy(() => import('./pages/OffersPage'));
 function App() {
   return (
     <>
+      <GoogleAdsTag />
       <Suspense fallback={<div className="page-shell" />}>
         <Routes>
           <Route path="/" element={<Home />} />
