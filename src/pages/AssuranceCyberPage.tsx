@@ -1,0 +1,121 @@
+import ContactForm from '../components/ContactForm';
+import FAQ from '../components/FAQ';
+import Footer from '../components/Footer';
+import Header from '../components/Header';
+import { assuranceCyberFaqItems } from '../data/faqs';
+import { usePageMeta } from '../lib/usePageMeta';
+
+export default function AssuranceCyberPage() {
+  usePageMeta({
+    title: 'Assurance cyber pour entreprise : comprendre la protection utile | Le Cyberassureur',
+    description:
+      "Comprenez à quoi sert une assurance cyber pour entreprise, ce qu'elle couvre, comment choisir le bon niveau de protection et pourquoi elle complète la cybersécurité.",
+    path: '/assurance-cyber',
+    keywords:
+      'assurance cyber, assurance cyber entreprise, assurance cyber PME, assurance cyber TPE, protection cyber entreprise',
+    structuredData: {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: assuranceCyberFaqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    },
+  });
+
+  return (
+    <div className="page-shell">
+      <Header />
+      <main className="page-main">
+        <section className="page-header">
+          <div className="page-header__inner">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Assurance cyber</span>
+            </div>
+            <h1 className="site-section__title mt-6">
+              Assurance cyber pour entreprise : ce qu&apos;elle protège vraiment
+            </h1>
+            <p className="site-section__intro mt-6">
+              Une assurance cyber sert à limiter l&apos;impact financier d&apos;un incident
+              numérique sur l&apos;activité. Elle intervient quand la cybersécurité ne suffit
+              plus à éviter la perte : arrêt des outils, remise en état, frais d&apos;experts,
+              responsabilités liées aux données ou besoin d&apos;accompagnement de crise.
+            </p>
+          </div>
+        </section>
+
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Le bon cadrage</span>
+              </div>
+              <h2 className="site-section__title">Une assurance cyber ne remplace pas la sécurité, elle protège l’entreprise quand l’incident a déjà eu lieu</h2>
+              <p className="site-section__intro">
+                Beaucoup d’entreprises confondent encore outil de cybersécurité, prestataire IT et assurance cyber. Les trois n’ont pas le même rôle et ne couvrent pas la même réalité.
+              </p>
+            </div>
+
+            <div className="site-card-grid site-card-grid--three">
+              <article className="site-card">
+                <h2 className="site-card__title">Interruption d’activité</h2>
+                <p className="site-card__body">
+                  Quand la messagerie, l’ERP, les fichiers ou les postes deviennent
+                  indisponibles, le sujet principal n’est plus technique : il devient
+                  immédiatement économique.
+                </p>
+              </article>
+              <article className="site-card">
+                <h2 className="site-card__title">Gestion de crise</h2>
+                <p className="site-card__body">
+                  Une assurance cyber permet d’accéder à des experts techniques,
+                  juridiques et opérationnels pour piloter la réaction au bon moment.
+                </p>
+              </article>
+              <article className="site-card">
+                <h2 className="site-card__title">Responsabilité liée aux données</h2>
+                <p className="site-card__body">
+                  Quand un incident touche des données clients, RH ou partenaires, le
+                  coût dépasse vite la simple remise en route du système.
+                </p>
+              </article>
+            </div>
+
+            <div className="site-panel site-panel--accent topic-page__panel">
+              <p className="site-panel__eyebrow">Ce qu’une entreprise doit regarder</p>
+              <h2 className="site-panel__title">Le bon niveau d’assurance cyber dépend de l’impact potentiel, pas d’un réflexe standard</h2>
+              <div className="topic-page__stack">
+                <p className="site-panel__body">
+                  Une entreprise doit d’abord se demander combien lui coûterait un arrêt,
+                  une remise en état, une fraude ou une atteinte aux données. C’est cette
+                  réalité qui permet ensuite de choisir un niveau de protection cohérent.
+                </p>
+                <ul className="topic-page__list">
+                  <li>Dépendance à la messagerie, à l’ERP, au CRM ou aux outils métiers</li>
+                  <li>Sensibilité des données manipulées et obligations associées</li>
+                  <li>Capacité financière à absorber un arrêt de plusieurs jours</li>
+                  <li>Exposition potentielle à la fraude ou à des dommages subis</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <FAQ
+          sectionId="assurance-cyber-faq"
+          eyebrow="Questions fréquentes"
+          title="Questions fréquentes sur l’assurance cyber"
+          intro="Cette page répond aux questions les plus fréquentes sur le rôle réel d’une assurance cyber et sur la manière de choisir une protection cohérente avec l’exposition d’une entreprise."
+          items={assuranceCyberFaqItems}
+        />
+
+        <ContactForm />
+      </main>
+      <Footer />
+    </div>
+  );
+}

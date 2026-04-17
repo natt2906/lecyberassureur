@@ -89,3 +89,72 @@ export const faqPageItems: FAQItem[] = [
       "Le bon niveau de couverture dépend du chiffre d'affaires, de la dépendance au système d'information, de la sensibilité des données, du nombre de postes, de la dépendance à des prestataires externes et du coût potentiel d'un arrêt. L'objectif n'est pas de prendre le plafond maximum, mais un niveau cohérent avec l'exposition réelle de l'entreprise.",
   },
 ];
+
+export const assuranceCyberFaqItems: FAQItem[] = [
+  {
+    question: "À quoi sert une assurance cyber pour une entreprise ?",
+    answer:
+      "Une assurance cyber sert à absorber les conséquences financières d'un incident informatique : interruption d'activité, frais d'expertise, remise en état, responsabilités liées aux données et accompagnement de crise selon les garanties prévues.",
+  },
+  {
+    question: "Une assurance cyber est-elle utile sans activité e-commerce ?",
+    answer:
+      "Oui. Une entreprise peut subir un sinistre cyber sans vendre en ligne : messagerie compromise, ERP indisponible, données clients exposées, fraude au virement ou poste chiffré par rançongiciel suffisent à créer un impact économique fort.",
+  },
+  {
+    question: "Quelle différence entre cybersécurité et assurance cyber ?",
+    answer:
+      "La cybersécurité vise à réduire la probabilité d'un incident. L'assurance cyber vise à couvrir ses conséquences financières et à donner accès à des experts quand l'attaque a déjà eu lieu. Les deux approches sont complémentaires.",
+  },
+  {
+    question: "Comment choisir le bon niveau de couverture cyber ?",
+    answer:
+      "Le bon niveau dépend de votre chiffre d'affaires, de votre dépendance au système d'information, de la sensibilité des données manipulées, du coût potentiel d'un arrêt et de votre exposition à la fraude ou à des tiers.",
+  },
+];
+
+export const offersFaqItems: FAQItem[] = [
+  {
+    question: "Quelle offre d'assurance cyber choisir entre Basic, Silver et Gold ?",
+    answer:
+      "Basic convient à un premier socle de couverture. Silver est plus pertinent si l'entreprise veut intégrer les dommages subis. Gold vise les structures qui veulent aussi couvrir des scénarios de fraude en plus du reste.",
+  },
+  {
+    question: "Les tarifs affichés sur la page offres sont-ils définitifs ?",
+    answer:
+      "Non. Ils servent de prix d'appel. Le tarif réel dépend du profil de l'entreprise, de son activité, de son chiffre d'affaires, de ses mesures de sécurité et du niveau de garantie retenu.",
+  },
+  {
+    question: "Une offre d'assurance cyber suffit-elle sans analyse du risque ?",
+    answer:
+      "Non. Une offre donne un cadre de protection, mais l'analyse du risque reste indispensable pour vérifier l'adéquation du niveau de couverture avec l'exposition réelle de l'entreprise.",
+  },
+  {
+    question: "Peut-on changer d'offre d'assurance cyber plus tard ?",
+    answer:
+      "Oui, sous réserve des modalités de l'assureur. Une entreprise peut ajuster son niveau de protection quand son exposition évolue : croissance, nouveaux outils, plus de données, plus de dépendance au numérique ou besoin renforcé sur la fraude.",
+  },
+];
+
+export const cyberRisksFaqItems: FAQItem[] = [
+  {
+    question: "Que recouvre exactement la notion de cyber-risques ?",
+    answer:
+      "Les cyber-risques regroupent les événements qui peuvent affecter le système d'information ou les données d'une entreprise : rançongiciel, compromission de messagerie, fuite de données, fraude, indisponibilité des outils ou erreur humaine exploitée.",
+  },
+  {
+    question: "Quels cyber-risques coûtent le plus cher aux PME ?",
+    answer:
+      "Les plus coûteux sont souvent l'interruption d'activité, la remise en état des systèmes, les dommages subis, la fraude et les responsabilités liées aux données ou à des tiers touchés par l'incident.",
+  },
+  {
+    question: "Les cyber-risques concernent-ils aussi les entreprises très petites ?",
+    answer:
+      "Oui. Les TPE et PME sont particulièrement exposées parce qu'elles dépendent fortement de quelques outils clés tout en disposant souvent de moins de ressources internes pour absorber un incident prolongé.",
+  },
+  {
+    question: "Comment réduire l'exposition aux cyber-risques avant même l'assurance ?",
+    answer:
+      "Le minimum utile reste la sauvegarde régulière, les mises à jour, le MFA, la gestion des accès, la sensibilisation des équipes et la capacité à déclarer rapidement un incident. L'assurance vient ensuite couvrir ce qui reste financièrement exposé.",
+  },
+];

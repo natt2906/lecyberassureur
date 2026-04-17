@@ -14,6 +14,8 @@ const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage'));
 const OffersPage = lazy(() => import('./pages/OffersPage'));
+const AssuranceCyberPage = lazy(() => import('./pages/AssuranceCyberPage'));
+const CyberRisksPage = lazy(() => import('./pages/CyberRisksPage'));
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/offres" element={<OffersPage />} />
+          <Route path="/assurance-cyber" element={<AssuranceCyberPage />} />
+          <Route path="/assurance-cyber-risques" element={<CyberRisksPage />} />
           <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/faq" element={<FAQPage />} />

@@ -2,7 +2,9 @@ import { Suspense, lazy } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import TrustBar from '../components/TrustBar';
+import PartnersSection from '../components/PartnersSection';
 import ContactForm from '../components/ContactForm';
+import { homeFaqItems } from '../data/faqs';
 import { usePageMeta } from '../lib/usePageMeta';
 
 const ProblemSection = lazy(() => import('../components/ProblemSection'));
@@ -15,12 +17,12 @@ const Footer = lazy(() => import('../components/Footer'));
 
 export default function Home() {
   usePageMeta({
-    title: 'Assurance cyber pour TPE et PME | Le Cyberassureur',
+    title: 'Assurance cyber pour entreprise, TPE et PME | Le Cyberassureur',
     description:
-      "Le Cyberassureur aide les TPE et PME à protéger leur trésorerie face aux cyberattaques avec une couverture dédiée, une analyse de risque et un accompagnement expert.",
+      "Le Cyberassureur propose une assurance cyber pour entreprise avec analyse du risque, couverture des pertes financières, dommages subis, fraude et accompagnement expert pour TPE et PME.",
     path: '/',
     keywords:
-      'assurance cyber, cyberassurance entreprise, assurance cyber PME, assurance cyber TPE, risque cyber entreprise, protection financière cyber',
+      "assurance cyber, assurance cyber entreprise, offre assurance cyber, assurance cyber risques, assurance cyber PME, assurance cyber TPE, risque cyber entreprise, protection financière cyber",
     structuredData: [
       {
         '@context': 'https://schema.org',
@@ -35,6 +37,34 @@ export default function Home() {
         name: 'Le Cyberassureur',
         url: 'https://lecyberassureur.fr',
       },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'Assurance cyber pour entreprise',
+        serviceType: 'Assurance cyber',
+        provider: {
+          '@type': 'Organization',
+          name: 'Le Cyberassureur',
+          url: 'https://lecyberassureur.fr',
+        },
+        areaServed: 'FR',
+        audience: {
+          '@type': 'BusinessAudience',
+          audienceType: 'TPE, PME et entreprises',
+        },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: homeFaqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      },
     ],
   });
 
@@ -44,6 +74,7 @@ export default function Home() {
       <Hero />
       <ContactForm />
       <TrustBar />
+      <PartnersSection />
       <Suspense fallback={null}>
         <ProblemSection />
         <CoverageSection />

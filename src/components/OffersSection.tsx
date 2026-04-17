@@ -2,7 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { offers } from '../data/offers';
 import { writeSelectedOffer } from '../lib/selectedOffer';
 
-export default function OffersSection() {
+type OffersSectionProps = {
+  showHeading?: boolean;
+};
+
+export default function OffersSection({ showHeading = true }: OffersSectionProps) {
   const navigate = useNavigate();
 
   const handleOfferClick = (offerId: string) => {
@@ -17,15 +21,17 @@ export default function OffersSection() {
   return (
     <section id="offers" className="offers-section">
       <div className="offers-section__container">
-        <div className="offers-section__heading">
-          <div className="offers-section__eyebrow">Nos offres</div>
-          <h2 className="offers-section__title">Choisissez le niveau de protection adapté</h2>
-          <p className="offers-section__intro">
-            Trois niveaux de couverture pour structurer votre protection cyber.
-            Les montants affichés sont des tarifs indicatifs, à affiner
-            selon le profil de votre entreprise.
-          </p>
-        </div>
+        {showHeading ? (
+          <div className="offers-section__heading">
+            <div className="offers-section__eyebrow">Nos offres</div>
+            <h2 className="offers-section__title">Choisissez le niveau de protection adapté</h2>
+            <p className="offers-section__intro">
+              Trois niveaux de couverture pour structurer votre protection cyber.
+              Les montants affichés sont des tarifs indicatifs, à affiner
+              selon le profil de votre entreprise.
+            </p>
+          </div>
+        ) : null}
 
         <div className="offers-section__grid">
           {offers.map((offer) => (

@@ -25,7 +25,9 @@ export default function Footer() {
           <div>
             <h3 className="site-footer__heading">Liens rapides</h3>
             <ul className="site-footer__list site-footer__list--two-columns">
+              <li><Link to="/assurance-cyber" className="site-footer__link">Assurance cyber</Link></li>
               <li><a href="/#coverage" className="site-footer__link">Garanties</a></li>
+              <li><Link to="/assurance-cyber-risques" className="site-footer__link">Cyber-risques</Link></li>
               <li><Link to="/offres" className="site-footer__link">Offres</Link></li>
               <li><a href="/#who-for" className="site-footer__link">Pour qui</a></li>
               <li><Link to="/articles" className="site-footer__link">Articles</Link></li>

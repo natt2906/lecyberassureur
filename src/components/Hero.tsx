@@ -1,5 +1,6 @@
 import { ArrowRight, Phone, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   const videos = ['/question1.mp4', '/question2.mp4', '/question3.mp4', '/question4.mp4'];
@@ -87,17 +88,29 @@ export default function Hero() {
           <div className="hero-section__content">
             <div className="hero-section__eyebrow-wrap">
               <span className="hero-section__eyebrow">
-                Le Cyberassureur, hero sans masque
+                Assurance cyber pour professionnels
               </span>
             </div>
 
             <h1 className="hero-section__title">
-              Ne laissez pas une cyberattaque couler votre entreprise.
+              Assurance cyber : protégez votre entreprise contre les cyber-risques majeurs.
             </h1>
 
             <p className="hero-section__description">
-              L'assurance qui rembourse vos pertes d'exploitation et finance votre remise en état. Une protection 100% financière pour les TPE/PME.
+              Le Cyberassureur aide les entreprises, TPE et PME à absorber l&apos;impact financier d&apos;une cyberattaque : interruption d&apos;activité, remise en état, dommages subis, responsabilités liées aux données et scénarios de fraude selon les garanties retenues.
             </p>
+
+            <div className="hero-section__topics">
+              <Link to="/assurance-cyber" className="hero-section__topic-link">
+                Assurance cyber
+              </Link>
+              <Link to="/offres" className="hero-section__topic-link">
+                Offres d&apos;assurance cyber
+              </Link>
+              <Link to="/assurance-cyber-risques" className="hero-section__topic-link">
+                Assurance cyber-risques
+              </Link>
+            </div>
 
             <div className="hero-section__actions">
               <button
