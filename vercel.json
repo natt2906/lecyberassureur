@@ -11,6 +11,52 @@
       "permanent": false
     }
   ],
+  "rewrites": [
+    {
+      "source": "/offres",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/assurance-cyber",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/assurance-cyber-risques",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/articles",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/articles/:slug",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/merci",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/politique-confidentialite",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/conditions-utilisation",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/mentions-legales",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/temoignages",
+      "destination": "/index.html"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
