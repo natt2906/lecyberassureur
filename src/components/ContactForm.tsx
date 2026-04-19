@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Send, Shield } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { activityDomains, isKnownActivityDomain } from '../data/activityDomains';
 import { captureLeadAttribution } from '../lib/leadAttribution';
 import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
 import { readSelectedOffer, writeSelectedOffer } from '../lib/selectedOffer';
@@ -8,7 +9,10 @@ import { isOfferId, offerLabelById } from '../data/offers';
 
 const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
 const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
+const SUBMITTED_LEADS_STORAGE_KEY = 'lecyberassureur-submitted-leads';
 const FORM_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
+const SUBMITTED_LEAD_TTL_MS = 24 * 60 * 60 * 1000;
+const MIN_FORM_COMPLETION_MS = 3500;
 
 const EMPTY_FORM_DATA = {
   companyName: '',
@@ -16,6 +20,9 @@ const EMPTY_FORM_DATA = {
   phone: '',
   offer: '',
 };
+
+type FormDataState = typeof EMPTY_FORM_DATA;
+type FieldErrors = Partial<Record<keyof FormDataState, string>>;
 
 type FormDraftData = Partial<typeof EMPTY_FORM_DATA>;
 type StoredFormDraft = FormDraftData | { savedAt?: string; data?: FormDraftData };
@@ -84,6 +91,168 @@ function hasMeaningfulFormData(formData: typeof EMPTY_FORM_DATA) {
   ].some((value) => value.length > 0);
 }
 
+function normalizeCompanyName(value: string) {
+  return value.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function normalizePhoneDigits(value: string) {
+  return value.replace(/\D/g, '');
+}
+
+function formatFrenchPhoneInput(value: string) {
+  const digits = normalizePhoneDigits(value);
+
+  if (!digits) {
+    return '';
+  }
+
+  if (digits.startsWith('33')) {
+    const rest = digits.slice(2, 11);
+    const groups = [
+      rest.slice(0, 1),
+      rest.slice(1, 3),
+      rest.slice(3, 5),
+      rest.slice(5, 7),
+      rest.slice(7, 9),
+    ].filter(Boolean);
+
+    return `+33 ${groups.join(' ')}`.trim();
+  }
+
+  const localDigits = digits.slice(0, 10);
+  const groups = [
+    localDigits.slice(0, 2),
+    localDigits.slice(2, 4),
+    localDigits.slice(4, 6),
+    localDigits.slice(6, 8),
+    localDigits.slice(8, 10),
+  ].filter(Boolean);
+
+  return groups.join(' ');
+}
+
+function isValidFrenchPhone(value: string) {
+  const digits = normalizePhoneDigits(value);
+  return /^(?:0[1-9]\d{8}|33[1-9]\d{8})$/.test(digits);
+}
+
+function toCanonicalPhone(value: string) {
+  const digits = normalizePhoneDigits(value);
+
+  if (/^0[1-9]\d{8}$/.test(digits)) {
+    return `+33${digits.slice(1)}`;
+  }
+
+  if (/^33[1-9]\d{8}$/.test(digits)) {
+    return `+${digits}`;
+  }
+
+  return value.trim();
+}
+
+function getLeadFingerprint(formData: FormDataState) {
+  const normalizedCompanyName = normalizeCompanyName(formData.companyName);
+  const canonicalPhone = toCanonicalPhone(formData.phone);
+
+  if (!normalizedCompanyName || !canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
+    return '';
+  }
+
+  return JSON.stringify({
+    companyName: normalizedCompanyName,
+    phone: canonicalPhone,
+  });
+}
+
+function readSubmittedLeadMap() {
+  if (typeof window === 'undefined') {
+    return new Map<string, number>();
+  }
+
+  try {
+    const raw = window.localStorage.getItem(SUBMITTED_LEADS_STORAGE_KEY);
+
+    if (!raw) {
+      return new Map<string, number>();
+    }
+
+    const parsed = JSON.parse(raw) as Record<string, number>;
+    const next = new Map<string, number>();
+    const now = Date.now();
+
+    Object.entries(parsed).forEach(([fingerprint, timestamp]) => {
+      if (typeof timestamp !== 'number') {
+        return;
+      }
+
+      if (now - timestamp > SUBMITTED_LEAD_TTL_MS) {
+        return;
+      }
+
+      next.set(fingerprint, timestamp);
+    });
+
+    return next;
+  } catch {
+    return new Map<string, number>();
+  }
+}
+
+function writeSubmittedLeadMap(submittedLeads: Map<string, number>) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  window.localStorage.setItem(
+    SUBMITTED_LEADS_STORAGE_KEY,
+    JSON.stringify(Object.fromEntries(submittedLeads.entries())),
+  );
+}
+
+function hasRecentSubmittedLead(formData: FormDataState) {
+  const fingerprint = getLeadFingerprint(formData);
+
+  if (!fingerprint) {
+    return false;
+  }
+
+  return readSubmittedLeadMap().has(fingerprint);
+}
+
+function rememberSubmittedLead(formData: FormDataState) {
+  const fingerprint = getLeadFingerprint(formData);
+
+  if (!fingerprint) {
+    return;
+  }
+
+  const submittedLeads = readSubmittedLeadMap();
+  submittedLeads.set(fingerprint, Date.now());
+  writeSubmittedLeadMap(submittedLeads);
+}
+
+function validateFormData(formData: FormDataState): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (!formData.companyName.trim()) {
+    errors.companyName = "Le nom de l'entreprise est obligatoire.";
+  }
+
+  if (!formData.phone.trim()) {
+    errors.phone = 'Le numéro de téléphone est obligatoire.';
+  } else if (!isValidFrenchPhone(formData.phone)) {
+    errors.phone = 'Saisissez un numéro français valide, par exemple 06 12 34 56 78.';
+  }
+
+  if (!formData.industry.trim()) {
+    errors.industry = "Le domaine d'activité est obligatoire.";
+  } else if (!isKnownActivityDomain(formData.industry)) {
+    errors.industry = "Sélectionnez un domaine d'activité dans la liste.";
+  }
+
+  return errors;
+}
+
 function getOfferLabel(value: string) {
   return isOfferId(value) ? offerLabelById[value] : value;
 }
@@ -103,11 +272,13 @@ export default function ContactForm() {
   const [formData, setFormData] = useState(readStoredFormDraft);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [honeypot, setHoneypot] = useState('');
   const formDataRef = useRef(formData);
   const honeypotRef = useRef(honeypot);
   const isSubmittingRef = useRef(false);
   const hasSubmittedRef = useRef(false);
+  const formOpenedAtRef = useRef(Date.now());
 
   useEffect(() => {
     formDataRef.current = formData;
@@ -247,6 +418,7 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitError('');
+    setFieldErrors({});
     isSubmittingRef.current = true;
     setIsSubmitting(true);
 
@@ -257,8 +429,24 @@ export default function ContactForm() {
     }
 
     try {
+      const validationErrors = validateFormData(formData);
+
+      if (Object.keys(validationErrors).length > 0) {
+        setFieldErrors(validationErrors);
+        throw new Error('Merci de corriger les champs signalés.');
+      }
+
+      if (Date.now() - formOpenedAtRef.current < MIN_FORM_COMPLETION_MS) {
+        throw new Error("Le formulaire a été soumis trop rapidement. Merci de réessayer dans quelques secondes.");
+      }
+
+      if (hasRecentSubmittedLead(formData)) {
+        throw new Error('Une demande récente existe déjà pour ce contact. Merci de patienter avant de renvoyer le formulaire.');
+      }
+
       const leadWebhookUrl = resolveLeadWebhookUrl();
       const leadWebhookHint = getLeadWebhookHint();
+      const canonicalPhone = toCanonicalPhone(formData.phone);
 
       if (!leadWebhookUrl || (import.meta.env.DEV && !import.meta.env.VITE_LEAD_WEBHOOK_URL)) {
         throw new Error(leadWebhookHint || 'VITE_LEAD_WEBHOOK_URL manquant');
@@ -269,8 +457,8 @@ export default function ContactForm() {
       const submissionPage = `${window.location.pathname}${window.location.search}${window.location.hash}`;
       const embedFields = [
         { name: 'Entreprise', value: toDiscordValue(formData.companyName), inline: true },
-        { name: 'Telephone', value: toDiscordValue(formData.phone), inline: true },
-        { name: 'Secteur', value: toDiscordValue(formData.industry), inline: true },
+        { name: 'Telephone', value: toDiscordValue(canonicalPhone), inline: true },
+        { name: "Domaine d'activite", value: toDiscordValue(formData.industry), inline: true },
         { name: 'Offre', value: toDiscordValue(formData.offer ? getOfferLabel(formData.offer) : ''), inline: true },
         { name: 'UTM Source', value: toDiscordValue(attribution.utm_source), inline: true },
         { name: 'UTM Medium', value: toDiscordValue(attribution.utm_medium), inline: true },
@@ -306,7 +494,7 @@ export default function ContactForm() {
           hp: honeypot,
           lead: {
             companyName: formData.companyName,
-            phone: formData.phone,
+            phone: canonicalPhone,
             industry: formData.industry,
             offer: formData.offer,
             offer_label: formData.offer ? getOfferLabel(formData.offer) : '',
@@ -324,11 +512,31 @@ export default function ContactForm() {
       });
 
       if (!response.ok) {
+        let message = `Webhook lead en erreur (${response.status})`;
         const responseText = await response.text();
-        throw new Error(responseText || `Webhook lead en erreur (${response.status})`);
+
+        try {
+          const payload = JSON.parse(responseText) as { error?: string };
+
+          if (payload?.error) {
+            message = payload.error;
+          } else if (responseText) {
+            message = responseText;
+          }
+        } catch {
+          if (responseText) {
+            message = responseText;
+          }
+        }
+
+        throw new Error(message);
       }
 
       hasSubmittedRef.current = true;
+      rememberSubmittedLead({
+        ...formData,
+        phone: canonicalPhone,
+      });
       window.localStorage.removeItem(FORM_DRAFT_STORAGE_KEY);
       window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
       setFormData(EMPTY_FORM_DATA);
@@ -353,13 +561,22 @@ export default function ContactForm() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+
     if (e.target.name === 'offer') {
       writeSelectedOffer(e.target.value);
     }
 
+    if (fieldErrors[name as keyof FormDataState]) {
+      setFieldErrors((current) => ({
+        ...current,
+        [name]: '',
+      }));
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: name === 'phone' ? formatFrenchPhoneInput(value) : value,
     });
   };
 
@@ -403,9 +620,17 @@ export default function ContactForm() {
                 value={formData.companyName}
                 onChange={handleChange}
                 required
+                autoComplete="organization"
+                aria-invalid={fieldErrors.companyName ? 'true' : 'false'}
+                aria-describedby={fieldErrors.companyName ? 'companyName-error' : undefined}
                 className="contact-form-field__input"
                 placeholder="Nom de votre entreprise"
               />
+              {fieldErrors.companyName && (
+                <p id="companyName-error" className="contact-form-field__error">
+                  {fieldErrors.companyName}
+                </p>
+              )}
             </div>
 
             <div className="contact-form-field">
@@ -419,25 +644,49 @@ export default function ContactForm() {
                 value={formData.phone}
                 onChange={handleChange}
                 required
+                autoComplete="tel"
+                inputMode="tel"
+                aria-invalid={fieldErrors.phone ? 'true' : 'false'}
+                aria-describedby={fieldErrors.phone ? 'phone-error' : 'phone-hint'}
                 className="contact-form-field__input"
                 placeholder="+33 6 12 34 56 78"
               />
+              <p id="phone-hint" className="contact-form-field__hint">
+                Format accepté : 01 23 45 67 89 ou +33 1 23 45 67 89
+              </p>
+              {fieldErrors.phone && (
+                <p id="phone-error" className="contact-form-field__error">
+                  {fieldErrors.phone}
+                </p>
+              )}
             </div>
 
             <div className="contact-form-field contact-form-field--full">
               <label htmlFor="industry" className="contact-form-field__label">
-                Secteur d'activité *
+                Domaine d'activité *
               </label>
-              <input
-                type="text"
+              <select
                 id="industry"
                 name="industry"
                 value={formData.industry}
                 onChange={handleChange}
                 required
-                className="contact-form-field__input"
-                placeholder="Ex: Technologie, santé, commerce"
-              />
+                aria-invalid={fieldErrors.industry ? 'true' : 'false'}
+                aria-describedby={fieldErrors.industry ? 'industry-error' : undefined}
+                className="contact-form-field__input contact-form-field__select"
+              >
+                <option value="">Sélectionnez votre domaine d'activité</option>
+                {activityDomains.map((domain) => (
+                  <option key={domain} value={domain}>
+                    {domain}
+                  </option>
+                ))}
+              </select>
+              {fieldErrors.industry && (
+                <p id="industry-error" className="contact-form-field__error">
+                  {fieldErrors.industry}
+                </p>
+              )}
             </div>
 
             <div className="contact-form-field contact-form-field--full">

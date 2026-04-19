@@ -95,6 +95,13 @@ type FormPayload = {
 const MAX_PAYLOAD_CHARS = 20_000;
 const DEFAULT_MAX_FIELD_LENGTH = 500;
 const MAX_URL_FIELD_LENGTH = 2048;
+const IP_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS_PER_IP_PER_WINDOW = 8;
+const SUBMITTED_LEAD_DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
+const ABANDONED_LEAD_DEDUP_TTL_MS = 6 * 60 * 60 * 1000;
+
+const ipRequestLog = new Map<string, number[]>();
+const leadFingerprintLog = new Map<string, { timestamp: number; status: string }>();
 
 function setHeaderIfPossible(res: ResponseLike, name: string, value: string) {
   res.setHeader?.(name, value);
@@ -141,6 +148,126 @@ function applySecurityHeaders(res: ResponseLike, allowedOrigin = '') {
 
 function text(value: unknown, maxLength = DEFAULT_MAX_FIELD_LENGTH) {
   return String(value || '').trim().slice(0, maxLength);
+}
+
+function normalizePhoneDigits(value: string) {
+  return value.replace(/\D/g, '');
+}
+
+function isValidFrenchPhone(value: string) {
+  return /^(?:0[1-9]\d{8}|33[1-9]\d{8})$/.test(normalizePhoneDigits(value));
+}
+
+function toCanonicalPhone(value: string) {
+  const digits = normalizePhoneDigits(value);
+
+  if (/^0[1-9]\d{8}$/.test(digits)) {
+    return `+33${digits.slice(1)}`;
+  }
+
+  if (/^33[1-9]\d{8}$/.test(digits)) {
+    return `+${digits}`;
+  }
+
+  return value.trim();
+}
+
+function normalizeCompanyName(value: string) {
+  return value.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function getLeadFingerprint(companyName: string, phone: string) {
+  const normalizedCompanyName = normalizeCompanyName(companyName);
+  const canonicalPhone = toCanonicalPhone(phone);
+
+  if (!normalizedCompanyName || !canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
+    return '';
+  }
+
+  return `${normalizedCompanyName}::${canonicalPhone}`;
+}
+
+function getClientIp(req: RequestLike) {
+  const forwardedFor = getHeader(req, 'x-forwarded-for');
+
+  if (forwardedFor) {
+    const firstIp = forwardedFor.split(',')[0]?.trim();
+    if (firstIp) {
+      return firstIp;
+    }
+  }
+
+  return text(getHeader(req, 'x-real-ip'), 120);
+}
+
+function cleanIpRequestLog(now: number) {
+  ipRequestLog.forEach((timestamps, ip) => {
+    const freshTimestamps = timestamps.filter((timestamp) => now - timestamp < IP_RATE_LIMIT_WINDOW_MS);
+
+    if (freshTimestamps.length === 0) {
+      ipRequestLog.delete(ip);
+      return;
+    }
+
+    ipRequestLog.set(ip, freshTimestamps);
+  });
+}
+
+function hasExceededIpRateLimit(ip: string) {
+  if (!ip) {
+    return false;
+  }
+
+  const now = Date.now();
+  cleanIpRequestLog(now);
+  const timestamps = ipRequestLog.get(ip) || [];
+
+  if (timestamps.length >= MAX_REQUESTS_PER_IP_PER_WINDOW) {
+    return true;
+  }
+
+  ipRequestLog.set(ip, [...timestamps, now]);
+  return false;
+}
+
+function cleanLeadFingerprintLog(now: number) {
+  leadFingerprintLog.forEach((entry, fingerprint) => {
+    const ttl = entry.status === 'submitted' ? SUBMITTED_LEAD_DEDUP_TTL_MS : ABANDONED_LEAD_DEDUP_TTL_MS;
+
+    if (now - entry.timestamp > ttl) {
+      leadFingerprintLog.delete(fingerprint);
+    }
+  });
+}
+
+function checkLeadFingerprint(fingerprint: string, status: string) {
+  if (!fingerprint) {
+    return { duplicate: false };
+  }
+
+  const now = Date.now();
+  cleanLeadFingerprintLog(now);
+
+  const existingEntry = leadFingerprintLog.get(fingerprint);
+
+  if (existingEntry) {
+    const ttl =
+      existingEntry.status === 'submitted' ? SUBMITTED_LEAD_DEDUP_TTL_MS : ABANDONED_LEAD_DEDUP_TTL_MS;
+
+    if (now - existingEntry.timestamp <= ttl) {
+      return {
+        duplicate: true,
+        existingStatus: existingEntry.status,
+      };
+    }
+  }
+
+  leadFingerprintLog.set(fingerprint, {
+    timestamp: now,
+    status,
+  });
+
+  return { duplicate: false };
 }
 
 function parseAllowedOrigins() {
@@ -220,7 +347,7 @@ function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
 
   return {
     companyName: text(lead.companyName, 120),
-    phone: text(lead.phone, 40),
+    phone: toCanonicalPhone(text(lead.phone, 40)),
     industry: text(lead.industry, 120),
     offer: text(lead.offer, 40),
     offer_label: text(lead.offer_label, 80),
@@ -261,7 +388,7 @@ function buildDiscordPayload(lead: NormalizedLeadPayload): DiscordPayload {
           { name: 'Statut', value: toDiscordValue(lead.status_label), inline: true },
           { name: 'Entreprise', value: toDiscordValue(lead.companyName), inline: true },
           { name: 'Telephone', value: toDiscordValue(lead.phone), inline: true },
-          { name: 'Secteur', value: toDiscordValue(lead.industry), inline: true },
+          { name: "Domaine d'activite", value: toDiscordValue(lead.industry), inline: true },
           { name: 'Offre', value: toDiscordValue(lead.offer_label || lead.offer), inline: true },
           { name: 'UTM Source', value: toDiscordValue(lead.utm_source), inline: true },
           { name: 'UTM Medium', value: toDiscordValue(lead.utm_medium), inline: true },
@@ -331,6 +458,12 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       return res.status(200).json({ ok: true, skipped: true });
     }
 
+    const clientIp = getClientIp(req);
+
+    if (hasExceededIpRateLimit(clientIp)) {
+      return res.status(429).json({ error: 'Trop de tentatives depuis cette origine. Merci de réessayer plus tard.' });
+    }
+
     const lead = payload.lead || {};
     const normalizedLead = normalizeLeadPayload(lead);
     const { companyName, phone, industry, submission_status: submissionStatus } = normalizedLead;
@@ -342,6 +475,21 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     if (isAbandoned && !companyName && !phone && !industry) {
       return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon vide' });
+    }
+
+    if (!isAbandoned && !isValidFrenchPhone(phone)) {
+      return res.status(400).json({ error: 'Le numéro de téléphone doit être un numéro français valide.' });
+    }
+
+    const leadFingerprint = getLeadFingerprint(companyName, phone);
+    const fingerprintCheck = checkLeadFingerprint(leadFingerprint, submissionStatus);
+
+    if (fingerprintCheck.duplicate && !isAbandoned) {
+      return res.status(409).json({ error: 'Une demande récente existe déjà pour ce contact.' });
+    }
+
+    if (fingerprintCheck.duplicate && isAbandoned) {
+      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon déjà enregistré récemment' });
     }
 
     const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;

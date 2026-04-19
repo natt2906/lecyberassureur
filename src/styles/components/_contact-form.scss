@@ -129,11 +129,31 @@
     box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.18);
     outline: none;
   }
+
+  &[aria-invalid='true'] {
+    border-color: rgba(248, 113, 113, 0.8);
+    box-shadow: 0 0 0 1px rgba(248, 113, 113, 0.12);
+  }
 }
 
 .contact-form-field__select {
   cursor: pointer;
   padding-right: 2.75rem;
+}
+
+.contact-form-field__hint,
+.contact-form-field__error {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contact-form-field__hint {
+  color: var(--text-muted);
+}
+
+.contact-form-field__error {
+  color: #f87171;
 }
 
 .contact-form-grid__submit {
