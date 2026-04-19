@@ -7,12 +7,36 @@ import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
 import { readSelectedOffer, writeSelectedOffer } from '../lib/selectedOffer';
 import { isOfferId, offerLabelById } from '../data/offers';
 
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        container: HTMLElement | string,
+        options: {
+          sitekey: string;
+          callback?: (token: string) => void;
+          'expired-callback'?: () => void;
+          'error-callback'?: () => void;
+          theme?: 'auto' | 'light' | 'dark';
+        },
+      ) => string;
+      reset: (widgetId?: string) => void;
+      remove?: (widgetId?: string) => void;
+    };
+  }
+}
+
 const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
 const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
 const SUBMITTED_LEADS_STORAGE_KEY = 'lecyberassureur-submitted-leads';
 const FORM_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
 const SUBMITTED_LEAD_TTL_MS = 24 * 60 * 60 * 1000;
 const MIN_FORM_COMPLETION_MS = 3500;
+const TURNSTILE_SCRIPT_ID = 'cf-turnstile-script';
+const TURNSTILE_SITE_KEY =
+  import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAC_qG144rn3nXwSr';
+const TURNSTILE_ERROR_MESSAGE =
+  'La vérification de sécurité est obligatoire avant l’envoi du formulaire.';
 
 const EMPTY_FORM_DATA = {
   companyName: '',
@@ -271,14 +295,18 @@ export default function ContactForm() {
   const location = useLocation();
   const [formData, setFormData] = useState(readStoredFormDraft);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTurnstileReady, setIsTurnstileReady] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [honeypot, setHoneypot] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
   const formDataRef = useRef(formData);
   const honeypotRef = useRef(honeypot);
   const isSubmittingRef = useRef(false);
   const hasSubmittedRef = useRef(false);
   const formOpenedAtRef = useRef(Date.now());
+  const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
+  const turnstileWidgetIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     formDataRef.current = formData;
@@ -340,6 +368,73 @@ export default function ContactForm() {
   useEffect(() => {
     isSubmittingRef.current = isSubmitting;
   }, [isSubmitting]);
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY || !turnstileContainerRef.current || turnstileWidgetIdRef.current) {
+      return;
+    }
+
+    let cancelled = false;
+    let scriptElement = document.getElementById(TURNSTILE_SCRIPT_ID) as HTMLScriptElement | null;
+
+    const renderTurnstile = () => {
+      if (
+        cancelled ||
+        !window.turnstile ||
+        !turnstileContainerRef.current ||
+        turnstileWidgetIdRef.current
+      ) {
+        return;
+      }
+
+      turnstileWidgetIdRef.current = window.turnstile.render(turnstileContainerRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: 'auto',
+        callback: (token) => {
+          setTurnstileToken(token);
+          setSubmitError((current) => (current === TURNSTILE_ERROR_MESSAGE ? '' : current));
+        },
+        'expired-callback': () => {
+          setTurnstileToken('');
+        },
+        'error-callback': () => {
+          setTurnstileToken('');
+          setSubmitError('La vérification Cloudflare a échoué. Merci de réessayer.');
+        },
+      });
+      setIsTurnstileReady(true);
+    };
+
+    const handleLoad = () => {
+      renderTurnstile();
+    };
+
+    if (window.turnstile) {
+      renderTurnstile();
+    } else if (scriptElement) {
+      scriptElement.addEventListener('load', handleLoad);
+    } else {
+      const script = document.createElement('script');
+      script.id = TURNSTILE_SCRIPT_ID;
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.addEventListener('load', handleLoad);
+      document.head.appendChild(script);
+      scriptElement = script;
+    }
+
+    return () => {
+      cancelled = true;
+
+      scriptElement?.removeEventListener('load', handleLoad);
+
+      if (window.turnstile && turnstileWidgetIdRef.current) {
+        window.turnstile.remove?.(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const handlePageHide = () => {
@@ -440,6 +535,10 @@ export default function ContactForm() {
         throw new Error("Le formulaire a été soumis trop rapidement. Merci de réessayer dans quelques secondes.");
       }
 
+      if (!turnstileToken) {
+        throw new Error(TURNSTILE_ERROR_MESSAGE);
+      }
+
       if (hasRecentSubmittedLead(formData)) {
         throw new Error('Une demande récente existe déjà pour ce contact. Merci de patienter avant de renvoyer le formulaire.');
       }
@@ -492,6 +591,7 @@ export default function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           hp: honeypot,
+          turnstileToken,
           lead: {
             companyName: formData.companyName,
             phone: canonicalPhone,
@@ -541,6 +641,8 @@ export default function ContactForm() {
       window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
       setFormData(EMPTY_FORM_DATA);
       setHoneypot('');
+      setTurnstileToken('');
+      window.turnstile?.reset(turnstileWidgetIdRef.current || undefined);
       navigate('/merci', {
         state: {
           trackConversion: true,
@@ -554,6 +656,10 @@ export default function ContactForm() {
           ? error.message
           : "Impossible d'envoyer votre demande pour le moment. Merci de reessayer.";
       setSubmitError(message);
+      if (window.turnstile && turnstileWidgetIdRef.current) {
+        setTurnstileToken('');
+        window.turnstile.reset(turnstileWidgetIdRef.current);
+      }
     } finally {
       isSubmittingRef.current = false;
       setIsSubmitting(false);
@@ -647,13 +753,10 @@ export default function ContactForm() {
                 autoComplete="tel"
                 inputMode="tel"
                 aria-invalid={fieldErrors.phone ? 'true' : 'false'}
-                aria-describedby={fieldErrors.phone ? 'phone-error' : 'phone-hint'}
+                aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
                 className="contact-form-field__input"
                 placeholder="+33 6 12 34 56 78"
               />
-              <p id="phone-hint" className="contact-form-field__hint">
-                Format accepté : 01 23 45 67 89 ou +33 1 23 45 67 89
-              </p>
               {fieldErrors.phone && (
                 <p id="phone-error" className="contact-form-field__error">
                   {fieldErrors.phone}
@@ -707,9 +810,18 @@ export default function ContactForm() {
               </select>
             </div>
 
+            <div className="contact-form-field contact-form-field--full contact-form-field--turnstile">
+              <div ref={turnstileContainerRef} className="contact-form-field__turnstile" />
+              {!isTurnstileReady && (
+                <p className="contact-form-field__meta">
+                  Chargement de la vérification Cloudflare…
+                </p>
+              )}
+            </div>
+
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isTurnstileReady}
               className="contact-form-grid__submit"
             >
               <span>{isSubmitting ? 'Envoi en cours...' : "Recevoir mon analyse du risque et de l'exposition cyber"}</span>

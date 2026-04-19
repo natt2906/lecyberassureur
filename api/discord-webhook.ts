@@ -88,6 +88,7 @@ type DiscordPayload = {
 type FormPayload = {
   hp?: string;
   honeypot?: string;
+  turnstileToken?: string;
   lead?: LeadPayload;
   discord?: DiscordPayload;
 };
@@ -303,6 +304,45 @@ function isAllowedOrigin(req: RequestLike) {
   };
 }
 
+async function verifyTurnstileToken(token: string, remoteIp = '') {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+
+  if (!secret) {
+    throw new Error('Secret Turnstile manquant cote serveur');
+  }
+
+  const body = new URLSearchParams({
+    secret,
+    response: token,
+  });
+
+  if (remoteIp) {
+    body.set('remoteip', remoteIp);
+  }
+
+  const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: body.toString(),
+  });
+
+  if (!response.ok) {
+    throw new Error('Verification Turnstile indisponible');
+  }
+
+  const result = (await response.json()) as {
+    success?: boolean;
+    'error-codes'?: string[];
+  };
+
+  return {
+    ok: Boolean(result.success),
+    errorCodes: result['error-codes'] || [],
+  };
+}
+
 function ensurePayloadSize(payload: FormPayload) {
   const serializedPayload = JSON.stringify(payload);
 
@@ -464,6 +504,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       return res.status(429).json({ error: 'Trop de tentatives depuis cette origine. Merci de réessayer plus tard.' });
     }
 
+    const turnstileToken = text(payload.turnstileToken, 4096);
     const lead = payload.lead || {};
     const normalizedLead = normalizeLeadPayload(lead);
     const { companyName, phone, industry, submission_status: submissionStatus } = normalizedLead;
@@ -475,6 +516,21 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     if (isAbandoned && !companyName && !phone && !industry) {
       return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon vide' });
+    }
+
+    if (!isAbandoned && !turnstileToken) {
+      return res.status(400).json({ error: 'La vérification de sécurité est obligatoire.' });
+    }
+
+    if (!isAbandoned) {
+      const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
+
+      if (!turnstileCheck.ok) {
+        return res.status(403).json({
+          error: 'La vérification de sécurité a échoué. Merci de réessayer.',
+          details: turnstileCheck.errorCodes,
+        });
+      }
     }
 
     if (!isAbandoned && !isValidFrenchPhone(phone)) {
@@ -563,6 +619,14 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
       if (error.message === 'Payload trop volumineux') {
         return res.status(413).json({ error: error.message });
+      }
+
+      if (error.message === 'Secret Turnstile manquant cote serveur') {
+        return res.status(500).json({ error: error.message });
+      }
+
+      if (error.message === 'Verification Turnstile indisponible') {
+        return res.status(503).json({ error: error.message });
       }
     }
 
