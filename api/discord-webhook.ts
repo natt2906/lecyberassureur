@@ -18,10 +18,13 @@ type LeadPayload = {
   industry?: string;
   offer?: string;
   offer_label?: string;
+  form_completion_ms?: number | string;
   source?: string;
   createdAt?: string;
   status_label?: string;
   submission_status?: string;
+  review_status?: string;
+  review_reason?: string;
   submitted_at?: string;
   abandoned_at?: string;
   submission_page?: string;
@@ -45,10 +48,14 @@ type NormalizedLeadPayload = {
   industry: string;
   offer: string;
   offer_label: string;
+  form_completion_ms: number;
   source: string;
   createdAt: string;
   status_label: string;
   submission_status: string;
+  review_status: string;
+  review_reason: string;
+  turnstile_result: string;
   submitted_at: string;
   abandoned_at: string;
   submission_page: string;
@@ -93,15 +100,82 @@ type FormPayload = {
   discord?: DiscordPayload;
 };
 
+type LeadReviewStatus = 'accepted' | 'suspect' | 'rejected';
+
 const MAX_PAYLOAD_CHARS = 20_000;
 const DEFAULT_MAX_FIELD_LENGTH = 500;
 const MAX_URL_FIELD_LENGTH = 2048;
-const IP_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
-const MAX_REQUESTS_PER_IP_PER_WINDOW = 8;
+const MIN_FORM_COMPLETION_MS = 3_000;
+const SUSPECT_FORM_COMPLETION_MS = 5_000;
+const IP_RATE_LIMIT_MINUTE_WINDOW_MS = 60 * 1000;
+const IP_RATE_LIMIT_HOUR_WINDOW_MS = 60 * 60 * 1000;
+const MAX_REQUESTS_PER_IP_PER_MINUTE = 3;
+const MAX_REQUESTS_PER_IP_PER_HOUR = 10;
+const IP_PHONE_CHURN_WINDOW_MS = 15 * 60 * 1000;
+const MAX_DISTINCT_PHONES_PER_IP_WINDOW_BEFORE_SUSPECT = 3;
 const SUBMITTED_LEAD_DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
 const ABANDONED_LEAD_DEDUP_TTL_MS = 6 * 60 * 60 * 1000;
+const REJECTED_PHONE_NUMBERS = new Set([
+  '0000000000',
+  '0123456789',
+  '0987654321',
+  '0102030405',
+  '0606060606',
+  '0611111111',
+  '0612345678',
+  '0666666666',
+  '0677777777',
+  '0700000000',
+  '0777777777',
+]);
+const REJECTED_COMPANY_MARKERS = [
+  'aaa',
+  'aaaa',
+  'azerty',
+  'demo',
+  'fake',
+  'faux',
+  'jdgshsgh',
+  'qsd',
+  'qsdf',
+  'qwerty',
+  'sample',
+  'test',
+] as const;
+const KNOWN_ACTIVITY_DOMAINS = new Set([
+  'Agriculture, élevage et viticulture',
+  'Agroalimentaire',
+  'Association, fondation et organisme',
+  'Assurance, courtage et mutuelle',
+  'Audit, conseil et services B2B',
+  'Automobile et mobilité',
+  'Banque, finance et fintech',
+  'BTP, construction et immobilier',
+  'Commerce de détail',
+  'Commerce de gros et distribution',
+  'Communication, marketing et média',
+  'Cybersécurité, informatique et infogérance',
+  'Éducation, formation et enseignement',
+  'Énergie et environnement',
+  'E-commerce',
+  'Hôtellerie, restauration et tourisme',
+  'Industrie et production',
+  'Juridique, conformité et expertise',
+  'Logistique et transport',
+  'Luxe, mode et beauté',
+  'Manufacture et atelier',
+  'Professions médicales, santé et paramédical',
+  'Professions réglementées',
+  'Ressources humaines et recrutement',
+  'SaaS, logiciels et technologies',
+  'Services à la personne',
+  'Télécommunications',
+  'TPE artisanales et commerces de proximité',
+  'Autre',
+]);
 
 const ipRequestLog = new Map<string, number[]>();
+const ipPhoneLog = new Map<string, Array<{ timestamp: number; phone: string }>>();
 const leadFingerprintLog = new Map<string, { timestamp: number; status: string }>();
 
 function setHeaderIfPossible(res: ResponseLike, name: string, value: string) {
@@ -151,6 +225,16 @@ function text(value: unknown, maxLength = DEFAULT_MAX_FIELD_LENGTH) {
   return String(value || '').trim().slice(0, maxLength);
 }
 
+function integer(value: unknown, fallback = 0, max = 10 * 60 * 1000) {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    return fallback;
+  }
+
+  return Math.min(Math.round(parsed), max);
+}
+
 function normalizePhoneDigits(value: string) {
   return value.replace(/\D/g, '');
 }
@@ -173,19 +257,123 @@ function toCanonicalPhone(value: string) {
   return value.trim();
 }
 
-function normalizeCompanyName(value: string) {
-  return value.trim().replace(/\s+/g, ' ').toLowerCase();
+function toLocalFrenchPhoneDigits(value: string) {
+  const digits = normalizePhoneDigits(value);
+
+  if (/^33[1-9]\d{8}$/.test(digits)) {
+    return `0${digits.slice(2)}`;
+  }
+
+  if (/^0[1-9]\d{8}$/.test(digits)) {
+    return digits;
+  }
+
+  return digits;
+}
+
+function isRejectedFrenchPhone(value: string) {
+  const localPhone = toLocalFrenchPhoneDigits(value);
+
+  if (!/^0[1-9]\d{8}$/.test(localPhone)) {
+    return false;
+  }
+
+  if (REJECTED_PHONE_NUMBERS.has(localPhone)) {
+    return true;
+  }
+
+  if (/^(..)\1{4}$/.test(localPhone)) {
+    return true;
+  }
+
+  if (/^0[1-9](\d)\1{7}$/.test(localPhone)) {
+    return true;
+  }
+
+  return /(\d)\1{4,}/.test(localPhone) && new Set(localPhone).size <= 3;
+}
+
+function normalizeAscii(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function isRejectedCompanyName(value: string) {
+  const normalized = normalizeAscii(value).replace(/['’]/g, '').trim();
+  const compact = normalized.replace(/[^a-z0-9]/g, '');
+  const lettersOnly = normalized.replace(/[^a-z]/g, '');
+  const vowelCount = (lettersOnly.match(/[aeiouy]/g) || []).length;
+  const hasSpace = /\s/.test(normalized);
+
+  if (lettersOnly.length < 3) {
+    return true;
+  }
+
+  if (REJECTED_COMPANY_MARKERS.some((marker) => compact === marker || compact.includes(marker))) {
+    return true;
+  }
+
+  if (/(azerty|qwerty|qsdf|asdf|wxcv|hjkl)/.test(compact)) {
+    return true;
+  }
+
+  if (/([a-z])\1{3,}/.test(lettersOnly)) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 6 && vowelCount === 0) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 7 && vowelCount <= 1) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 7 && new Set(lettersOnly).size <= 3) {
+    return true;
+  }
+
+  return !hasSpace && /[^aeiouy]{6,}/.test(lettersOnly);
+}
+
+function logLeadDecision(input: {
+  clientIp: string;
+  userAgent: string;
+  companyName: string;
+  phone: string;
+  industry: string;
+  formCompletionMs: number;
+  decision: LeadReviewStatus;
+  reason: string;
+  turnstile: string;
+}) {
+  console.info(
+    '[lead-guard]',
+    JSON.stringify({
+      ip: input.clientIp || 'unknown',
+      ua: input.userAgent || 'missing',
+      companyName: input.companyName,
+      phone: input.phone,
+      industry: input.industry,
+      formCompletionMs: input.formCompletionMs,
+      decision: input.decision,
+      reason: input.reason,
+      turnstile: input.turnstile,
+      at: new Date().toISOString(),
+    }),
+  );
 }
 
 function getLeadFingerprint(companyName: string, phone: string) {
-  const normalizedCompanyName = normalizeCompanyName(companyName);
   const canonicalPhone = toCanonicalPhone(phone);
 
-  if (!normalizedCompanyName || !canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
+  if (!canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
     return '';
   }
 
-  return `${normalizedCompanyName}::${canonicalPhone}`;
+  return canonicalPhone;
 }
 
 function getClientIp(req: RequestLike) {
@@ -203,7 +391,9 @@ function getClientIp(req: RequestLike) {
 
 function cleanIpRequestLog(now: number) {
   ipRequestLog.forEach((timestamps, ip) => {
-    const freshTimestamps = timestamps.filter((timestamp) => now - timestamp < IP_RATE_LIMIT_WINDOW_MS);
+    const freshTimestamps = timestamps.filter(
+      (timestamp) => now - timestamp < IP_RATE_LIMIT_HOUR_WINDOW_MS,
+    );
 
     if (freshTimestamps.length === 0) {
       ipRequestLog.delete(ip);
@@ -222,13 +412,49 @@ function hasExceededIpRateLimit(ip: string) {
   const now = Date.now();
   cleanIpRequestLog(now);
   const timestamps = ipRequestLog.get(ip) || [];
+  const requestsLastMinute = timestamps.filter(
+    (timestamp) => now - timestamp < IP_RATE_LIMIT_MINUTE_WINDOW_MS,
+  ).length;
+  const requestsLastHour = timestamps.length;
 
-  if (timestamps.length >= MAX_REQUESTS_PER_IP_PER_WINDOW) {
+  if (
+    requestsLastMinute >= MAX_REQUESTS_PER_IP_PER_MINUTE ||
+    requestsLastHour >= MAX_REQUESTS_PER_IP_PER_HOUR
+  ) {
     return true;
   }
 
   ipRequestLog.set(ip, [...timestamps, now]);
   return false;
+}
+
+function cleanIpPhoneLog(now: number) {
+  ipPhoneLog.forEach((entries, ip) => {
+    const freshEntries = entries.filter((entry) => now - entry.timestamp < IP_PHONE_CHURN_WINDOW_MS);
+
+    if (freshEntries.length === 0) {
+      ipPhoneLog.delete(ip);
+      return;
+    }
+
+    ipPhoneLog.set(ip, freshEntries);
+  });
+}
+
+function isIpPhoneChurnSuspicious(ip: string, phone: string) {
+  if (!ip || !phone || !isValidFrenchPhone(phone)) {
+    return false;
+  }
+
+  const now = Date.now();
+  cleanIpPhoneLog(now);
+  const canonicalPhone = toCanonicalPhone(phone);
+  const entries = ipPhoneLog.get(ip) || [];
+  const nextEntries = [...entries, { timestamp: now, phone: canonicalPhone }];
+  ipPhoneLog.set(ip, nextEntries);
+
+  const distinctPhones = new Set(nextEntries.map((entry) => entry.phone));
+  return distinctPhones.size >= MAX_DISTINCT_PHONES_PER_IP_WINDOW_BEFORE_SUSPECT;
 }
 
 function cleanLeadFingerprintLog(now: number) {
@@ -335,11 +561,13 @@ async function verifyTurnstileToken(token: string, remoteIp = '') {
   const result = (await response.json()) as {
     success?: boolean;
     'error-codes'?: string[];
+    hostname?: string;
   };
 
   return {
     ok: Boolean(result.success),
     errorCodes: result['error-codes'] || [],
+    hostname: result.hostname || '',
   };
 }
 
@@ -391,10 +619,14 @@ function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
     industry: text(lead.industry, 120),
     offer: text(lead.offer, 40),
     offer_label: text(lead.offer_label, 80),
+    form_completion_ms: integer(lead.form_completion_ms),
     source: text(lead.source, 120) || 'lecyberassureur.fr',
     createdAt,
     status_label: text(lead.status_label, 80) || (isAbandoned ? 'Formulaire non soumis' : 'Formulaire soumis'),
     submission_status: submissionStatus,
+    review_status: text(lead.review_status, 40),
+    review_reason: text(lead.review_reason, 180),
+    turnstile_result: text((lead as { turnstile_result?: string }).turnstile_result, 80),
     submitted_at: text(lead.submitted_at, 80) || (isAbandoned ? '' : createdAt),
     abandoned_at: text(lead.abandoned_at, 80) || (isAbandoned ? createdAt : ''),
     submission_page: text(lead.submission_page, 300),
@@ -415,21 +647,40 @@ function normalizeLeadPayload(lead: LeadPayload): NormalizedLeadPayload {
 
 function buildDiscordPayload(lead: NormalizedLeadPayload): DiscordPayload {
   const isAbandoned = lead.submission_status === 'not_submitted';
+  const isSuspect = lead.review_status === 'suspect';
+  const isRejected = lead.review_status === 'rejected';
+  const title = isAbandoned
+    ? 'Formulaire non soumis Le Cyberassureur'
+    : isRejected
+      ? 'Lead rejeté Le Cyberassureur'
+      : isSuspect
+        ? 'Lead suspect Le Cyberassureur'
+        : 'Nouveau lead Le Cyberassureur';
+  const content = isAbandoned
+    ? 'Brouillon detecte: formulaire non soumis sur lecyberassureur.fr'
+    : isRejected
+      ? 'Soumission rejetee sur lecyberassureur.fr'
+      : isSuspect
+        ? 'Lead suspect detecte sur lecyberassureur.fr'
+        : 'Nouveau lead recu depuis le formulaire lecyberassureur.fr';
+  const color = isAbandoned ? 16753920 : isRejected ? 15158332 : isSuspect ? 16753920 : 65535;
 
   return {
-    content: isAbandoned
-      ? 'Brouillon detecte: formulaire non soumis sur lecyberassureur.fr'
-      : 'Nouveau lead recu depuis le formulaire lecyberassureur.fr',
+    content,
     embeds: [
       {
-        title: isAbandoned ? 'Formulaire non soumis Le Cyberassureur' : 'Nouveau lead Le Cyberassureur',
-        color: isAbandoned ? 16753920 : 65535,
+        title,
+        color,
         fields: [
           { name: 'Statut', value: toDiscordValue(lead.status_label), inline: true },
+          { name: 'Qualification', value: toDiscordValue(lead.review_status || '-'), inline: true },
+          { name: 'Raison', value: toDiscordValue(lead.review_reason || '-'), inline: true },
           { name: 'Entreprise', value: toDiscordValue(lead.companyName), inline: true },
           { name: 'Telephone', value: toDiscordValue(lead.phone), inline: true },
           { name: "Domaine d'activite", value: toDiscordValue(lead.industry), inline: true },
           { name: 'Offre', value: toDiscordValue(lead.offer_label || lead.offer), inline: true },
+          { name: 'Temps de remplissage', value: toDiscordValue(String(lead.form_completion_ms || '-')), inline: true },
+          { name: 'Turnstile', value: toDiscordValue(lead.turnstile_result || '-'), inline: true },
           { name: 'UTM Source', value: toDiscordValue(lead.utm_source), inline: true },
           { name: 'UTM Medium', value: toDiscordValue(lead.utm_medium), inline: true },
           { name: 'UTM Campaign', value: toDiscordValue(lead.utm_campaign), inline: true },
@@ -453,6 +704,139 @@ function buildDiscordPayload(lead: NormalizedLeadPayload): DiscordPayload {
         timestamp: lead.createdAt || new Date().toISOString(),
       },
     ],
+  };
+}
+
+function withLeadReview(
+  lead: NormalizedLeadPayload,
+  reviewStatus: LeadReviewStatus,
+  reviewReason: string,
+  turnstileResult: string,
+) {
+  return {
+    ...lead,
+    review_status: reviewStatus,
+    review_reason: reviewReason,
+    turnstile_result: turnstileResult,
+  };
+}
+
+async function sendLeadDestinations(
+  lead: NormalizedLeadPayload,
+  options: {
+    discordWebhookUrl?: string;
+    sheetsWebhookUrl?: string;
+  },
+) {
+  const shouldSendDiscord = Boolean(options.discordWebhookUrl);
+  const shouldSendSheets = Boolean(options.sheetsWebhookUrl);
+
+  const tasks: Promise<{ target: string; ok: boolean; status?: number; body?: string }>[] = [];
+
+  if (shouldSendDiscord) {
+    const discordPayload = buildDiscordPayload(lead);
+
+    tasks.push(
+      fetch(options.discordWebhookUrl as string, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(discordPayload),
+      }).then(async (response) => ({
+        target: 'discord',
+        ok: response.ok,
+        status: response.status,
+        body: response.ok ? undefined : await response.text(),
+      })),
+    );
+  }
+
+  if (shouldSendSheets) {
+    tasks.push(
+      fetch(options.sheetsWebhookUrl as string, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(lead),
+      }).then(async (response) => ({
+        target: 'sheets',
+        ok: response.ok,
+        status: response.status,
+        body: response.ok ? undefined : await response.text(),
+      })),
+    );
+  }
+
+  if (tasks.length === 0) {
+    return [];
+  }
+
+  return Promise.all(tasks);
+}
+
+function getExpectedRequestHost(req: RequestLike) {
+  return (getHeader(req, 'x-forwarded-host') || getHeader(req, 'host') || '').trim().toLowerCase();
+}
+
+function isAllowedTurnstileHostname(hostname: string, req: RequestLike) {
+  if (!hostname) {
+    return false;
+  }
+
+  const normalizedHostname = hostname.trim().toLowerCase();
+  const expectedHost = getExpectedRequestHost(req);
+
+  if (normalizedHostname === expectedHost) {
+    return true;
+  }
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    /^(localhost|127\.0\.0\.1)(:\d+)?$/i.test(normalizedHostname)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function getLeadReviewDecision(input: {
+  lead: NormalizedLeadPayload;
+  isAbandoned: boolean;
+  isPhoneChurnSuspicious: boolean;
+}) {
+  if (input.isAbandoned) {
+    return {
+      reviewStatus: 'suspect' as const,
+      reviewReason: 'abandoned_draft',
+    };
+  }
+
+  const reasons: string[] = [];
+
+  if (input.lead.form_completion_ms < MIN_FORM_COMPLETION_MS) {
+    return {
+      reviewStatus: 'rejected' as const,
+      reviewReason: 'submitted_too_fast',
+    };
+  }
+
+  if (input.lead.form_completion_ms < SUSPECT_FORM_COMPLETION_MS) {
+    reasons.push('fast_submission');
+  }
+
+  if (input.isPhoneChurnSuspicious) {
+    reasons.push('ip_phone_churn');
+  }
+
+  if (reasons.length > 0) {
+    return {
+      reviewStatus: 'suspect' as const,
+      reviewReason: reasons.join(','),
+    };
+  }
+
+  return {
+    reviewStatus: 'accepted' as const,
+    reviewReason: 'validated',
   };
 }
 
@@ -493,61 +877,6 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     const payload = await parsePayload(req);
     ensurePayloadSize(payload);
-
-    if (text(payload.honeypot) || text(payload.hp)) {
-      return res.status(200).json({ ok: true, skipped: true });
-    }
-
-    const clientIp = getClientIp(req);
-
-    if (hasExceededIpRateLimit(clientIp)) {
-      return res.status(429).json({ error: 'Trop de tentatives depuis cette origine. Merci de réessayer plus tard.' });
-    }
-
-    const turnstileToken = text(payload.turnstileToken, 4096);
-    const lead = payload.lead || {};
-    const normalizedLead = normalizeLeadPayload(lead);
-    const { companyName, phone, industry, submission_status: submissionStatus } = normalizedLead;
-    const isAbandoned = submissionStatus === 'not_submitted';
-
-    if ((!companyName || !phone || !industry) && !isAbandoned) {
-      return res.status(400).json({ error: 'Champs lead manquants' });
-    }
-
-    if (isAbandoned && !companyName && !phone && !industry) {
-      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon vide' });
-    }
-
-    if (!isAbandoned && !turnstileToken) {
-      return res.status(400).json({ error: 'La vérification de sécurité est obligatoire.' });
-    }
-
-    if (!isAbandoned) {
-      const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
-
-      if (!turnstileCheck.ok) {
-        return res.status(403).json({
-          error: 'La vérification de sécurité a échoué. Merci de réessayer.',
-          details: turnstileCheck.errorCodes,
-        });
-      }
-    }
-
-    if (!isAbandoned && !isValidFrenchPhone(phone)) {
-      return res.status(400).json({ error: 'Le numéro de téléphone doit être un numéro français valide.' });
-    }
-
-    const leadFingerprint = getLeadFingerprint(companyName, phone);
-    const fingerprintCheck = checkLeadFingerprint(leadFingerprint, submissionStatus);
-
-    if (fingerprintCheck.duplicate && !isAbandoned) {
-      return res.status(409).json({ error: 'Une demande récente existe déjà pour ce contact.' });
-    }
-
-    if (fingerprintCheck.duplicate && isAbandoned) {
-      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon déjà enregistré récemment' });
-    }
-
     const discordWebhookUrl = process.env.DISCORD_WEBHOOK_URL;
     const sheetsWebhookUrl =
       process.env.GOOGLE_SHEETS_WEBHOOK_URL || process.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL;
@@ -556,41 +885,216 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       return res.status(500).json({ error: 'Aucune destination webhook configuree cote serveur' });
     }
 
-    const tasks: Promise<{ target: string; ok: boolean; status?: number; body?: string }>[] = [];
+    const lead = payload.lead || {};
+    const normalizedLead = normalizeLeadPayload(lead);
+    const clientIp = getClientIp(req);
+    const userAgent = text(getHeader(req, 'user-agent'), 300);
+    const turnstileToken = text(payload.turnstileToken, 4096);
+    const { companyName, phone, industry, submission_status: submissionStatus } = normalizedLead;
+    const isAbandoned = submissionStatus === 'not_submitted';
+    const formCompletionMs = normalizedLead.form_completion_ms;
 
-    if (discordWebhookUrl) {
-      const discordPayload = buildDiscordPayload(normalizedLead);
+    const reportLead = async (
+      reviewStatus: LeadReviewStatus,
+      reviewReason: string,
+      turnstileResult: string,
+      httpStatus: number,
+      errorMessage?: string,
+      exposeAsSkipped = false,
+    ) => {
+      const reviewedLead = withLeadReview(
+        normalizedLead,
+        reviewStatus,
+        reviewReason,
+        turnstileResult,
+      );
 
-      tasks.push(
-        fetch(discordWebhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(discordPayload),
-        }).then(async (response) => ({
-          target: 'discord',
-          ok: response.ok,
-          status: response.status,
-          body: response.ok ? undefined : await response.text(),
-        })),
+      try {
+        const results = await sendLeadDestinations(reviewedLead, {
+          discordWebhookUrl,
+          sheetsWebhookUrl,
+        });
+        results
+          .filter((result) => !result.ok)
+          .forEach((failure) => {
+            console.error(`Erreur ${failure.target}:`, failure.status, failure.body);
+          });
+      } catch (destinationError) {
+        console.error('Erreur de remontée lead:', destinationError);
+      }
+
+      logLeadDecision({
+        clientIp,
+        userAgent,
+        companyName,
+        phone,
+        industry,
+        formCompletionMs,
+        decision: reviewStatus,
+        reason: reviewReason,
+        turnstile: turnstileResult,
+      });
+
+      if (!errorMessage) {
+        return res.status(200).json({
+          ok: true,
+          leadStatus: reviewStatus,
+          reviewReason,
+        });
+      }
+
+      return res.status(httpStatus).json({
+        ok: exposeAsSkipped ? true : false,
+        skipped: exposeAsSkipped || undefined,
+        error: errorMessage,
+        leadStatus: reviewStatus,
+        reviewReason,
+      });
+    };
+
+    if (text(payload.honeypot) || text(payload.hp)) {
+      return reportLead(
+        'rejected',
+        'honeypot_filled',
+        'not_checked',
+        200,
+        'Soumission ignoree',
+        true,
       );
     }
 
-    if (sheetsWebhookUrl) {
-      tasks.push(
-        fetch(sheetsWebhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(normalizedLead),
-        }).then(async (response) => ({
-          target: 'sheets',
-          ok: response.ok,
-          status: response.status,
-          body: response.ok ? undefined : await response.text(),
-        })),
+    if (!userAgent) {
+      return reportLead('rejected', 'missing_user_agent', 'not_checked', 400, 'User-Agent manquant');
+    }
+
+    if (hasExceededIpRateLimit(clientIp)) {
+      return reportLead(
+        'rejected',
+        'ip_rate_limit',
+        'not_checked',
+        429,
+        'Trop de tentatives depuis cette origine. Merci de réessayer plus tard.',
       );
     }
 
-    const results = await Promise.all(tasks);
+    if ((!companyName || !phone || !industry) && !isAbandoned) {
+      return reportLead('rejected', 'missing_required_fields', 'not_checked', 400, 'Champs lead manquants');
+    }
+
+    if (isAbandoned && !companyName && !phone && !industry) {
+      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon vide' });
+    }
+
+    if (!isAbandoned && !turnstileToken) {
+      return reportLead(
+        'rejected',
+        'missing_turnstile_token',
+        'missing',
+        400,
+        'La vérification de sécurité est obligatoire.',
+      );
+    }
+
+    let turnstileResult = isAbandoned ? 'not_checked' : 'ok';
+
+    if (!isAbandoned) {
+      const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
+
+      if (!turnstileCheck.ok) {
+        turnstileResult = turnstileCheck.errorCodes.join(',') || 'invalid';
+        return reportLead(
+          'rejected',
+          'invalid_turnstile_token',
+          turnstileResult,
+          403,
+          'La vérification de sécurité a échoué. Merci de réessayer.',
+        );
+      }
+
+      if (!isAllowedTurnstileHostname(turnstileCheck.hostname, req)) {
+        return reportLead(
+          'rejected',
+          'turnstile_hostname_mismatch',
+          `hostname:${turnstileCheck.hostname || 'missing'}`,
+          403,
+          'La vérification de sécurité a échoué. Merci de réessayer.',
+        );
+      }
+    }
+
+    if (!isAbandoned && !isValidFrenchPhone(phone)) {
+      return reportLead(
+        'rejected',
+        'invalid_phone_format',
+        turnstileResult,
+        400,
+        'Le numéro de téléphone doit être un numéro français valide.',
+      );
+    }
+
+    if (!isAbandoned && isRejectedFrenchPhone(phone)) {
+      return reportLead(
+        'rejected',
+        'rejected_fake_phone_pattern',
+        turnstileResult,
+        400,
+        'Le numéro de téléphone semble invalide.',
+      );
+    }
+
+    if (!isAbandoned && isRejectedCompanyName(companyName)) {
+      return reportLead(
+        'rejected',
+        'rejected_fake_company_name',
+        turnstileResult,
+        400,
+        "Le nom de l'entreprise semble invalide.",
+      );
+    }
+
+    if (!isAbandoned && !KNOWN_ACTIVITY_DOMAINS.has(industry)) {
+      return reportLead(
+        'rejected',
+        'invalid_activity_domain',
+        turnstileResult,
+        400,
+        "Le domaine d'activité est invalide.",
+      );
+    }
+
+    const leadFingerprint = getLeadFingerprint(companyName, phone);
+    const fingerprintCheck = checkLeadFingerprint(leadFingerprint, submissionStatus);
+
+    if (fingerprintCheck.duplicate && !isAbandoned) {
+      return reportLead(
+        'rejected',
+        'duplicate_lead',
+        turnstileResult,
+        409,
+        'Une demande récente existe déjà pour ce contact.',
+      );
+    }
+
+    if (fingerprintCheck.duplicate && isAbandoned) {
+      return res.status(200).json({ ok: true, skipped: true, reason: 'Brouillon déjà enregistré récemment' });
+    }
+
+    const phoneChurnSuspicious = !isAbandoned && isIpPhoneChurnSuspicious(clientIp, phone);
+    const reviewDecision = getLeadReviewDecision({
+      lead: normalizedLead,
+      isAbandoned,
+      isPhoneChurnSuspicious: phoneChurnSuspicious,
+    });
+    const reviewedLead = withLeadReview(
+      normalizedLead,
+      reviewDecision.reviewStatus,
+      reviewDecision.reviewReason,
+      turnstileResult,
+    );
+    const results = await sendLeadDestinations(reviewedLead, {
+      discordWebhookUrl,
+      sheetsWebhookUrl,
+    });
     const successes = results.filter((result) => result.ok);
     const failures = results.filter((result) => !result.ok);
 
@@ -602,8 +1106,24 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       return res.status(500).json({ error: 'Toutes les destinations webhook ont echoue' });
     }
 
+    if (!isAbandoned && reviewDecision.reviewStatus) {
+      logLeadDecision({
+        clientIp,
+        userAgent,
+        companyName,
+        phone,
+        industry,
+        formCompletionMs,
+        decision: reviewDecision.reviewStatus,
+        reason: reviewDecision.reviewReason,
+        turnstile: turnstileResult,
+      });
+    }
+
     return res.status(200).json({
       ok: true,
+      leadStatus: reviewDecision.reviewStatus,
+      reviewReason: reviewDecision.reviewReason,
       warnings: failures.map((failure) => ({
         target: failure.target,
         status: failure.status,

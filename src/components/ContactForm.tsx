@@ -31,12 +31,38 @@ const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandon
 const SUBMITTED_LEADS_STORAGE_KEY = 'lecyberassureur-submitted-leads';
 const FORM_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
 const SUBMITTED_LEAD_TTL_MS = 24 * 60 * 60 * 1000;
-const MIN_FORM_COMPLETION_MS = 3500;
 const TURNSTILE_SCRIPT_ID = 'cf-turnstile-script';
 const TURNSTILE_SITE_KEY =
   import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAC_qG144rn3nXwSr';
 const TURNSTILE_ERROR_MESSAGE =
   'La vérification de sécurité est obligatoire avant l’envoi du formulaire.';
+const REJECTED_PHONE_NUMBERS = new Set([
+  '0000000000',
+  '0123456789',
+  '0987654321',
+  '0102030405',
+  '0606060606',
+  '0611111111',
+  '0612345678',
+  '0666666666',
+  '0677777777',
+  '0700000000',
+  '0777777777',
+]);
+const REJECTED_COMPANY_MARKERS = [
+  'aaa',
+  'aaaa',
+  'azerty',
+  'demo',
+  'fake',
+  'faux',
+  'jdgshsgh',
+  'qsd',
+  'qsdf',
+  'qwerty',
+  'sample',
+  'test',
+] as const;
 
 const EMPTY_FORM_DATA = {
   companyName: '',
@@ -115,10 +141,6 @@ function hasMeaningfulFormData(formData: typeof EMPTY_FORM_DATA) {
   ].some((value) => value.length > 0);
 }
 
-function normalizeCompanyName(value: string) {
-  return value.trim().replace(/\s+/g, ' ').toLowerCase();
-}
-
 function normalizePhoneDigits(value: string) {
   return value.replace(/\D/g, '');
 }
@@ -174,18 +196,95 @@ function toCanonicalPhone(value: string) {
   return value.trim();
 }
 
+function toLocalFrenchPhoneDigits(value: string) {
+  const digits = normalizePhoneDigits(value);
+
+  if (/^33[1-9]\d{8}$/.test(digits)) {
+    return `0${digits.slice(2)}`;
+  }
+
+  if (/^0[1-9]\d{8}$/.test(digits)) {
+    return digits;
+  }
+
+  return digits;
+}
+
+function isRejectedFrenchPhone(value: string) {
+  const localPhone = toLocalFrenchPhoneDigits(value);
+
+  if (!/^0[1-9]\d{8}$/.test(localPhone)) {
+    return false;
+  }
+
+  if (REJECTED_PHONE_NUMBERS.has(localPhone)) {
+    return true;
+  }
+
+  if (/^(..)\1{4}$/.test(localPhone)) {
+    return true;
+  }
+
+  if (/^0[1-9](\d)\1{7}$/.test(localPhone)) {
+    return true;
+  }
+
+  return /(\d)\1{4,}/.test(localPhone) && new Set(localPhone).size <= 3;
+}
+
+function normalizeAscii(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+}
+
+function looksLikeFakeCompanyName(value: string) {
+  const normalized = normalizeAscii(value).replace(/['’]/g, '').trim();
+  const compact = normalized.replace(/[^a-z0-9]/g, '');
+  const lettersOnly = normalized.replace(/[^a-z]/g, '');
+  const vowelCount = (lettersOnly.match(/[aeiouy]/g) || []).length;
+  const hasSpace = /\s/.test(normalized);
+
+  if (lettersOnly.length < 3) {
+    return true;
+  }
+
+  if (REJECTED_COMPANY_MARKERS.some((marker) => compact === marker || compact.includes(marker))) {
+    return true;
+  }
+
+  if (/(azerty|qwerty|qsdf|asdf|wxcv|hjkl)/.test(compact)) {
+    return true;
+  }
+
+  if (/([a-z])\1{3,}/.test(lettersOnly)) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 6 && vowelCount === 0) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 7 && vowelCount <= 1) {
+    return true;
+  }
+
+  if (!hasSpace && lettersOnly.length >= 7 && new Set(lettersOnly).size <= 3) {
+    return true;
+  }
+
+  return !hasSpace && /[^aeiouy]{6,}/.test(lettersOnly);
+}
+
 function getLeadFingerprint(formData: FormDataState) {
-  const normalizedCompanyName = normalizeCompanyName(formData.companyName);
   const canonicalPhone = toCanonicalPhone(formData.phone);
 
-  if (!normalizedCompanyName || !canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
+  if (!canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
     return '';
   }
 
-  return JSON.stringify({
-    companyName: normalizedCompanyName,
-    phone: canonicalPhone,
-  });
+  return canonicalPhone;
 }
 
 function readSubmittedLeadMap() {
@@ -260,12 +359,18 @@ function validateFormData(formData: FormDataState): FieldErrors {
 
   if (!formData.companyName.trim()) {
     errors.companyName = "Le nom de l'entreprise est obligatoire.";
+  } else if (formData.companyName.trim().length < 3) {
+    errors.companyName = "Le nom de l'entreprise doit contenir au moins 3 caractères.";
+  } else if (looksLikeFakeCompanyName(formData.companyName)) {
+    errors.companyName = "Le nom de l'entreprise semble invalide. Merci de renseigner une raison sociale réelle.";
   }
 
   if (!formData.phone.trim()) {
     errors.phone = 'Le numéro de téléphone est obligatoire.';
   } else if (!isValidFrenchPhone(formData.phone)) {
     errors.phone = 'Saisissez un numéro français valide, par exemple 06 12 34 56 78.';
+  } else if (isRejectedFrenchPhone(formData.phone)) {
+    errors.phone = 'Le numéro de téléphone semble invalide. Merci de renseigner un numéro professionnel réel.';
   }
 
   if (!formData.industry.trim()) {
@@ -531,10 +636,6 @@ export default function ContactForm() {
         throw new Error('Merci de corriger les champs signalés.');
       }
 
-      if (Date.now() - formOpenedAtRef.current < MIN_FORM_COMPLETION_MS) {
-        throw new Error("Le formulaire a été soumis trop rapidement. Merci de réessayer dans quelques secondes.");
-      }
-
       if (!turnstileToken) {
         throw new Error(TURNSTILE_ERROR_MESSAGE);
       }
@@ -546,6 +647,7 @@ export default function ContactForm() {
       const leadWebhookUrl = resolveLeadWebhookUrl();
       const leadWebhookHint = getLeadWebhookHint();
       const canonicalPhone = toCanonicalPhone(formData.phone);
+      const formCompletionMs = Date.now() - formOpenedAtRef.current;
 
       if (!leadWebhookUrl || (import.meta.env.DEV && !import.meta.env.VITE_LEAD_WEBHOOK_URL)) {
         throw new Error(leadWebhookHint || 'VITE_LEAD_WEBHOOK_URL manquant');
@@ -598,6 +700,7 @@ export default function ContactForm() {
             industry: formData.industry,
             offer: formData.offer,
             offer_label: formData.offer ? getOfferLabel(formData.offer) : '',
+            form_completion_ms: formCompletionMs,
             source: 'lecyberassureur.fr',
             createdAt,
             status_label: 'Formulaire soumis',
@@ -632,6 +735,12 @@ export default function ContactForm() {
         throw new Error(message);
       }
 
+      const responsePayload = (await response.json()) as {
+        leadStatus?: 'accepted' | 'suspect' | 'rejected';
+        reviewReason?: string;
+      };
+      const leadStatus = responsePayload.leadStatus || 'accepted';
+
       hasSubmittedRef.current = true;
       rememberSubmittedLead({
         ...formData,
@@ -645,8 +754,10 @@ export default function ContactForm() {
       window.turnstile?.reset(turnstileWidgetIdRef.current || undefined);
       navigate('/merci', {
         state: {
-          trackConversion: true,
+          trackConversion: leadStatus === 'accepted',
           conversionKey: createdAt,
+          leadStatus,
+          reviewReason: responsePayload.reviewReason || '',
         },
       });
     } catch (error) {
