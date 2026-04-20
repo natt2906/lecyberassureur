@@ -6,18 +6,18 @@ const leadPartners = [
     logoAlt: 'Logo PRORISK Assurances',
   },
   {
-    name: 'Hiscox',
+    name: 'Kobalt',
     role: 'Partenaire principal',
-    logoSrc: '/partners/logo_hiscox_assurances.png',
-    logoAlt: 'Logo Hiscox',
+    logoSrc: '/partners/logo-kobalt.png',
+    logoAlt: 'Logo Kobalt',
   },
 ] as const;
 
 const supportPartners = [
   {
-    name: 'Kobalt',
-    logoSrc: '/partners/logo-kobalt.png',
-    logoAlt: 'Logo Kobalt',
+    name: 'Hiscox',
+    logoSrc: '/partners/logo_hiscox_assurances.png',
+    logoAlt: 'Logo Hiscox',
   },
   {
     name: 'Izeho',
