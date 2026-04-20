@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "outDir": "tests/.compiled",
+    "strict": true,
+    "skipLibCheck": true,
+    "declaration": false,
+    "sourceMap": false,
+    "noEmit": false
+  },
+  "include": ["src/lib/leadReview.ts", "src/data/activityDomains.ts"]
+}

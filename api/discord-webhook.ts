@@ -1,3 +1,14 @@
+import {
+  getLeadFingerprint,
+  getLeadReviewDecision,
+  isAcceptedActivityDomain,
+  isRejectedCompanyName,
+  isRejectedFrenchPhone,
+  isValidFrenchPhone,
+  toCanonicalPhone,
+  type LeadReviewStatus,
+} from '../src/lib/leadReview';
+
 type RequestLike = {
   method?: string;
   body?: unknown;
@@ -100,13 +111,9 @@ type FormPayload = {
   discord?: DiscordPayload;
 };
 
-type LeadReviewStatus = 'accepted' | 'suspect' | 'rejected';
-
 const MAX_PAYLOAD_CHARS = 20_000;
 const DEFAULT_MAX_FIELD_LENGTH = 500;
 const MAX_URL_FIELD_LENGTH = 2048;
-const MIN_FORM_COMPLETION_MS = 3_000;
-const SUSPECT_FORM_COMPLETION_MS = 5_000;
 const IP_RATE_LIMIT_MINUTE_WINDOW_MS = 60 * 1000;
 const IP_RATE_LIMIT_HOUR_WINDOW_MS = 60 * 60 * 1000;
 const MAX_REQUESTS_PER_IP_PER_MINUTE = 3;
@@ -115,64 +122,6 @@ const IP_PHONE_CHURN_WINDOW_MS = 15 * 60 * 1000;
 const MAX_DISTINCT_PHONES_PER_IP_WINDOW_BEFORE_SUSPECT = 3;
 const SUBMITTED_LEAD_DEDUP_TTL_MS = 24 * 60 * 60 * 1000;
 const ABANDONED_LEAD_DEDUP_TTL_MS = 6 * 60 * 60 * 1000;
-const REJECTED_PHONE_NUMBERS = new Set([
-  '0000000000',
-  '0123456789',
-  '0987654321',
-  '0102030405',
-  '0606060606',
-  '0611111111',
-  '0612345678',
-  '0666666666',
-  '0677777777',
-  '0700000000',
-  '0777777777',
-]);
-const REJECTED_COMPANY_MARKERS = [
-  'aaa',
-  'aaaa',
-  'azerty',
-  'demo',
-  'fake',
-  'faux',
-  'jdgshsgh',
-  'qsd',
-  'qsdf',
-  'qwerty',
-  'sample',
-  'test',
-] as const;
-const KNOWN_ACTIVITY_DOMAINS = new Set([
-  'Agriculture, élevage et viticulture',
-  'Agroalimentaire',
-  'Association, fondation et organisme',
-  'Assurance, courtage et mutuelle',
-  'Audit, conseil et services B2B',
-  'Automobile et mobilité',
-  'Banque, finance et fintech',
-  'BTP, construction et immobilier',
-  'Commerce de détail',
-  'Commerce de gros et distribution',
-  'Communication, marketing et média',
-  'Cybersécurité, informatique et infogérance',
-  'Éducation, formation et enseignement',
-  'Énergie et environnement',
-  'E-commerce',
-  'Hôtellerie, restauration et tourisme',
-  'Industrie et production',
-  'Juridique, conformité et expertise',
-  'Logistique et transport',
-  'Luxe, mode et beauté',
-  'Manufacture et atelier',
-  'Professions médicales, santé et paramédical',
-  'Professions réglementées',
-  'Ressources humaines et recrutement',
-  'SaaS, logiciels et technologies',
-  'Services à la personne',
-  'Télécommunications',
-  'TPE artisanales et commerces de proximité',
-  'Autre',
-]);
 
 const ipRequestLog = new Map<string, number[]>();
 const ipPhoneLog = new Map<string, Array<{ timestamp: number; phone: string }>>();
@@ -235,109 +184,6 @@ function integer(value: unknown, fallback = 0, max = 10 * 60 * 1000) {
   return Math.min(Math.round(parsed), max);
 }
 
-function normalizePhoneDigits(value: string) {
-  return value.replace(/\D/g, '');
-}
-
-function isValidFrenchPhone(value: string) {
-  return /^(?:0[1-9]\d{8}|33[1-9]\d{8})$/.test(normalizePhoneDigits(value));
-}
-
-function toCanonicalPhone(value: string) {
-  const digits = normalizePhoneDigits(value);
-
-  if (/^0[1-9]\d{8}$/.test(digits)) {
-    return `+33${digits.slice(1)}`;
-  }
-
-  if (/^33[1-9]\d{8}$/.test(digits)) {
-    return `+${digits}`;
-  }
-
-  return value.trim();
-}
-
-function toLocalFrenchPhoneDigits(value: string) {
-  const digits = normalizePhoneDigits(value);
-
-  if (/^33[1-9]\d{8}$/.test(digits)) {
-    return `0${digits.slice(2)}`;
-  }
-
-  if (/^0[1-9]\d{8}$/.test(digits)) {
-    return digits;
-  }
-
-  return digits;
-}
-
-function isRejectedFrenchPhone(value: string) {
-  const localPhone = toLocalFrenchPhoneDigits(value);
-
-  if (!/^0[1-9]\d{8}$/.test(localPhone)) {
-    return false;
-  }
-
-  if (REJECTED_PHONE_NUMBERS.has(localPhone)) {
-    return true;
-  }
-
-  if (/^(..)\1{4}$/.test(localPhone)) {
-    return true;
-  }
-
-  if (/^0[1-9](\d)\1{7}$/.test(localPhone)) {
-    return true;
-  }
-
-  return /(\d)\1{4,}/.test(localPhone) && new Set(localPhone).size <= 3;
-}
-
-function normalizeAscii(value: string) {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-}
-
-function isRejectedCompanyName(value: string) {
-  const normalized = normalizeAscii(value).replace(/['’]/g, '').trim();
-  const compact = normalized.replace(/[^a-z0-9]/g, '');
-  const lettersOnly = normalized.replace(/[^a-z]/g, '');
-  const vowelCount = (lettersOnly.match(/[aeiouy]/g) || []).length;
-  const hasSpace = /\s/.test(normalized);
-
-  if (lettersOnly.length < 3) {
-    return true;
-  }
-
-  if (REJECTED_COMPANY_MARKERS.some((marker) => compact === marker || compact.includes(marker))) {
-    return true;
-  }
-
-  if (/(azerty|qwerty|qsdf|asdf|wxcv|hjkl)/.test(compact)) {
-    return true;
-  }
-
-  if (/([a-z])\1{3,}/.test(lettersOnly)) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 6 && vowelCount === 0) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 7 && vowelCount <= 1) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 7 && new Set(lettersOnly).size <= 3) {
-    return true;
-  }
-
-  return !hasSpace && /[^aeiouy]{6,}/.test(lettersOnly);
-}
-
 function logLeadDecision(input: {
   clientIp: string;
   userAgent: string;
@@ -364,16 +210,6 @@ function logLeadDecision(input: {
       at: new Date().toISOString(),
     }),
   );
-}
-
-function getLeadFingerprint(companyName: string, phone: string) {
-  const canonicalPhone = toCanonicalPhone(phone);
-
-  if (!canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
-    return '';
-  }
-
-  return canonicalPhone;
 }
 
 function getClientIp(req: RequestLike) {
@@ -798,48 +634,6 @@ function isAllowedTurnstileHostname(hostname: string, req: RequestLike) {
   return false;
 }
 
-function getLeadReviewDecision(input: {
-  lead: NormalizedLeadPayload;
-  isAbandoned: boolean;
-  isPhoneChurnSuspicious: boolean;
-}) {
-  if (input.isAbandoned) {
-    return {
-      reviewStatus: 'suspect' as const,
-      reviewReason: 'abandoned_draft',
-    };
-  }
-
-  const reasons: string[] = [];
-
-  if (input.lead.form_completion_ms < MIN_FORM_COMPLETION_MS) {
-    return {
-      reviewStatus: 'rejected' as const,
-      reviewReason: 'submitted_too_fast',
-    };
-  }
-
-  if (input.lead.form_completion_ms < SUSPECT_FORM_COMPLETION_MS) {
-    reasons.push('fast_submission');
-  }
-
-  if (input.isPhoneChurnSuspicious) {
-    reasons.push('ip_phone_churn');
-  }
-
-  if (reasons.length > 0) {
-    return {
-      reviewStatus: 'suspect' as const,
-      reviewReason: reasons.join(','),
-    };
-  }
-
-  return {
-    reviewStatus: 'accepted' as const,
-    reviewReason: 'validated',
-  };
-}
-
 export default async function handler(req: RequestLike, res: ResponseLike) {
   const { allowed, origin } = isAllowedOrigin(req);
   applySecurityHeaders(res, allowed ? origin : '');
@@ -1052,7 +846,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       );
     }
 
-    if (!isAbandoned && !KNOWN_ACTIVITY_DOMAINS.has(industry)) {
+    if (!isAbandoned && !isAcceptedActivityDomain(industry)) {
       return reportLead(
         'rejected',
         'invalid_activity_domain',
@@ -1062,7 +856,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       );
     }
 
-    const leadFingerprint = getLeadFingerprint(companyName, phone);
+    const leadFingerprint = getLeadFingerprint(phone);
     const fingerprintCheck = checkLeadFingerprint(leadFingerprint, submissionStatus);
 
     if (fingerprintCheck.duplicate && !isAbandoned) {
@@ -1081,8 +875,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     const phoneChurnSuspicious = !isAbandoned && isIpPhoneChurnSuspicious(clientIp, phone);
     const reviewDecision = getLeadReviewDecision({
-      lead: normalizedLead,
-      isAbandoned,
+      submissionStatus,
+      formCompletionMs,
       isPhoneChurnSuspicious: phoneChurnSuspicious,
     });
     const reviewedLead = withLeadReview(
