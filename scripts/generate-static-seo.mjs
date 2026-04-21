@@ -240,11 +240,11 @@ function createStaticRoutes(content) {
   return [
     {
       path: '/',
-      title: 'Assurance cyber pour entreprise, TPE et PME | Le Cyberassureur',
+      title: 'Assurance cyber entreprise, TPE et PME : devis et accompagnement | Le Cyberassureur',
       description:
-        "Le Cyberassureur propose une assurance cyber pour entreprise avec analyse du risque, couverture des pertes financières, dommages subis, fraude et accompagnement expert pour TPE et PME.",
+        "Le Cyberassureur accompagne les TPE et PME avec une assurance cyber pensée pour absorber les pertes financières, l’arrêt d’activité et les frais de gestion de crise.",
       keywords:
-        'assurance cyber, assurance cyber entreprise, offre assurance cyber, assurance cyber risques, assurance cyber PME, assurance cyber TPE, risque cyber entreprise, protection financiere cyber',
+        'assurance cyber entreprise, assurance cyber TPE, assurance cyber PME, devis assurance cyber, protection cyber entreprise, couverture cyber entreprise',
       structuredData: [
         {
           '@context': 'https://schema.org',
@@ -280,29 +280,29 @@ function createStaticRoutes(content) {
     },
     {
       path: '/offres',
-      title: "Offres d'assurance cyber pour entreprise | Le Cyberassureur",
+      title: 'Offre assurance cyber : Basic, Silver et Gold | Le Cyberassureur',
       description:
-        "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir un niveau de protection cohérent avec votre activité, votre exposition au risque et vos besoins de couverture.",
+        "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir une formule cohérente avec votre activité, votre exposition au risque et votre besoin de couverture.",
       keywords:
-        "offre assurance cyber, offres d'assurance cyber, assurance cyber entreprise, assurance cyber PME, protection cyber entreprise",
+        "offre assurance cyber, offres assurance cyber entreprise, formule assurance cyber, prix assurance cyber entreprise, niveau de couverture cyber",
       structuredData: [toFaqStructuredData(content.offersFaqItems)],
     },
     {
       path: '/assurance-cyber',
-      title: 'Assurance cyber pour entreprise : comprendre la protection utile | Le Cyberassureur',
+      title: "Comment fonctionne l'assurance cyber en entreprise | Le Cyberassureur",
       description:
-        "Comprenez à quoi sert une assurance cyber pour entreprise, ce qu'elle couvre, comment choisir le bon niveau de protection et pourquoi elle complète la cybersécurité.",
+        "Guide pratique pour comprendre le rôle d'une assurance cyber en entreprise, ce qu'elle couvre, ce qu'elle ne remplace pas et comment choisir le bon niveau de protection.",
       keywords:
-        'assurance cyber, assurance cyber entreprise, assurance cyber PME, assurance cyber TPE, protection cyber entreprise',
+        "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
       structuredData: [toFaqStructuredData(content.assuranceCyberFaqItems)],
     },
     {
       path: '/assurance-cyber-risques',
-      title: 'Assurance cyber-risques : comprendre les risques les plus coûteux | Le Cyberassureur',
+      title: 'Cyber-risques en entreprise : coûts, impacts et couverture | Le Cyberassureur',
       description:
-        "Découvrez quels cyber-risques coûtent le plus cher aux entreprises, pourquoi les TPE et PME sont exposées et comment une assurance cyber-risques aide à absorber l'impact financier.",
+        "Identifiez les cyber-risques les plus coûteux pour une entreprise, les impacts concrets sur l'activité et la manière dont une couverture adaptée peut limiter la perte.",
       keywords:
-        'assurance cyber risques, assurance cyber-risques, cyber risques entreprise, risque cyber PME, assurance cyber fraude',
+        'cyber risques entreprise, risques cyber PME, cout cyberattaque entreprise, exposition cyber entreprise, couverture cyber risques',
       structuredData: [toFaqStructuredData(content.cyberRisksFaqItems)],
     },
     {
@@ -318,6 +318,7 @@ function createStaticRoutes(content) {
       title: 'FAQ assurance cyber : questions fréquentes | Le Cyberassureur',
       description:
         "Retrouvez les réponses clés sur l'assurance cyber, les garanties, les pertes d'exploitation, la fraude et les conditions de couverture pour les TPE et PME.",
+      robots: 'noindex,follow',
       structuredData: [toFaqStructuredData(content.faqPageItems)],
     },
     {
@@ -325,24 +326,28 @@ function createStaticRoutes(content) {
       title: 'Témoignages clients cyberassurance | Le Cyberassureur',
       description:
         "Découvrez des retours d'expérience concrets sur la gestion d'incidents, l'absorption des pertes financières et l'accompagnement après cyberattaque.",
+      robots: 'noindex,follow',
     },
     {
       path: '/politique-confidentialite',
       title: 'Politique de confidentialité | Le Cyberassureur',
       description:
         'Consultez la politique de confidentialité du site Le Cyberassureur, les données collectées via le formulaire et la gestion du consentement cookies.',
+      robots: 'noindex,follow',
     },
     {
       path: '/conditions-utilisation',
       title: "Conditions d'utilisation | Le Cyberassureur",
       description:
         "Consultez les conditions d'utilisation du site Le Cyberassureur et le cadre d'usage du contenu et du formulaire de contact.",
+      robots: 'noindex,follow',
     },
     {
       path: '/mentions-legales',
       title: 'Mentions légales | Le Cyberassureur',
       description:
         "Consultez les mentions légales du site Le Cyberassureur, les informations d'identification de l'éditeur et les éléments d'hébergement du service.",
+      robots: 'noindex,follow',
     },
     {
       path: '/merci',

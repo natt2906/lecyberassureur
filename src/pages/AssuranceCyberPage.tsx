@@ -7,12 +7,12 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberPage() {
   usePageMeta({
-    title: 'Assurance cyber pour entreprise : comprendre la protection utile | Le Cyberassureur',
+    title: "Comment fonctionne l'assurance cyber en entreprise | Le Cyberassureur",
     description:
-      "Comprenez à quoi sert une assurance cyber pour entreprise, ce qu'elle couvre, comment choisir le bon niveau de protection et pourquoi elle complète la cybersécurité.",
+      "Guide pratique pour comprendre le rôle d'une assurance cyber en entreprise, ce qu'elle couvre, ce qu'elle ne remplace pas et comment choisir le bon niveau de protection.",
     path: '/assurance-cyber',
     keywords:
-      'assurance cyber, assurance cyber entreprise, assurance cyber PME, assurance cyber TPE, protection cyber entreprise',
+      "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -37,7 +37,7 @@ export default function AssuranceCyberPage() {
               <span className="site-section__eyebrow-text">Assurance cyber</span>
             </div>
             <h1 className="site-section__title mt-6">
-              Assurance cyber pour entreprise : ce qu&apos;elle protège vraiment
+              Comment fonctionne une assurance cyber pour entreprise ?
             </h1>
             <p className="site-section__intro mt-6">
               Une assurance cyber sert à limiter l&apos;impact financier d&apos;un incident

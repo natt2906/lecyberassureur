@@ -7,6 +7,7 @@ export default function TermsPage() {
     description:
       "Consultez les conditions d'utilisation du site Le Cyberassureur et le cadre d'usage du contenu et du formulaire de contact.",
     path: '/conditions-utilisation',
+    robots: 'noindex,follow',
   });
 
   return (

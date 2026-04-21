@@ -7,12 +7,12 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function CyberRisksPage() {
   usePageMeta({
-    title: 'Assurance cyber-risques : comprendre les risques les plus coûteux | Le Cyberassureur',
+    title: 'Cyber-risques en entreprise : coûts, impacts et couverture | Le Cyberassureur',
     description:
-      "Découvrez quels cyber-risques coûtent le plus cher aux entreprises, pourquoi les TPE et PME sont exposées et comment une assurance cyber-risques aide à absorber l'impact financier.",
+      "Identifiez les cyber-risques les plus coûteux pour une entreprise, les impacts concrets sur l'activité et la manière dont une couverture adaptée peut limiter la perte.",
     path: '/assurance-cyber-risques',
     keywords:
-      'assurance cyber risques, assurance cyber-risques, cyber risques entreprise, risque cyber PME, assurance cyber fraude',
+      'cyber risques entreprise, risques cyber PME, cout cyberattaque entreprise, exposition cyber entreprise, couverture cyber risques',
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -37,7 +37,7 @@ export default function CyberRisksPage() {
               <span className="site-section__eyebrow-text">Cyber-risques</span>
             </div>
             <h1 className="site-section__title mt-6">
-              Assurance cyber-risques : quels risques coûtent vraiment à une entreprise ?
+              Quels cyber-risques coûtent vraiment à une entreprise ?
             </h1>
             <p className="site-section__intro mt-6">
               Le sujet n’est pas seulement l’attaque elle-même. Le vrai risque vient de

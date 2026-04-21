@@ -7,6 +7,7 @@ export default function LegalMentionsPage() {
     description:
       "Consultez les mentions légales du site Le Cyberassureur, les informations d'identification de l'éditeur et les éléments d'hébergement du service.",
     path: '/mentions-legales',
+    robots: 'noindex,follow',
   });
 
   return (

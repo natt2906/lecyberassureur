@@ -7,6 +7,7 @@ export default function PrivacyPage() {
     description:
       "Consultez la politique de confidentialité du site Le Cyberassureur, les données collectées via le formulaire et la gestion du consentement cookies.",
     path: '/politique-confidentialite',
+    robots: 'noindex,follow',
   });
 
   return (

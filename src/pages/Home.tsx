@@ -17,12 +17,12 @@ const Footer = lazy(() => import('../components/Footer'));
 
 export default function Home() {
   usePageMeta({
-    title: 'Assurance cyber pour entreprise, TPE et PME | Le Cyberassureur',
+    title: 'Assurance cyber entreprise, TPE et PME : devis et accompagnement | Le Cyberassureur',
     description:
-      "Le Cyberassureur propose une assurance cyber pour entreprise avec analyse du risque, couverture des pertes financières, dommages subis, fraude et accompagnement expert pour TPE et PME.",
+      "Le Cyberassureur accompagne les TPE et PME avec une assurance cyber pensée pour absorber les pertes financières, l’arrêt d’activité et les frais de gestion de crise.",
     path: '/',
     keywords:
-      "assurance cyber, assurance cyber entreprise, offre assurance cyber, assurance cyber risques, assurance cyber PME, assurance cyber TPE, risque cyber entreprise, protection financière cyber",
+      'assurance cyber entreprise, assurance cyber TPE, assurance cyber PME, devis assurance cyber, protection cyber entreprise, couverture cyber entreprise',
     structuredData: [
       {
         '@context': 'https://schema.org',

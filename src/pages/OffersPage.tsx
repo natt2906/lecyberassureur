@@ -8,12 +8,12 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function OffersPage() {
   usePageMeta({
-    title: "Offres d'assurance cyber pour entreprise | Le Cyberassureur",
+    title: 'Offre assurance cyber : Basic, Silver et Gold | Le Cyberassureur',
     description:
-      "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir un niveau de protection cohérent avec votre activité, votre exposition au risque et vos besoins de couverture.",
+      "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir une formule cohérente avec votre activité, votre exposition au risque et votre besoin de couverture.",
     path: '/offres',
     keywords:
-      "offre assurance cyber, offres d'assurance cyber, assurance cyber entreprise, assurance cyber PME, protection cyber entreprise",
+      "offre assurance cyber, offres assurance cyber entreprise, formule assurance cyber, prix assurance cyber entreprise, niveau de couverture cyber",
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -38,7 +38,7 @@ export default function OffersPage() {
               <span className="site-section__eyebrow-text">Nos offres</span>
             </div>
             <h1 className="site-section__title mt-6">
-              Offres d&apos;assurance cyber pour structurer votre niveau de protection
+              Quelle offre d&apos;assurance cyber choisir pour votre entreprise ?
             </h1>
             <p className="site-section__intro mt-6">
               Cette page permet de comparer rapidement trois niveaux de protection cyber.

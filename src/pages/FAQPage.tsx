@@ -10,6 +10,7 @@ export default function FAQPage() {
     description:
       "Retrouvez les réponses clés sur l'assurance cyber, les garanties, les pertes d'exploitation, la fraude et les conditions de couverture pour les TPE et PME.",
     path: '/faq',
+    robots: 'noindex,follow',
     structuredData: {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',

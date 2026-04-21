@@ -9,6 +9,7 @@ export default function TestimonialsPage() {
     description:
       "Découvrez des retours d'expérience concrets sur la gestion d'incidents, l'absorption des pertes financières et l'accompagnement après cyberattaque.",
     path: '/temoignages',
+    robots: 'noindex,follow',
   });
 
   return (
