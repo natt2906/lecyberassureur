@@ -3,6 +3,13 @@ import { Send, Shield } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { activityDomains, isKnownActivityDomain } from '../data/activityDomains';
 import { captureLeadAttribution } from '../lib/leadAttribution';
+import {
+  getLeadFingerprint,
+  isRejectedCompanyName,
+  isRejectedFrenchPhone,
+  isValidFrenchPhone,
+  toCanonicalPhone,
+} from '../lib/leadReview';
 import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
 import { readSelectedOffer, writeSelectedOffer } from '../lib/selectedOffer';
 import { isOfferId, offerLabelById } from '../data/offers';
@@ -36,33 +43,6 @@ const TURNSTILE_SITE_KEY =
   import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAC_qG144rn3nXwSr';
 const TURNSTILE_ERROR_MESSAGE =
   'La vérification de sécurité est obligatoire avant l’envoi du formulaire.';
-const REJECTED_PHONE_NUMBERS = new Set([
-  '0000000000',
-  '0123456789',
-  '0987654321',
-  '0102030405',
-  '0606060606',
-  '0611111111',
-  '0612345678',
-  '0666666666',
-  '0677777777',
-  '0700000000',
-  '0777777777',
-]);
-const REJECTED_COMPANY_MARKERS = [
-  'aaa',
-  'aaaa',
-  'azerty',
-  'demo',
-  'fake',
-  'faux',
-  'jdgshsgh',
-  'qsd',
-  'qsdf',
-  'qwerty',
-  'sample',
-  'test',
-] as const;
 
 const EMPTY_FORM_DATA = {
   companyName: '',
@@ -177,116 +157,6 @@ function formatFrenchPhoneInput(value: string) {
   return groups.join(' ');
 }
 
-function isValidFrenchPhone(value: string) {
-  const digits = normalizePhoneDigits(value);
-  return /^(?:0[1-9]\d{8}|33[1-9]\d{8})$/.test(digits);
-}
-
-function toCanonicalPhone(value: string) {
-  const digits = normalizePhoneDigits(value);
-
-  if (/^0[1-9]\d{8}$/.test(digits)) {
-    return `+33${digits.slice(1)}`;
-  }
-
-  if (/^33[1-9]\d{8}$/.test(digits)) {
-    return `+${digits}`;
-  }
-
-  return value.trim();
-}
-
-function toLocalFrenchPhoneDigits(value: string) {
-  const digits = normalizePhoneDigits(value);
-
-  if (/^33[1-9]\d{8}$/.test(digits)) {
-    return `0${digits.slice(2)}`;
-  }
-
-  if (/^0[1-9]\d{8}$/.test(digits)) {
-    return digits;
-  }
-
-  return digits;
-}
-
-function isRejectedFrenchPhone(value: string) {
-  const localPhone = toLocalFrenchPhoneDigits(value);
-
-  if (!/^0[1-9]\d{8}$/.test(localPhone)) {
-    return false;
-  }
-
-  if (REJECTED_PHONE_NUMBERS.has(localPhone)) {
-    return true;
-  }
-
-  if (/^(..)\1{4}$/.test(localPhone)) {
-    return true;
-  }
-
-  if (/^0[1-9](\d)\1{7}$/.test(localPhone)) {
-    return true;
-  }
-
-  return /(\d)\1{4,}/.test(localPhone) && new Set(localPhone).size <= 3;
-}
-
-function normalizeAscii(value: string) {
-  return value
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase();
-}
-
-function looksLikeFakeCompanyName(value: string) {
-  const normalized = normalizeAscii(value).replace(/['’]/g, '').trim();
-  const compact = normalized.replace(/[^a-z0-9]/g, '');
-  const lettersOnly = normalized.replace(/[^a-z]/g, '');
-  const vowelCount = (lettersOnly.match(/[aeiouy]/g) || []).length;
-  const hasSpace = /\s/.test(normalized);
-
-  if (lettersOnly.length < 3) {
-    return true;
-  }
-
-  if (REJECTED_COMPANY_MARKERS.some((marker) => compact === marker || compact.includes(marker))) {
-    return true;
-  }
-
-  if (/(azerty|qwerty|qsdf|asdf|wxcv|hjkl)/.test(compact)) {
-    return true;
-  }
-
-  if (/([a-z])\1{3,}/.test(lettersOnly)) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 6 && vowelCount === 0) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 7 && vowelCount <= 1) {
-    return true;
-  }
-
-  if (!hasSpace && lettersOnly.length >= 7 && new Set(lettersOnly).size <= 3) {
-    return true;
-  }
-
-  return !hasSpace && /[^aeiouy]{6,}/.test(lettersOnly);
-}
-
-function getLeadFingerprint(formData: FormDataState) {
-  const canonicalPhone = toCanonicalPhone(formData.phone);
-
-  if (!canonicalPhone || !isValidFrenchPhone(canonicalPhone)) {
-    return '';
-  }
-
-  return canonicalPhone;
-}
-
 function readSubmittedLeadMap() {
   if (typeof window === 'undefined') {
     return new Map<string, number>();
@@ -333,7 +203,7 @@ function writeSubmittedLeadMap(submittedLeads: Map<string, number>) {
 }
 
 function hasRecentSubmittedLead(formData: FormDataState) {
-  const fingerprint = getLeadFingerprint(formData);
+  const fingerprint = getLeadFingerprint(formData.phone);
 
   if (!fingerprint) {
     return false;
@@ -343,7 +213,7 @@ function hasRecentSubmittedLead(formData: FormDataState) {
 }
 
 function rememberSubmittedLead(formData: FormDataState) {
-  const fingerprint = getLeadFingerprint(formData);
+  const fingerprint = getLeadFingerprint(formData.phone);
 
   if (!fingerprint) {
     return;
@@ -361,7 +231,7 @@ function validateFormData(formData: FormDataState): FieldErrors {
     errors.companyName = "Le nom de l'entreprise est obligatoire.";
   } else if (formData.companyName.trim().length < 3) {
     errors.companyName = "Le nom de l'entreprise doit contenir au moins 3 caractères.";
-  } else if (looksLikeFakeCompanyName(formData.companyName)) {
+  } else if (isRejectedCompanyName(formData.companyName)) {
     errors.companyName = "Le nom de l'entreprise semble invalide. Merci de renseigner une raison sociale réelle.";
   }
 

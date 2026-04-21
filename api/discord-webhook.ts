@@ -7,7 +7,7 @@ import {
   isValidFrenchPhone,
   toCanonicalPhone,
   type LeadReviewStatus,
-} from '../src/lib/leadReview';
+} from './leadReview.ts';
 
 type RequestLike = {
   method?: string;

@@ -1,0 +1,35 @@
+export const activityDomains = [
+  'Agriculture, élevage et viticulture',
+  'Agroalimentaire',
+  'Association, fondation et organisme',
+  'Assurance, courtage et mutuelle',
+  'Audit, conseil et services B2B',
+  'Automobile et mobilité',
+  'Banque, finance et fintech',
+  'BTP, construction et immobilier',
+  'Commerce de détail',
+  'Commerce de gros et distribution',
+  'Communication, marketing et média',
+  'Cybersécurité, informatique et infogérance',
+  'Éducation, formation et enseignement',
+  'Énergie et environnement',
+  'E-commerce',
+  'Hôtellerie, restauration et tourisme',
+  'Industrie et production',
+  'Juridique, conformité et expertise',
+  'Logistique et transport',
+  'Luxe, mode et beauté',
+  'Manufacture et atelier',
+  'Professions médicales, santé et paramédical',
+  'Professions réglementées',
+  'Ressources humaines et recrutement',
+  'SaaS, logiciels et technologies',
+  'Services à la personne',
+  'Télécommunications',
+  'TPE artisanales et commerces de proximité',
+  'Autre',
+] as const;
+
+export function isKnownActivityDomain(value: string) {
+  return activityDomains.includes(value as (typeof activityDomains)[number]);
+}

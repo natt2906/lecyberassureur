@@ -34,6 +34,7 @@ test('rejette les noms d’entreprise manifestement bidons', () => {
 test('accepte un nom d’entreprise plausible', () => {
   assert.equal(isRejectedCompanyName('Prorisk Assurances'), false);
   assert.equal(isRejectedCompanyName('Cabinet Martin Conseil'), false);
+  assert.equal(isRejectedCompanyName('test form'), false);
 });
 
 test('n’accepte que les domaines d’activité connus', () => {

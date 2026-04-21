@@ -1,4 +1,4 @@
-import { isKnownActivityDomain } from '../data/activityDomains';
+import { isKnownActivityDomain } from './activityDomains.ts';
 
 export type LeadReviewStatus = 'accepted' | 'suspect' | 'rejected';
 
