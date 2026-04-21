@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { activityDomains, isKnownActivityDomain } from '../data/activityDomains';
 import { captureLeadAttribution } from '../lib/leadAttribution';
 import {
-  getLeadFingerprint,
   isRejectedCompanyName,
   isRejectedFrenchPhone,
   isValidFrenchPhone,
@@ -35,9 +34,7 @@ declare global {
 
 const FORM_DRAFT_STORAGE_KEY = 'lecyberassureur-contact-form-draft';
 const FORM_DRAFT_ABANDONED_SIGNATURE_KEY = 'lecyberassureur-contact-form-abandoned-signature';
-const SUBMITTED_LEADS_STORAGE_KEY = 'lecyberassureur-submitted-leads';
 const FORM_DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
-const SUBMITTED_LEAD_TTL_MS = 24 * 60 * 60 * 1000;
 const TURNSTILE_SCRIPT_ID = 'cf-turnstile-script';
 const TURNSTILE_SITE_KEY =
   import.meta.env.VITE_TURNSTILE_SITE_KEY || '0x4AAAAAAC_qG144rn3nXwSr';
@@ -157,73 +154,6 @@ function formatFrenchPhoneInput(value: string) {
   return groups.join(' ');
 }
 
-function readSubmittedLeadMap() {
-  if (typeof window === 'undefined') {
-    return new Map<string, number>();
-  }
-
-  try {
-    const raw = window.localStorage.getItem(SUBMITTED_LEADS_STORAGE_KEY);
-
-    if (!raw) {
-      return new Map<string, number>();
-    }
-
-    const parsed = JSON.parse(raw) as Record<string, number>;
-    const next = new Map<string, number>();
-    const now = Date.now();
-
-    Object.entries(parsed).forEach(([fingerprint, timestamp]) => {
-      if (typeof timestamp !== 'number') {
-        return;
-      }
-
-      if (now - timestamp > SUBMITTED_LEAD_TTL_MS) {
-        return;
-      }
-
-      next.set(fingerprint, timestamp);
-    });
-
-    return next;
-  } catch {
-    return new Map<string, number>();
-  }
-}
-
-function writeSubmittedLeadMap(submittedLeads: Map<string, number>) {
-  if (typeof window === 'undefined') {
-    return;
-  }
-
-  window.localStorage.setItem(
-    SUBMITTED_LEADS_STORAGE_KEY,
-    JSON.stringify(Object.fromEntries(submittedLeads.entries())),
-  );
-}
-
-function hasRecentSubmittedLead(formData: FormDataState) {
-  const fingerprint = getLeadFingerprint(formData.phone);
-
-  if (!fingerprint) {
-    return false;
-  }
-
-  return readSubmittedLeadMap().has(fingerprint);
-}
-
-function rememberSubmittedLead(formData: FormDataState) {
-  const fingerprint = getLeadFingerprint(formData.phone);
-
-  if (!fingerprint) {
-    return;
-  }
-
-  const submittedLeads = readSubmittedLeadMap();
-  submittedLeads.set(fingerprint, Date.now());
-  writeSubmittedLeadMap(submittedLeads);
-}
-
 function validateFormData(formData: FormDataState): FieldErrors {
   const errors: FieldErrors = {};
 
@@ -306,6 +236,10 @@ export default function ContactForm() {
   useEffect(() => {
     honeypotRef.current = honeypot;
   }, [honeypot]);
+
+  useEffect(() => {
+    window.localStorage.removeItem('lecyberassureur-submitted-leads');
+  }, []);
 
   useEffect(() => {
     if (!formData.offer || !isOfferId(formData.offer)) {
@@ -510,10 +444,6 @@ export default function ContactForm() {
         throw new Error(TURNSTILE_ERROR_MESSAGE);
       }
 
-      if (hasRecentSubmittedLead(formData)) {
-        throw new Error('Une demande récente existe déjà pour ce contact. Merci de patienter avant de renvoyer le formulaire.');
-      }
-
       const leadWebhookUrl = resolveLeadWebhookUrl();
       const leadWebhookHint = getLeadWebhookHint();
       const canonicalPhone = toCanonicalPhone(formData.phone);
@@ -612,10 +542,6 @@ export default function ContactForm() {
       const leadStatus = responsePayload.leadStatus || 'accepted';
 
       hasSubmittedRef.current = true;
-      rememberSubmittedLead({
-        ...formData,
-        phone: canonicalPhone,
-      });
       window.localStorage.removeItem(FORM_DRAFT_STORAGE_KEY);
       window.localStorage.removeItem(FORM_DRAFT_ABANDONED_SIGNATURE_KEY);
       setFormData(EMPTY_FORM_DATA);
