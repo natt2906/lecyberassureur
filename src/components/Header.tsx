@@ -1,31 +1,89 @@
-import { Menu, Moon, Sun, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelectedOffer } from '../lib/selectedOffer';
 import { useTheme } from './theme-context';
+
+type NavigationItem = {
+  label: string;
+  href?: string;
+  to?: string;
+};
 
 export default function Header() {
   const { theme, toggleTheme } = useTheme();
   const selectedOffer = useSelectedOffer();
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [openDesktopMenu, setOpenDesktopMenu] = useState<string | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
+    setOpenDesktopMenu(null);
   }, [location.pathname, location.search, location.hash]);
 
-  const navigationItems = [
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!headerRef.current?.contains(event.target as Node)) {
+        setOpenDesktopMenu(null);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpenDesktopMenu(null);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, []);
+
+  const mobileNavigationItems: NavigationItem[] = [
+    { to: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
+    { to: '/assurance-cyber', label: 'Assurance cyber' },
     { href: '/#coverage', label: 'Garanties' },
     { to: '/offres', label: 'Offres' },
     { href: '/#who-for', label: 'Pour qui' },
     { to: '/articles', label: 'Articles' },
     { to: '/temoignages', label: 'Temoignages' },
     { to: '/faq', label: 'FAQ' },
+  ];
+
+  const desktopNavigationGroups = [
+    {
+      id: 'assurance',
+      label: 'Assurance cyber',
+      items: [
+        { to: '/assurance-cyber', label: "Vue d'ensemble" },
+        { href: '/#coverage', label: 'Garanties' },
+        { href: '/#who-for', label: 'Pour qui' },
+      ],
+    },
+    {
+      id: 'resources',
+      label: 'Ressources',
+      items: [
+        { to: '/articles', label: 'Articles' },
+        { to: '/temoignages', label: 'Temoignages' },
+        { to: '/faq', label: 'FAQ' },
+      ],
+    },
   ] as const;
 
+  const desktopNavigationItems: NavigationItem[] = [
+    { to: '/offres', label: 'Offres' },
+    { to: '/qui-sommes-nous', label: 'A propos' },
+  ];
+
   const secondaryLinkClassName = 'site-header__cta';
-  const navLinkClassName =
-    'site-header__nav-link';
+  const navLinkClassName = 'site-header__nav-link';
   const logoClassName = [
     'site-header__logo',
     selectedOffer ? `site-header__logo--${selectedOffer}` : '',
@@ -33,8 +91,19 @@ export default function Header() {
     .filter(Boolean)
     .join(' ');
 
+  const renderNavigationItem = (item: NavigationItem, className: string) =>
+    item.to ? (
+      <Link key={item.label} to={item.to} className={className}>
+        {item.label}
+      </Link>
+    ) : (
+      <a key={item.label} href={item.href} className={className}>
+        {item.label}
+      </a>
+    );
+
   return (
-    <header className="site-header">
+    <header ref={headerRef} className="site-header">
       <div className="site-header__container">
         <div className="site-header__bar">
           <Link to="/" className="site-header__brand">
@@ -49,19 +118,44 @@ export default function Header() {
 
           <div className="site-header__actions">
             <nav className="site-header__nav">
-              {navigationItems.map((item) =>
-                'to' in item ? (
-                  <Link key={item.label} to={item.to} className={navLinkClassName}>
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a key={item.label} href={item.href} className={navLinkClassName}>
-                    {item.label}
-                  </a>
-                ),
-              )}
+              {desktopNavigationGroups.map((group) => {
+                const isOpen = openDesktopMenu === group.id;
+
+                return (
+                  <div
+                    key={group.id}
+                    className="site-header__nav-group"
+                    onMouseEnter={() => setOpenDesktopMenu(group.id)}
+                    onMouseLeave={() => setOpenDesktopMenu((current) => (current === group.id ? null : current))}
+                  >
+                    <button
+                      type="button"
+                      className="site-header__nav-trigger"
+                      aria-expanded={isOpen}
+                      aria-controls={`desktop-nav-${group.id}`}
+                      onClick={() =>
+                        setOpenDesktopMenu((current) => (current === group.id ? null : group.id))
+                      }
+                    >
+                      <span>{group.label}</span>
+                      <ChevronDown
+                        className={`site-header__nav-trigger-icon${isOpen ? ' site-header__nav-trigger-icon--open' : ''}`}
+                      />
+                    </button>
+
+                    {isOpen && (
+                      <div id={`desktop-nav-${group.id}`} className="site-header__nav-menu">
+                        {group.items.map((item) => renderNavigationItem(item, 'site-header__nav-menu-link'))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {desktopNavigationItems.map((item) => renderNavigationItem(item, navLinkClassName))}
+
               <a href="/#devis-cyber" className={secondaryLinkClassName}>
-                Obtenir une expertise
+                Demander un devis
               </a>
             </nav>
 
@@ -93,29 +187,11 @@ export default function Header() {
             className="site-header__mobile"
           >
             <nav className="site-header__mobile-nav">
-              {navigationItems.map((item) =>
-                'to' in item ? (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    className="site-header__mobile-link"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="site-header__mobile-link"
-                  >
-                    {item.label}
-                  </a>
-                ),
-              )}
+              {mobileNavigationItems.map((item) => renderNavigationItem(item, 'site-header__mobile-link'))}
 
               <div className="site-header__mobile-actions">
                 <a href="/#devis-cyber" className={secondaryLinkClassName}>
-                  Obtenir une expertise
+                  Demander un devis
                 </a>
               </div>
             </nav>

@@ -11,6 +11,7 @@ const ProblemSection = lazy(() => import('../components/ProblemSection'));
 const CoverageSection = lazy(() => import('../components/CoverageSection'));
 const WhoForSection = lazy(() => import('../components/WhoForSection'));
 const WhySpecialistSection = lazy(() => import('../components/WhySpecialistSection'));
+const SeoEntryPointsSection = lazy(() => import('../components/SeoEntryPointsSection'));
 const FAQ = lazy(() => import('../components/FAQ'));
 const FinalCTA = lazy(() => import('../components/FinalCTA'));
 const Footer = lazy(() => import('../components/Footer'));
@@ -76,6 +77,7 @@ export default function Home() {
       <TrustBar />
       <PartnersSection />
       <Suspense fallback={null}>
+        <SeoEntryPointsSection />
         <ProblemSection />
         <CoverageSection />
         <WhoForSection />

@@ -158,3 +158,72 @@ export const cyberRisksFaqItems: FAQItem[] = [
       "Le minimum utile reste la sauvegarde régulière, les mises à jour, le MFA, la gestion des accès, la sensibilisation des équipes et la capacité à déclarer rapidement un incident. L'assurance vient ensuite couvrir ce qui reste financièrement exposé.",
   },
 ];
+
+export const assuranceCyberPriceFaqItems: FAQItem[] = [
+  {
+    question: "Quel est le prix d'une assurance cyber pour une PME ?",
+    answer:
+      "Il n'existe pas de prix unique. Le budget dépend surtout du chiffre d'affaires, du niveau de dépendance au système d'information, des données manipulées, du niveau de garanties choisi et du profil de risque observé par l'assureur.",
+  },
+  {
+    question: 'Pourquoi deux entreprises comparables n’ont-elles pas le même tarif cyber ?',
+    answer:
+      "Deux entreprises de taille proche peuvent avoir des expositions très différentes. Une activité fortement dépendante à la messagerie, à un ERP, au paiement en ligne ou à des données sensibles sera généralement perçue comme plus exposée qu'une structure moins numérisée.",
+  },
+  {
+    question: 'Les prix affichés sur la page offres sont-ils des tarifs définitifs ?',
+    answer:
+      "Non. Les montants affichés servent d'indication de départ. Le prix final dépend de l'analyse du risque, des garanties retenues, des plafonds, des franchises et des informations fournies au moment de la demande.",
+  },
+  {
+    question: 'Comment obtenir rapidement un devis d’assurance cyber ?',
+    answer:
+      "Le plus simple est de préciser votre activité, votre taille, votre niveau de dépendance aux outils numériques et le niveau de couverture recherché. Plus le besoin est cadré, plus le devis peut être qualifié rapidement.",
+  },
+];
+
+export const assuranceCyberMandatoryFaqItems: FAQItem[] = [
+  {
+    question: "L'assurance cyber est-elle obligatoire pour une entreprise en France ?",
+    answer:
+      "Dans la majorité des cas, non. Il n'existe pas d'obligation générale imposant une assurance cyber à toutes les entreprises. En revanche, certaines activités ont déjà des obligations d'assurance propres, et des exigences contractuelles peuvent rendre une couverture cyber nécessaire dans la pratique.",
+  },
+  {
+    question: 'Une activité réglementée doit-elle vérifier ses obligations d’assurance ?',
+    answer:
+      "Oui. Lorsqu'une activité est réglementée, il faut toujours vérifier les obligations applicables à la profession et aux contrats conclus avec les clients, partenaires ou donneurs d'ordre. L'absence d'obligation générale ne dispense pas de cette vérification.",
+  },
+  {
+    question: 'Des clients peuvent-ils exiger une assurance cyber ?',
+    answer:
+      "Oui. Dans certains appels d'offres, contrats cadres, marchés ou relations avec des donneurs d'ordre, une preuve de couverture cyber peut être demandée, même si la loi ne l'impose pas de manière générale.",
+  },
+  {
+    question: "Une petite entreprise sans e-commerce peut-elle s'en passer ?",
+    answer:
+      "Pas forcément. Une entreprise sans vente en ligne peut quand même dépendre fortement de sa messagerie, de ses outils métiers, de ses données clients ou de ses prestataires. Le sujet n'est donc pas seulement l'obligation, mais l'exposition réelle au risque.",
+  },
+];
+
+export const assuranceCyberCoverageFaqItems: FAQItem[] = [
+  {
+    question: "Que couvre en pratique une assurance cyber ?",
+    answer:
+      "Une assurance cyber peut couvrir selon le contrat l'interruption d'activité, les frais d'experts, la remise en état, certaines responsabilités liées aux données, la communication de crise, les dommages subis et parfois la fraude selon les options retenues.",
+  },
+  {
+    question: "Les pertes d'exploitation sont-elles couvertes ?",
+    answer:
+      "Elles peuvent l'être, sous réserve des conditions du contrat. Il faut vérifier les événements déclencheurs, les plafonds, les franchises et la durée d'indemnisation prévue.",
+  },
+  {
+    question: 'La fraude est-elle toujours incluse dans une assurance cyber ?',
+    answer:
+      "Non. La fraude n'est pas systématiquement incluse dans tous les niveaux d'offre. Elle peut relever d'une garantie spécifique ou d'une formule plus protectrice selon la structure du contrat.",
+  },
+  {
+    question: 'Une assurance cyber couvre-t-elle tout ?',
+    answer:
+      "Non. Comme tout contrat d'assurance, une assurance cyber comporte un périmètre précis, des limites, des exclusions, des plafonds et des conditions de mise en jeu. La qualité du contrat se lit autant dans ce qu'il couvre que dans la manière dont il indemnise.",
+  },
+];

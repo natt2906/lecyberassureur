@@ -203,6 +203,15 @@ async function loadContentData() {
   const assuranceCyberFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'assuranceCyberFaqItems', '[', ']'),
   );
+  const assuranceCyberCoverageFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'assuranceCyberCoverageFaqItems', '[', ']'),
+  );
+  const assuranceCyberMandatoryFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'assuranceCyberMandatoryFaqItems', '[', ']'),
+  );
+  const assuranceCyberPriceFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'assuranceCyberPriceFaqItems', '[', ']'),
+  );
   const offersFaqItems = evaluateExpression(extractAssignment(faqSource, 'offersFaqItems', '[', ']'));
   const cyberRisksFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'cyberRisksFaqItems', '[', ']'),
@@ -214,6 +223,9 @@ async function loadContentData() {
     homeFaqItems,
     faqPageItems,
     assuranceCyberFaqItems,
+    assuranceCyberCoverageFaqItems,
+    assuranceCyberMandatoryFaqItems,
+    assuranceCyberPriceFaqItems,
     offersFaqItems,
     cyberRisksFaqItems,
     articles,
@@ -279,6 +291,14 @@ function createStaticRoutes(content) {
       ],
     },
     {
+      path: '/qui-sommes-nous',
+      title: 'Qui sommes-nous ? | Le Cyberassureur',
+      description:
+        "Découvrez Le Cyberassureur, la marque spécialisée de Prorisk Assurances dédiée à l'assurance cyber entreprise, à la protection financière et à l'accompagnement des organisations face aux cyber-risques.",
+      keywords:
+        'qui sommes nous cyberassurance, le cyberassureur, prorisk assurances, courtier assurance cyber entreprise, specialiste assurance cyber',
+    },
+    {
       path: '/offres',
       title: 'Offre assurance cyber : Basic, Silver et Gold | Le Cyberassureur',
       description:
@@ -295,6 +315,33 @@ function createStaticRoutes(content) {
       keywords:
         "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
       structuredData: [toFaqStructuredData(content.assuranceCyberFaqItems)],
+    },
+    {
+      path: '/assurance-cyber-prix',
+      title: 'Prix assurance cyber PME : comment estimer le bon budget | Le Cyberassureur',
+      description:
+        "Prix assurance cyber PME : découvrez ce qui fait varier le tarif, comment lire un prix d'appel et comment demander un devis cohérent avec votre exposition réelle.",
+      keywords:
+        'assurance cyber prix pme, prix assurance cyber, tarif assurance cyber entreprise, devis assurance cyber, budget assurance cyber',
+      structuredData: [toFaqStructuredData(content.assuranceCyberPriceFaqItems)],
+    },
+    {
+      path: '/assurance-cyber-obligatoire',
+      title: 'Assurance cyber obligatoire ou non : ce qu’une entreprise doit savoir | Le Cyberassureur',
+      description:
+        "Assurance cyber obligatoire ou non : découvrez ce qu'une entreprise doit vérifier, quand la couverture n'est pas imposée par la loi mais devient nécessaire en pratique, et quels profils sont les plus exposés.",
+      keywords:
+        'assurance cyber obligatoire, assurance cyber obligatoire ou non, obligation assurance cyber entreprise, assurance cyber profession reglementee',
+      structuredData: [toFaqStructuredData(content.assuranceCyberMandatoryFaqItems)],
+    },
+    {
+      path: '/assurance-cyber-que-couvre',
+      title: 'Que couvre une assurance cyber pour entreprise ? | Le Cyberassureur',
+      description:
+        "Découvrez ce que couvre une assurance cyber pour entreprise : interruption d'activité, frais d'experts, gestion de crise, responsabilités liées aux données, dommages subis et fraude selon les garanties.",
+      keywords:
+        'assurance cyber que couvre, que couvre assurance cyber, garanties assurance cyber, couverture assurance cyber entreprise, assurance cyber fraude',
+      structuredData: [toFaqStructuredData(content.assuranceCyberCoverageFaqItems)],
     },
     {
       path: '/assurance-cyber-risques',

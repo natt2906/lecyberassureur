@@ -1,7 +1,9 @@
 import ContactForm from '../components/ContactForm';
+import CardIllustration from '../components/CardIllustration';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import PageFeatureImage from '../components/PageFeatureImage';
 import { assuranceCyberFaqItems } from '../data/faqs';
 import { usePageMeta } from '../lib/usePageMeta';
 
@@ -48,6 +50,11 @@ export default function AssuranceCyberPage() {
           </div>
         </section>
 
+        <PageFeatureImage
+          src="/seo-images/assurance-cyber-overview.png"
+          alt="Dirigeants et conseiller en cyberassurance en réunion dans un bureau moderne"
+        />
+
         <section className="site-section site-section--muted">
           <div className="site-section__container">
             <div className="site-section__header">
@@ -62,6 +69,7 @@ export default function AssuranceCyberPage() {
 
             <div className="site-card-grid site-card-grid--three">
               <article className="site-card">
+                <CardIllustration variant="downtime-impact" />
                 <h2 className="site-card__title">Interruption d’activité</h2>
                 <p className="site-card__body">
                   Quand la messagerie, l’ERP, les fichiers ou les postes deviennent
@@ -70,6 +78,7 @@ export default function AssuranceCyberPage() {
                 </p>
               </article>
               <article className="site-card">
+                <CardIllustration variant="crisis-comms" />
                 <h2 className="site-card__title">Gestion de crise</h2>
                 <p className="site-card__body">
                   Une assurance cyber permet d’accéder à des experts techniques,
@@ -77,6 +86,7 @@ export default function AssuranceCyberPage() {
                 </p>
               </article>
               <article className="site-card">
+                <CardIllustration variant="third-party" />
                 <h2 className="site-card__title">Responsabilité liée aux données</h2>
                 <p className="site-card__body">
                   Quand un incident touche des données clients, RH ou partenaires, le
@@ -93,6 +103,13 @@ export default function AssuranceCyberPage() {
                   Une entreprise doit d’abord se demander combien lui coûterait un arrêt,
                   une remise en état, une fraude ou une atteinte aux données. C’est cette
                   réalité qui permet ensuite de choisir un niveau de protection cohérent.
+                  Pour affiner ce cadrage, consulte aussi
+                  {' '}
+                  <a className="topic-page__inline-link" href="/assurance-cyber-que-couvre">
+                    ce que couvre une assurance cyber
+                  </a>
+                  {' '}et comparez ensuite les
+                  <a className="topic-page__inline-link" href="/offres">différents niveaux d’offre</a>.
                 </p>
                 <ul className="topic-page__list">
                   <li>Dépendance à la messagerie, à l’ERP, au CRM ou aux outils métiers</li>

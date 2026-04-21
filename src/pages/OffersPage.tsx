@@ -100,7 +100,9 @@ export default function OffersPage() {
                 {' '}
                 <Link className="topic-page__inline-link" to="/assurance-cyber">l&apos;assurance cyber</Link>
                 {' '}et aux
-                <Link className="topic-page__inline-link" to="/assurance-cyber-risques">cyber-risques</Link>.
+                <Link className="topic-page__inline-link" to="/assurance-cyber-risques">cyber-risques</Link>,
+                {' '}ainsi qu&apos;à notre page sur le
+                <Link className="topic-page__inline-link" to="/assurance-cyber-prix">prix d&apos;une assurance cyber</Link>.
               </p>
             </div>
           </div>

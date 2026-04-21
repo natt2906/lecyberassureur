@@ -1,4 +1,5 @@
 import ContactForm from '../components/ContactForm';
+import CardIllustration from '../components/CardIllustration';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -63,6 +64,7 @@ export default function CyberRisksPage() {
 
             <div className="site-card-grid site-card-grid--three">
               <article className="site-card">
+                <CardIllustration variant="downtime-impact" />
                 <h2 className="site-card__title">Rançongiciel</h2>
                 <p className="site-card__body">
                   Le problème n’est pas seulement le chiffrement. Le coût se construit
@@ -70,6 +72,7 @@ export default function CyberRisksPage() {
                 </p>
               </article>
               <article className="site-card">
+                <CardIllustration variant="finance-impact" />
                 <h2 className="site-card__title">Compromission de messagerie</h2>
                 <p className="site-card__body">
                   Une messagerie compromise peut ouvrir la porte à la fraude, à
@@ -77,6 +80,7 @@ export default function CyberRisksPage() {
                 </p>
               </article>
               <article className="site-card">
+                <CardIllustration variant="third-party" />
                 <h2 className="site-card__title">Données et tiers</h2>
                 <p className="site-card__body">
                   Dès qu’un incident touche des données clients, fournisseurs ou partenaires,
@@ -93,7 +97,14 @@ export default function CyberRisksPage() {
                   Selon le profil de l’entreprise, le risque principal ne sera pas le même.
                   Certaines structures craignent surtout l’arrêt, d’autres les dommages subis,
                   d’autres encore la fraude. C’est pour cela qu’un niveau d’offre doit rester
-                  lié à l’exposition réelle.
+                  lié à l’exposition réelle. Si vous vous demandez si cette couverture
+                  devient vraiment nécessaire dans votre cas, lisez aussi notre page
+                  {' '}
+                  <a className="topic-page__inline-link" href="/assurance-cyber-obligatoire">
+                    assurance cyber obligatoire ou non
+                  </a>
+                  . Pour cadrer le budget, consultez ensuite la page sur le
+                  <a className="topic-page__inline-link" href="/assurance-cyber-prix">prix d’une assurance cyber</a>.
                 </p>
                 <ul className="topic-page__list">
                   <li>Temps d’arrêt acceptable avant impact de trésorerie</li>

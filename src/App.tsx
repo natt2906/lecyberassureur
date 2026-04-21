@@ -9,12 +9,16 @@ const ArticlePage = lazy(() => import('./pages/ArticlePage'));
 const ArticlesPage = lazy(() => import('./pages/ArticlesPage'));
 const FAQPage = lazy(() => import('./pages/FAQPage'));
 const LegalMentionsPage = lazy(() => import('./pages/LegalMentionsPage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
 const ThankYouPage = lazy(() => import('./pages/ThankYouPage'));
 const TermsPage = lazy(() => import('./pages/TermsPage'));
 const TestimonialsPage = lazy(() => import('./pages/TestimonialsPage'));
 const OffersPage = lazy(() => import('./pages/OffersPage'));
 const AssuranceCyberPage = lazy(() => import('./pages/AssuranceCyberPage'));
+const AssuranceCyberCoveragePage = lazy(() => import('./pages/AssuranceCyberCoveragePage'));
+const AssuranceCyberMandatoryPage = lazy(() => import('./pages/AssuranceCyberMandatoryPage'));
+const AssuranceCyberPricePage = lazy(() => import('./pages/AssuranceCyberPricePage'));
 const CyberRisksPage = lazy(() => import('./pages/CyberRisksPage'));
 
 function App() {
@@ -24,8 +28,12 @@ function App() {
       <Suspense fallback={<div className="page-shell" />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/qui-sommes-nous" element={<AboutPage />} />
           <Route path="/offres" element={<OffersPage />} />
           <Route path="/assurance-cyber" element={<AssuranceCyberPage />} />
+          <Route path="/assurance-cyber-prix" element={<AssuranceCyberPricePage />} />
+          <Route path="/assurance-cyber-obligatoire" element={<AssuranceCyberMandatoryPage />} />
+          <Route path="/assurance-cyber-que-couvre" element={<AssuranceCyberCoveragePage />} />
           <Route path="/assurance-cyber-risques" element={<CyberRisksPage />} />
           <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
