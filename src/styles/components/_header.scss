@@ -196,12 +196,17 @@ html[data-theme='light'] .site-header__logo--gold {
 }
 
 .site-header__nav-trigger-icon {
-  height: 0.95rem;
-  transition: transform 0.22s ease;
-  width: 0.95rem;
+  height: 0.92rem;
+  opacity: 0.72;
+  stroke-width: 2.25;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+  width: 0.92rem;
 }
 
 .site-header__nav-trigger-icon--open {
+  opacity: 1;
   transform: rotate(180deg);
 }
 
@@ -219,8 +224,16 @@ html[data-theme='light'] .site-header__logo--gold {
   min-width: 15.5rem;
   padding: 0.5rem;
   position: absolute;
-  top: calc(100% + 0.65rem);
+  top: calc(100% + 0.35rem);
   z-index: 30;
+
+  &::before {
+    content: '';
+    height: 0.5rem;
+    inset-inline: 0;
+    position: absolute;
+    top: -0.5rem;
+  }
 
   @include respond-up(wide) {
     min-width: 16.5rem;

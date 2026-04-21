@@ -17,15 +17,43 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDesktopMenu, setOpenDesktopMenu] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
+  const closeDesktopMenuTimeoutRef = useRef<number | undefined>(undefined);
+
+  const clearDesktopMenuCloseTimeout = () => {
+    if (closeDesktopMenuTimeoutRef.current !== undefined) {
+      window.clearTimeout(closeDesktopMenuTimeoutRef.current);
+      closeDesktopMenuTimeoutRef.current = undefined;
+    }
+  };
+
+  const openDesktopGroup = (groupId: string) => {
+    clearDesktopMenuCloseTimeout();
+    setOpenDesktopMenu(groupId);
+  };
+
+  const scheduleDesktopMenuClose = (groupId: string) => {
+    clearDesktopMenuCloseTimeout();
+    closeDesktopMenuTimeoutRef.current = window.setTimeout(() => {
+      setOpenDesktopMenu((current) => (current === groupId ? null : current));
+      closeDesktopMenuTimeoutRef.current = undefined;
+    }, 220);
+  };
+
+  const toggleDesktopGroup = (groupId: string) => {
+    clearDesktopMenuCloseTimeout();
+    setOpenDesktopMenu((current) => (current === groupId ? null : groupId));
+  };
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setOpenDesktopMenu(null);
+    clearDesktopMenuCloseTimeout();
   }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
       if (!headerRef.current?.contains(event.target as Node)) {
+        clearDesktopMenuCloseTimeout();
         setOpenDesktopMenu(null);
       }
     };
@@ -40,6 +68,7 @@ export default function Header() {
     document.addEventListener('keydown', handleEscape);
 
     return () => {
+      clearDesktopMenuCloseTimeout();
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('keydown', handleEscape);
     };
@@ -118,41 +147,81 @@ export default function Header() {
 
           <div className="site-header__actions">
             <nav className="site-header__nav">
-              {desktopNavigationGroups.map((group) => {
-                const isOpen = openDesktopMenu === group.id;
+              {desktopNavigationGroups
+                .filter((group) => group.id === 'assurance')
+                .map((group) => {
+                  const isOpen = openDesktopMenu === group.id;
 
-                return (
-                  <div
-                    key={group.id}
-                    className="site-header__nav-group"
-                    onMouseEnter={() => setOpenDesktopMenu(group.id)}
-                    onMouseLeave={() => setOpenDesktopMenu((current) => (current === group.id ? null : current))}
-                  >
-                    <button
-                      type="button"
-                      className="site-header__nav-trigger"
-                      aria-expanded={isOpen}
-                      aria-controls={`desktop-nav-${group.id}`}
-                      onClick={() =>
-                        setOpenDesktopMenu((current) => (current === group.id ? null : group.id))
-                      }
+                  return (
+                    <div
+                      key={group.id}
+                      className="site-header__nav-group"
+                      onMouseEnter={() => openDesktopGroup(group.id)}
+                      onMouseLeave={() => scheduleDesktopMenuClose(group.id)}
                     >
-                      <span>{group.label}</span>
-                      <ChevronDown
-                        className={`site-header__nav-trigger-icon${isOpen ? ' site-header__nav-trigger-icon--open' : ''}`}
-                      />
-                    </button>
+                      <button
+                        type="button"
+                        className="site-header__nav-trigger"
+                        aria-expanded={isOpen}
+                        aria-controls={`desktop-nav-${group.id}`}
+                        onClick={() => toggleDesktopGroup(group.id)}
+                      >
+                        <span>{group.label}</span>
+                        <ChevronDown
+                          className={`site-header__nav-trigger-icon${isOpen ? ' site-header__nav-trigger-icon--open' : ''}`}
+                        />
+                      </button>
 
-                    {isOpen && (
-                      <div id={`desktop-nav-${group.id}`} className="site-header__nav-menu">
-                        {group.items.map((item) => renderNavigationItem(item, 'site-header__nav-menu-link'))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {isOpen && (
+                        <div id={`desktop-nav-${group.id}`} className="site-header__nav-menu">
+                          {group.items.map((item) => renderNavigationItem(item, 'site-header__nav-menu-link'))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
 
-              {desktopNavigationItems.map((item) => renderNavigationItem(item, navLinkClassName))}
+              {desktopNavigationItems
+                .filter((item) => item.label === 'Offres')
+                .map((item) => renderNavigationItem(item, navLinkClassName))}
+
+              {desktopNavigationGroups
+                .filter((group) => group.id === 'resources')
+                .map((group) => {
+                  const isOpen = openDesktopMenu === group.id;
+
+                  return (
+                    <div
+                      key={group.id}
+                      className="site-header__nav-group"
+                      onMouseEnter={() => openDesktopGroup(group.id)}
+                      onMouseLeave={() => scheduleDesktopMenuClose(group.id)}
+                    >
+                      <button
+                        type="button"
+                        className="site-header__nav-trigger"
+                        aria-expanded={isOpen}
+                        aria-controls={`desktop-nav-${group.id}`}
+                        onClick={() => toggleDesktopGroup(group.id)}
+                      >
+                        <span>{group.label}</span>
+                        <ChevronDown
+                          className={`site-header__nav-trigger-icon${isOpen ? ' site-header__nav-trigger-icon--open' : ''}`}
+                        />
+                      </button>
+
+                      {isOpen && (
+                        <div id={`desktop-nav-${group.id}`} className="site-header__nav-menu">
+                          {group.items.map((item) => renderNavigationItem(item, 'site-header__nav-menu-link'))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
+              {desktopNavigationItems
+                .filter((item) => item.label !== 'Offres')
+                .map((item) => renderNavigationItem(item, navLinkClassName))}
 
               <a href="/#devis-cyber" className={secondaryLinkClassName}>
                 Demander un devis
