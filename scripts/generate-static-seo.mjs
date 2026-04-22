@@ -7,6 +7,7 @@ const siteUrl = (process.env.VITE_SITE_URL || 'https://lecyberassureur.fr').repl
 const defaultImage = '/hero-cyber.png';
 const siteName = 'Le Cyberassureur';
 const logoUrl = '/brand-assets/logo-cropped-384.png';
+const buildTimestamp = new Date().toISOString();
 
 function toAbsoluteUrl(value) {
   if (/^https?:\/\//i.test(value)) {
@@ -248,6 +249,77 @@ function toFaqStructuredData(items) {
   };
 }
 
+function createBreadcrumbStructuredData(pathname, title) {
+  const segments = pathname.split('/').filter(Boolean);
+  const baseItems = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Accueil',
+      item: `${siteUrl}/`,
+    },
+  ];
+
+  if (pathname === '/') {
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: baseItems,
+    };
+  }
+
+  const itemListElement = [...baseItems];
+  let currentPath = '';
+
+  segments.forEach((segment, index) => {
+    currentPath += `/${segment}`;
+    const isLast = index === segments.length - 1;
+    const crumbName = isLast
+      ? title.split(' | ')[0]
+      : segment
+          .split('-')
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(' ');
+
+    itemListElement.push({
+      '@type': 'ListItem',
+      position: itemListElement.length + 1,
+      name: crumbName,
+      item: new URL(currentPath, `${siteUrl}/`).toString(),
+    });
+  });
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  };
+}
+
+function createWebPageStructuredData(route) {
+  const pageType =
+    route.path === '/qui-sommes-nous'
+      ? 'AboutPage'
+      : route.path === '/articles'
+        ? 'CollectionPage'
+        : 'WebPage';
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': pageType,
+    name: route.title,
+    description: route.description,
+    url: new URL(route.path, `${siteUrl}/`).toString(),
+    image: toAbsoluteUrl(route.image || defaultImage),
+    inLanguage: 'fr-FR',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteName,
+      url: siteUrl,
+    },
+  };
+}
+
 function createStaticRoutes(content) {
   return [
     {
@@ -365,7 +437,6 @@ function createStaticRoutes(content) {
       title: 'FAQ assurance cyber : questions fréquentes | Le Cyberassureur',
       description:
         "Retrouvez les réponses clés sur l'assurance cyber, les garanties, les pertes d'exploitation, la fraude et les conditions de couverture pour les TPE et PME.",
-      robots: 'noindex,follow',
       structuredData: [toFaqStructuredData(content.faqPageItems)],
     },
     {
@@ -373,7 +444,6 @@ function createStaticRoutes(content) {
       title: 'Témoignages clients cyberassurance | Le Cyberassureur',
       description:
         "Découvrez des retours d'expérience concrets sur la gestion d'incidents, l'absorption des pertes financières et l'accompagnement après cyberattaque.",
-      robots: 'noindex,follow',
     },
     {
       path: '/politique-confidentialite',
@@ -442,23 +512,50 @@ function createArticleRoutes(content) {
 }
 
 async function writeRouteHtml(baseHtml, route) {
+  const structuredData = [
+    createWebPageStructuredData(route),
+    createBreadcrumbStructuredData(route.path, route.title),
+    ...(route.structuredData || []),
+  ];
   const targetPath =
     route.path === '/'
       ? path.join(distDir, 'index.html')
       : path.join(distDir, route.path.replace(/^\/+/, ''), 'index.html');
 
   await mkdir(path.dirname(targetPath), { recursive: true });
-  await writeFile(targetPath, applyMeta(baseHtml, route), 'utf8');
+  await writeFile(targetPath, applyMeta(baseHtml, { ...route, structuredData }), 'utf8');
 }
 
 async function writeSitemap(routes) {
   const indexedRoutes = routes.filter((route) => route.path !== '/merci' && route.robots !== 'noindex,follow');
+  const routePriorityMap = new Map([
+    ['/', '1.0'],
+    ['/assurance-cyber', '0.9'],
+    ['/offres', '0.9'],
+    ['/assurance-cyber-prix', '0.8'],
+    ['/assurance-cyber-obligatoire', '0.8'],
+    ['/assurance-cyber-que-couvre', '0.8'],
+    ['/assurance-cyber-risques', '0.8'],
+    ['/articles', '0.8'],
+    ['/faq', '0.7'],
+    ['/temoignages', '0.7'],
+    ['/qui-sommes-nous', '0.7'],
+  ]);
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...indexedRoutes.map(
-      (route) => `  <url><loc>${new URL(route.path, `${siteUrl}/`).toString()}</loc></url>`,
-    ),
+    ...indexedRoutes.map((route) => {
+      const priority = routePriorityMap.get(route.path) || (route.path.startsWith('/articles/') ? '0.7' : '0.6');
+      const changefreq = route.path === '/' ? 'weekly' : route.path.startsWith('/articles/') ? 'monthly' : 'weekly';
+      return [
+        '  <url>',
+        `    <loc>${new URL(route.path, `${siteUrl}/`).toString()}</loc>`,
+        `    <lastmod>${buildTimestamp}</lastmod>`,
+        `    <changefreq>${changefreq}</changefreq>`,
+        `    <priority>${priority}</priority>`,
+        '  </url>',
+      ].join('\n');
+    }),
     '</urlset>',
     '',
   ];
