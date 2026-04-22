@@ -227,3 +227,72 @@ export const assuranceCyberCoverageFaqItems: FAQItem[] = [
       "Non. Comme tout contrat d'assurance, une assurance cyber comporte un périmètre précis, des limites, des exclusions, des plafonds et des conditions de mise en jeu. La qualité du contrat se lit autant dans ce qu'il couvre que dans la manière dont il indemnise.",
   },
 ];
+
+export const assuranceCyberPmeFaqItems: FAQItem[] = [
+  {
+    question: 'Pourquoi une PME a-t-elle besoin d’une assurance cyber ?',
+    answer:
+      "Une PME cumule souvent messagerie, ERP, comptabilité, données clients, RH et prestataires externes. Cette densité d'usages numériques suffit à créer un risque élevé d'arrêt d'activité, de perte financière et d'exposition aux données.",
+  },
+  {
+    question: 'Une PME sans e-commerce est-elle concernée ?',
+    answer:
+      "Oui. Le risque cyber ne dépend pas seulement de la vente en ligne. Une PME peut être fortement exposée via sa messagerie, ses accès distants, son outil de facturation, son ERP ou ses dossiers clients.",
+  },
+  {
+    question: 'Quelles garanties cyber sont les plus utiles pour une PME ?',
+    answer:
+      "Les garanties les plus utiles sont souvent l'interruption d'activité, les frais d'experts, la remise en état, la gestion de crise, la responsabilité liée aux données et, selon le profil, les dommages subis ou la fraude.",
+  },
+  {
+    question: 'Comment obtenir un devis assurance cyber PME ?',
+    answer:
+      "Le plus efficace est de décrire votre activité, votre nombre de salariés, votre dépendance aux outils numériques, la nature des données manipulées et le niveau de couverture recherché. Cela permet de cadrer un devis plus rapidement.",
+  },
+];
+
+export const assuranceCyberTpeFaqItems: FAQItem[] = [
+  {
+    question: 'Une TPE est-elle vraiment ciblée par les cyberattaques ?',
+    answer:
+      "Oui. Les TPE sont souvent ciblées parce qu'elles disposent de moins de ressources internes, tout en dépendant fortement de quelques outils clés comme l'email, la comptabilité, le cloud ou les paiements.",
+  },
+  {
+    question: 'Une assurance cyber est-elle utile pour une petite structure ?',
+    answer:
+      "Oui, car une petite structure absorbe plus difficilement un arrêt, une fraude, une perte de revenus ou des frais imprévus. La cyberassurance protège surtout la capacité à redémarrer vite et à limiter l'impact financier.",
+  },
+  {
+    question: 'Les startups et indépendants sont-ils concernés par la même logique ?',
+    answer:
+      "Oui. Dès qu'une activité repose sur des outils cloud, une messagerie professionnelle, des paiements ou des données clients, le risque cyber devient réel, même avec une équipe très réduite.",
+  },
+  {
+    question: 'Quelles mesures minimales une TPE doit-elle avoir avant de demander un devis ?',
+    answer:
+      "Le minimum utile reste la sauvegarde régulière, les mises à jour, le MFA sur les accès critiques et une attention particulière au phishing. Ces éléments permettent aussi de mieux qualifier le besoin d'assurance.",
+  },
+];
+
+export const devisAssuranceCyberFaqItems: FAQItem[] = [
+  {
+    question: 'Quelles informations faut-il préparer pour demander un devis assurance cyber ?',
+    answer:
+      "Il faut en priorité préciser l'activité, la taille de l'entreprise, le chiffre d'affaires, la dépendance aux outils numériques, la présence de données clients et le niveau de couverture recherché.",
+  },
+  {
+    question: 'Le devis assurance cyber est-il immédiat et définitif ?',
+    answer:
+      "Non. Le formulaire permet de cadrer rapidement le besoin, mais le prix final dépend de l'analyse du risque, des garanties retenues et des informations fournies lors de l'étude du dossier.",
+  },
+  {
+    question: 'Demander un devis engage-t-il l’entreprise ?',
+    answer:
+      "Non. Une demande de devis permet d'obtenir un cadrage et un premier niveau d'orientation. Elle n'engage pas l'entreprise tant qu'aucune souscription n'est formalisée.",
+  },
+  {
+    question: 'En combien de temps peut-on être recontacté après une demande ?',
+    answer:
+      "Le délai dépend du niveau d'information transmis et du besoin à qualifier, mais une demande bien renseignée permet une reprise de contact plus rapide et un cadrage plus utile du devis.",
+  },
+];

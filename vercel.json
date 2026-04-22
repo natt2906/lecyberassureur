@@ -1,4 +1,61 @@
 {
+  "redirects": [
+    {
+      "source": "/articles/pertes-financieres-cyberattaque",
+      "destination": "/assurance-cyber-risques",
+      "permanent": true
+    },
+    {
+      "source": "/articles/interruption-activite-cyber",
+      "destination": "/assurance-cyber-risques",
+      "permanent": true
+    },
+    {
+      "source": "/articles/exposition-juridique-et-reglementaire",
+      "destination": "/assurance-cyber-risques",
+      "permanent": true
+    },
+    {
+      "source": "/articles/atteinte-a-la-reputation-apres-incident",
+      "destination": "/assurance-cyber-risques",
+      "permanent": true
+    },
+    {
+      "source": "/articles/pertes-financieres-et-perte-de-revenus",
+      "destination": "/assurance-cyber-que-couvre",
+      "permanent": true
+    },
+    {
+      "source": "/articles/experts-en-reponse-aux-incidents",
+      "destination": "/assurance-cyber-que-couvre",
+      "permanent": true
+    },
+    {
+      "source": "/articles/defense-juridique-et-couts-reglementaires",
+      "destination": "/assurance-cyber-que-couvre",
+      "permanent": true
+    },
+    {
+      "source": "/articles/communication-de-crise-et-reputation",
+      "destination": "/assurance-cyber-que-couvre",
+      "permanent": true
+    },
+    {
+      "source": "/articles/dommages-aux-tiers-en-cyberassurance",
+      "destination": "/assurance-cyber-que-couvre",
+      "permanent": true
+    },
+    {
+      "source": "/articles/cyberassurance-pour-tpe-et-startups",
+      "destination": "/assurance-cyber-tpe",
+      "permanent": true
+    },
+    {
+      "source": "/articles/cyberassurance-pour-pme",
+      "destination": "/assurance-cyber-pme",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

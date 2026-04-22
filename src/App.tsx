@@ -19,7 +19,10 @@ const AssuranceCyberPage = lazy(() => import('./pages/AssuranceCyberPage'));
 const AssuranceCyberCoveragePage = lazy(() => import('./pages/AssuranceCyberCoveragePage'));
 const AssuranceCyberMandatoryPage = lazy(() => import('./pages/AssuranceCyberMandatoryPage'));
 const AssuranceCyberPricePage = lazy(() => import('./pages/AssuranceCyberPricePage'));
+const AssuranceCyberPmePage = lazy(() => import('./pages/AssuranceCyberPmePage'));
+const AssuranceCyberTpePage = lazy(() => import('./pages/AssuranceCyberTpePage'));
 const CyberRisksPage = lazy(() => import('./pages/CyberRisksPage'));
+const DevisAssuranceCyberPage = lazy(() => import('./pages/DevisAssuranceCyberPage'));
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
           <Route path="/assurance-cyber-obligatoire" element={<AssuranceCyberMandatoryPage />} />
           <Route path="/assurance-cyber-que-couvre" element={<AssuranceCyberCoveragePage />} />
           <Route path="/assurance-cyber-risques" element={<CyberRisksPage />} />
+          <Route path="/assurance-cyber-pme" element={<AssuranceCyberPmePage />} />
+          <Route path="/assurance-cyber-tpe" element={<AssuranceCyberTpePage />} />
+          <Route path="/devis-assurance-cyber" element={<DevisAssuranceCyberPage />} />
           <Route path="/articles" element={<ArticlesPage />} />
           <Route path="/articles/:slug" element={<ArticlePage />} />
           <Route path="/faq" element={<FAQPage />} />

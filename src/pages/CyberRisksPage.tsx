@@ -3,6 +3,7 @@ import CardIllustration from '../components/CardIllustration';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import PageFeatureImage from '../components/PageFeatureImage';
 import { cyberRisksFaqItems } from '../data/faqs';
 import { usePageMeta } from '../lib/usePageMeta';
 
@@ -47,6 +48,11 @@ export default function CyberRisksPage() {
             </p>
           </div>
         </section>
+
+        <PageFeatureImage
+          src="/card-images/interruption-activite.jpg"
+          alt="Equipe dirigeante analysant les impacts d'un incident cyber sur l'activite"
+        />
 
         <section className="site-section site-section--muted">
           <div className="site-section__container">
@@ -113,6 +119,106 @@ export default function CyberRisksPage() {
                   <li>Niveau de sensibilité des données exploitées par l’entreprise</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Les postes qui font vraiment mal</span>
+              </div>
+              <h2 className="site-section__title">Quand on parle de cyber-risques, il faut distinguer les impacts qui déséquilibrent réellement l’entreprise</h2>
+              <p className="site-section__intro">
+                Les entreprises se focalisent souvent sur l’attaque. Pourtant, ce qui coûte
+                le plus cher est souvent l’effet de chaîne sur l’exploitation, la trésorerie,
+                la conformité et la relation client.
+              </p>
+            </div>
+
+            <div className="site-card-grid site-card-grid--two">
+              <article className="site-card">
+                <CardIllustration variant="finance-impact" />
+                <h3 className="site-card__title">Pertes financières immédiates</h3>
+                <p className="site-card__body">
+                  Prestataires d’urgence, temps perdu, paiements bloqués, retard
+                  de facturation et décisions prises dans l’urgence créent rapidement
+                  une tension directe sur la trésorerie.
+                </p>
+              </article>
+              <article className="site-card">
+                <CardIllustration variant="downtime-impact" />
+                <h3 className="site-card__title">Interruption d’activité</h3>
+                <p className="site-card__body">
+                  Quand les outils tombent, l’entreprise continue rarement “comme avant”.
+                  Même un fonctionnement dégradé pendant plusieurs jours produit une perte concrète.
+                </p>
+              </article>
+              <article className="site-card">
+                <CardIllustration variant="legal-impact" />
+                <h3 className="site-card__title">Exposition juridique et réglementaire</h3>
+                <p className="site-card__body">
+                  Une fuite ou une compromission de données peut créer des obligations
+                  de notification, des frais de conseil et une charge de conformité lourde.
+                </p>
+              </article>
+              <article className="site-card">
+                <CardIllustration variant="reputation-impact" />
+                <h3 className="site-card__title">Atteinte à la réputation</h3>
+                <p className="site-card__body">
+                  Une crise mal pilotée fragilise la confiance des clients et partenaires.
+                  Le sujet devient alors commercial autant que technique.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Le bon prolongement</span>
+              </div>
+              <h2 className="site-section__title">Une fois les risques identifiés, il faut choisir le bon angle de protection</h2>
+              <p className="site-section__intro">
+                La bonne page suivante dépend surtout de votre taille d’entreprise et du
+                niveau de couverture recherché.
+              </p>
+            </div>
+
+            <div className="site-card-grid site-card-grid--three">
+              <article className="site-card">
+                <h3 className="site-card__title">Pour une TPE ou une startup</h3>
+                <p className="site-card__body">
+                  Les petites structures doivent surtout protéger leur capacité à continuer
+                  à travailler malgré un incident ou une fraude.
+                </p>
+                <a href="/assurance-cyber-tpe" className="site-card__meta">
+                  Voir l’assurance cyber TPE
+                </a>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">Pour une PME</h3>
+                <p className="site-card__body">
+                  Une PME doit arbitrer entre interruption d’activité, données, tiers,
+                  gestion de crise et niveau de protection financière.
+                </p>
+                <a href="/assurance-cyber-pme" className="site-card__meta">
+                  Voir l’assurance cyber PME
+                </a>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">Pour cadrer le devis</h3>
+                <p className="site-card__body">
+                  Une demande bien renseignée permet de qualifier plus vite l’exposition
+                  et d’orienter l’entreprise vers la bonne couverture.
+                </p>
+                <a href="/devis-assurance-cyber" className="site-card__meta">
+                  Demander un devis assurance cyber
+                </a>
+              </article>
             </div>
           </div>
         </section>

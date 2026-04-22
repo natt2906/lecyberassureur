@@ -126,9 +126,9 @@ export default function AssuranceCyberPricePage() {
                 Précisez votre activité, votre dépendance aux outils numériques, votre
                 taille, les données manipulées et les scénarios que vous craignez le plus.
               </p>
-              <a href="/#devis-cyber" className="site-card__meta">
+              <Link to="/devis-assurance-cyber" className="site-card__meta">
                 Demander un devis cyber
-              </a>
+              </Link>
             </article>
             <article className="site-card">
               <h3 className="site-card__title">Comparer le niveau de couverture</h3>

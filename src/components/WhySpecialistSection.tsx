@@ -47,7 +47,7 @@ export default function WhySpecialistSection() {
 
       return {
         ...item,
-        slug: article.slug,
+        path: article.path,
       };
     })
     .filter((item) => item !== null);
@@ -59,7 +59,7 @@ export default function WhySpecialistSection() {
   const renderCard = (item: NonNullable<(typeof linkedDifferentiators)[number]>) => (
     <Link
       key={item.title}
-      to={`/articles/${item.slug}`}
+      to={item.path}
       aria-label={`Lire l'article complet : ${item.title}`}
       className="site-card site-card--interactive"
     >

@@ -62,7 +62,7 @@ export default function CoverageSection() {
             return (
               <Link
                 key={coverage.title}
-                to={`/articles/${article.slug}`}
+                to={article.path}
                 aria-label={`Lire l'article complet : ${coverage.title}`}
                 className="site-card site-card--interactive group"
               >

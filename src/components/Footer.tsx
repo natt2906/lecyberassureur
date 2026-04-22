@@ -39,6 +39,7 @@ export default function Footer() {
             <ul className="site-footer__list">
               <li><Link to="/assurance-cyber" className="site-footer__link">Assurance cyber</Link></li>
               <li><Link to="/offres" className="site-footer__link">Offres</Link></li>
+              <li><Link to="/devis-assurance-cyber" className="site-footer__link">Devis assurance cyber</Link></li>
               <li><Link to="/articles" className="site-footer__link">Articles</Link></li>
               <li><Link to="/qui-sommes-nous" className="site-footer__link">Qui sommes-nous ?</Link></li>
             </ul>
@@ -50,6 +51,8 @@ export default function Footer() {
             <ul className="site-footer__list">
               <li><a href="/#coverage" className="site-footer__link">Garanties</a></li>
               <li><Link to="/assurance-cyber-prix" className="site-footer__link">Prix assurance cyber</Link></li>
+              <li><Link to="/assurance-cyber-pme" className="site-footer__link">Assurance cyber PME</Link></li>
+              <li><Link to="/assurance-cyber-tpe" className="site-footer__link">Assurance cyber TPE</Link></li>
               <li><Link to="/assurance-cyber-que-couvre" className="site-footer__link">Ce que couvre l&apos;assurance cyber</Link></li>
               <li><Link to="/faq" className="site-footer__link">FAQ</Link></li>
             </ul>
@@ -74,7 +77,7 @@ export default function Footer() {
                 <span>Paris, France</span>
               </li>
               <li>
-                <a href="/#devis-cyber" className="site-footer__mini-cta">Demander un devis cyber</a>
+                <Link to="/devis-assurance-cyber" className="site-footer__mini-cta">Demander un devis cyber</Link>
               </li>
             </ul>
           </div>

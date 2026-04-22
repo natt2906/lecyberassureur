@@ -119,6 +119,46 @@ export default function AssuranceCyberCoveragePage() {
         <div className="site-section__container">
           <div className="site-section__header">
             <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Les garanties à relier au contrat</span>
+            </div>
+            <h2 className="site-section__title">Les postes les plus recherchés doivent apparaître clairement dans votre lecture du contrat</h2>
+            <p className="site-section__intro">
+              Beaucoup d’entreprises cherchent des réponses très précises: dommages aux tiers,
+              experts, défense juridique, communication de crise, pertes de revenus. Ces sujets
+              doivent être reliés à un guide plus large de couverture, pas lus comme des garanties isolées.
+            </p>
+          </div>
+
+          <div className="site-card-grid site-card-grid--three">
+            <article className="site-card">
+              <h3 className="site-card__title">Experts en réponse aux incidents</h3>
+              <p className="site-card__body">
+                L’intérêt principal n’est pas seulement l’accès à un prestataire, mais la
+                vitesse de mobilisation et la capacité à structurer les premières heures.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Défense juridique et conformité</h3>
+              <p className="site-card__body">
+                Une violation de données peut générer des obligations concrètes. Le contrat
+                doit être lu aussi sous l’angle juridique et réglementaire.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Dommages aux tiers et réputation</h3>
+              <p className="site-card__body">
+                L’incident dépasse souvent le périmètre interne. Il peut affecter les clients,
+                partenaires et l’image de l’entreprise sur plusieurs semaines.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Comparer utilement</span>
             </div>
             <h2 className="site-section__title">Avant de choisir une formule, comparez le périmètre et pas seulement le prix</h2>
@@ -140,13 +180,13 @@ export default function AssuranceCyberCoveragePage() {
               </Link>
             </article>
             <article className="site-card">
-              <h3 className="site-card__title">Évaluer le bon budget</h3>
+              <h3 className="site-card__title">Demander un devis cohérent</h3>
               <p className="site-card__body">
-                Le bon niveau de couverture doit rester cohérent avec le coût potentiel
-                d’un arrêt, d’une remédiation, d’une fraude ou d’une exposition de données.
+                Une fois le périmètre de couverture compris, la meilleure étape suivante
+                consiste à cadrer un devis en fonction de votre activité et de votre exposition.
               </p>
-              <Link to="/assurance-cyber-prix" className="site-card__meta">
-                Comprendre le prix d’une assurance cyber
+              <Link to="/devis-assurance-cyber" className="site-card__meta">
+                Demander un devis assurance cyber
               </Link>
             </article>
           </div>

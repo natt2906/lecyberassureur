@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CardIllustration from '../components/CardIllustration';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { articles } from '../data/articles';
+import { visibleArticles } from '../data/articles';
 import { usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlesPage() {
@@ -36,7 +36,7 @@ export default function ArticlesPage() {
             </div>
 
             <div className="site-card-grid site-card-grid--three">
-              {articles.map((article) => (
+              {visibleArticles.map((article) => (
                 <Link
                   key={article.slug}
                   to={`/articles/${article.slug}`}

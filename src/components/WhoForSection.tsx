@@ -49,7 +49,7 @@ export default function WhoForSection() {
             return (
               <Link
                 key={audience.title}
-                to={`/articles/${article.slug}`}
+                to={article.path}
                 aria-label={`Lire l'article complet : ${audience.title}`}
                 className="site-card site-card--interactive"
               >

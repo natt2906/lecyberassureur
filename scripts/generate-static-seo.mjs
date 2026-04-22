@@ -207,17 +207,29 @@ async function loadContentData() {
   const assuranceCyberCoverageFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'assuranceCyberCoverageFaqItems', '[', ']'),
   );
+  const assuranceCyberPmeFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'assuranceCyberPmeFaqItems', '[', ']'),
+  );
+  const assuranceCyberTpeFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'assuranceCyberTpeFaqItems', '[', ']'),
+  );
   const assuranceCyberMandatoryFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'assuranceCyberMandatoryFaqItems', '[', ']'),
   );
   const assuranceCyberPriceFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'assuranceCyberPriceFaqItems', '[', ']'),
   );
+  const devisAssuranceCyberFaqItems = evaluateExpression(
+    extractAssignment(faqSource, 'devisAssuranceCyberFaqItems', '[', ']'),
+  );
   const offersFaqItems = evaluateExpression(extractAssignment(faqSource, 'offersFaqItems', '[', ']'));
   const cyberRisksFaqItems = evaluateExpression(
     extractAssignment(faqSource, 'cyberRisksFaqItems', '[', ']'),
   );
   const articles = evaluateExpression(extractAssignment(articlesSource, 'articles', '[', ']'));
+  const articleRedirects = evaluateExpression(
+    extractAssignment(articlesSource, 'articleRedirects', '{', '}'),
+  );
   const cardImages = evaluateExpression(extractAssignment(cardImagesSource, 'cardImages', '{', '}'));
 
   return {
@@ -225,11 +237,15 @@ async function loadContentData() {
     faqPageItems,
     assuranceCyberFaqItems,
     assuranceCyberCoverageFaqItems,
+    assuranceCyberPmeFaqItems,
+    assuranceCyberTpeFaqItems,
     assuranceCyberMandatoryFaqItems,
     assuranceCyberPriceFaqItems,
+    devisAssuranceCyberFaqItems,
     offersFaqItems,
     cyberRisksFaqItems,
     articles,
+    articleRedirects,
     cardImages,
   };
 }
@@ -398,6 +414,15 @@ function createStaticRoutes(content) {
       structuredData: [toFaqStructuredData(content.assuranceCyberPriceFaqItems)],
     },
     {
+      path: '/devis-assurance-cyber',
+      title: 'Devis assurance cyber : demande rapide pour entreprise | Le Cyberassureur',
+      description:
+        "Demandez un devis assurance cyber pour votre entreprise. Décrivez votre activité, votre exposition et votre besoin de couverture pour obtenir un cadrage rapide et cohérent.",
+      keywords:
+        'devis assurance cyber, demande devis assurance cyber, devis cyber entreprise, prix assurance cyber devis, formulaire assurance cyber',
+      structuredData: [toFaqStructuredData(content.devisAssuranceCyberFaqItems)],
+    },
+    {
       path: '/assurance-cyber-obligatoire',
       title: 'Assurance cyber obligatoire ou non : ce qu’une entreprise doit savoir | Le Cyberassureur',
       description:
@@ -414,6 +439,24 @@ function createStaticRoutes(content) {
       keywords:
         'assurance cyber que couvre, que couvre assurance cyber, garanties assurance cyber, couverture assurance cyber entreprise, assurance cyber fraude',
       structuredData: [toFaqStructuredData(content.assuranceCyberCoverageFaqItems)],
+    },
+    {
+      path: '/assurance-cyber-pme',
+      title: 'Assurance cyber PME : couverture et devis pour votre activité | Le Cyberassureur',
+      description:
+        "Assurance cyber PME : identifiez les risques les plus coûteux pour une PME, les garanties réellement utiles et la meilleure façon d'obtenir un devis cohérent avec votre activité.",
+      keywords:
+        'assurance cyber pme, devis assurance cyber pme, couverture cyber pme, cyber risques pme, prix assurance cyber pme',
+      structuredData: [toFaqStructuredData(content.assuranceCyberPmeFaqItems)],
+    },
+    {
+      path: '/assurance-cyber-tpe',
+      title: 'Assurance cyber TPE : protéger une petite entreprise contre le risque cyber | Le Cyberassureur',
+      description:
+        "Assurance cyber TPE : découvrez pourquoi une petite entreprise, une startup ou une structure agile reste exposée, quelles garanties regarder et comment demander un devis adapté.",
+      keywords:
+        'assurance cyber tpe, assurance cyber petite entreprise, devis assurance cyber tpe, cyber risque tpe, assurance cyber startup',
+      structuredData: [toFaqStructuredData(content.assuranceCyberTpeFaqItems)],
     },
     {
       path: '/assurance-cyber-risques',
@@ -477,38 +520,40 @@ function createStaticRoutes(content) {
 }
 
 function createArticleRoutes(content) {
-  return content.articles.map((article) => {
-    const image = content.cardImages[article.variant]?.src || defaultImage;
-    return {
-      path: `/articles/${article.slug}`,
-      title: `${article.title} | Le Cyberassureur`,
-      description: article.excerpt,
-      image,
-      type: 'article',
-      structuredData: [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: article.title,
-          description: article.excerpt,
-          image: [toAbsoluteUrl(image)],
-          mainEntityOfPage: new URL(`/articles/${article.slug}`, `${siteUrl}/`).toString(),
-          author: {
-            '@type': 'Organization',
-            name: siteName,
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: siteName,
-            logo: {
-              '@type': 'ImageObject',
-              url: toAbsoluteUrl(logoUrl),
+  return content.articles
+    .filter((article) => !content.articleRedirects[article.slug])
+    .map((article) => {
+      const image = content.cardImages[article.variant]?.src || defaultImage;
+      return {
+        path: `/articles/${article.slug}`,
+        title: `${article.title} | Le Cyberassureur`,
+        description: article.excerpt,
+        image,
+        type: 'article',
+        structuredData: [
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: article.title,
+            description: article.excerpt,
+            image: [toAbsoluteUrl(image)],
+            mainEntityOfPage: new URL(`/articles/${article.slug}`, `${siteUrl}/`).toString(),
+            author: {
+              '@type': 'Organization',
+              name: siteName,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: siteName,
+              logo: {
+                '@type': 'ImageObject',
+                url: toAbsoluteUrl(logoUrl),
+              },
             },
           },
-        },
-      ],
-    };
-  });
+        ],
+      };
+    });
 }
 
 async function writeRouteHtml(baseHtml, route) {
@@ -532,9 +577,12 @@ async function writeSitemap(routes) {
     ['/', '1.0'],
     ['/assurance-cyber', '0.9'],
     ['/offres', '0.9'],
+    ['/devis-assurance-cyber', '0.9'],
     ['/assurance-cyber-prix', '0.8'],
     ['/assurance-cyber-obligatoire', '0.8'],
     ['/assurance-cyber-que-couvre', '0.8'],
+    ['/assurance-cyber-pme', '0.8'],
+    ['/assurance-cyber-tpe', '0.8'],
     ['/assurance-cyber-risques', '0.8'],
     ['/articles', '0.8'],
     ['/faq', '0.7'],

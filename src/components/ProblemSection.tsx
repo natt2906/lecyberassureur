@@ -56,7 +56,7 @@ export default function ProblemSection() {
             return (
               <Link
                 key={impact.title}
-                to={`/articles/${article.slug}`}
+                to={article.path}
                 aria-label={`Lire l'article complet : ${impact.title}`}
                 className="site-card site-card--interactive"
               >

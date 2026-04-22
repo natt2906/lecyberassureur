@@ -77,8 +77,8 @@ export default function Header() {
   const mobileNavigationItems: NavigationItem[] = [
     { to: '/qui-sommes-nous', label: 'Qui sommes-nous ?' },
     { to: '/assurance-cyber', label: 'Assurance cyber' },
-    { href: '/#coverage', label: 'Garanties' },
     { to: '/offres', label: 'Offres' },
+    { href: '/#coverage', label: 'Garanties' },
     { href: '/#who-for', label: 'Pour qui' },
     { to: '/articles', label: 'Articles' },
     { to: '/temoignages', label: 'Temoignages' },
@@ -93,12 +93,16 @@ export default function Header() {
         { to: '/assurance-cyber', label: "Vue d'ensemble" },
         { href: '/#coverage', label: 'Garanties' },
         { href: '/#who-for', label: 'Pour qui' },
+        { to: '/assurance-cyber-tpe', label: 'Assurance cyber TPE' },
+        { to: '/assurance-cyber-pme', label: 'Assurance cyber PME' },
       ],
     },
     {
       id: 'resources',
       label: 'Ressources',
       items: [
+        { to: '/assurance-cyber-prix', label: 'Prix assurance cyber' },
+        { to: '/assurance-cyber-obligatoire', label: 'Assurance cyber obligatoire' },
         { to: '/articles', label: 'Articles' },
         { to: '/temoignages', label: 'Temoignages' },
         { to: '/faq', label: 'FAQ' },
