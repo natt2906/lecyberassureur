@@ -227,9 +227,6 @@ async function loadContentData() {
     extractAssignment(faqSource, 'cyberRisksFaqItems', '[', ']'),
   );
   const articles = evaluateExpression(extractAssignment(articlesSource, 'articles', '[', ']'));
-  const articleRedirects = evaluateExpression(
-    extractAssignment(articlesSource, 'articleRedirects', '{', '}'),
-  );
   const cardImages = evaluateExpression(extractAssignment(cardImagesSource, 'cardImages', '{', '}'));
 
   return {
@@ -245,7 +242,6 @@ async function loadContentData() {
     offersFaqItems,
     cyberRisksFaqItems,
     articles,
-    articleRedirects,
     cardImages,
   };
 }
@@ -520,9 +516,7 @@ function createStaticRoutes(content) {
 }
 
 function createArticleRoutes(content) {
-  return content.articles
-    .filter((article) => !content.articleRedirects[article.slug])
-    .map((article) => {
+  return content.articles.map((article) => {
       const image = content.cardImages[article.variant]?.src || defaultImage;
       return {
         path: `/articles/${article.slug}`,

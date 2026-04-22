@@ -564,21 +564,9 @@ export const articles: Article[] = [
   },
 ];
 
-export const articleRedirects: Record<string, string> = {
-  'pertes-financieres-cyberattaque': '/assurance-cyber-risques',
-  'interruption-activite-cyber': '/assurance-cyber-risques',
-  'exposition-juridique-et-reglementaire': '/assurance-cyber-risques',
-  'atteinte-a-la-reputation-apres-incident': '/assurance-cyber-risques',
-  'pertes-financieres-et-perte-de-revenus': '/assurance-cyber-que-couvre',
-  'experts-en-reponse-aux-incidents': '/assurance-cyber-que-couvre',
-  'defense-juridique-et-couts-reglementaires': '/assurance-cyber-que-couvre',
-  'communication-de-crise-et-reputation': '/assurance-cyber-que-couvre',
-  'dommages-aux-tiers-en-cyberassurance': '/assurance-cyber-que-couvre',
-  'cyberassurance-pour-tpe-et-startups': '/assurance-cyber-tpe',
-  'cyberassurance-pour-pme': '/assurance-cyber-pme',
-};
+export const articleRedirects: Record<string, string> = {};
 
-export const visibleArticles = articles.filter((article) => !articleRedirects[article.slug]);
+export const visibleArticles = articles;
 
 export function getArticleBySlug(slug: string) {
   return articles.find((article) => article.slug === slug);

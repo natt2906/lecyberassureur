@@ -1,26 +1,17 @@
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { articleRedirects, getArticleBySlug } from '../data/articles';
+import { getArticleBySlug } from '../data/articles';
 import { cardImages } from '../data/cardImages';
 import { siteMeta, usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlePage() {
   const { slug = '' } = useParams();
-  const redirectPath = articleRedirects[slug];
   const article = getArticleBySlug(slug);
 
   usePageMeta(
-    redirectPath
-      ? {
-          title: 'Redirection de contenu | Le Cyberassureur',
-          description:
-            "Le contenu demandé a été intégré dans un guide plus complet pour éviter les doublons et renforcer la lisibilité du sujet.",
-          path: `/articles/${slug}`,
-          robots: 'noindex,follow',
-        }
-      : article
+    article
       ? {
           title: `${article.title} | Le Cyberassureur`,
           description: article.excerpt,
@@ -56,10 +47,6 @@ export default function ArticlePage() {
           robots: 'noindex,follow',
         },
   );
-
-  if (redirectPath) {
-    return <Navigate to={redirectPath} replace />;
-  }
 
   if (!article) {
     return (
