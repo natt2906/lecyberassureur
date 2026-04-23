@@ -228,7 +228,7 @@ export default function Header() {
                 .map((item) => renderNavigationItem(item, navLinkClassName))}
 
               <a href="/#devis-cyber" className={secondaryLinkClassName}>
-                Demander un devis
+                Recevoir un devis
               </a>
             </nav>
 
@@ -264,7 +264,7 @@ export default function Header() {
 
               <div className="site-header__mobile-actions">
                 <a href="/#devis-cyber" className={secondaryLinkClassName}>
-                  Demander un devis
+                  Recevoir un devis
                 </a>
               </div>
             </nav>

@@ -34,7 +34,7 @@ export default function FinalCTA() {
             onClick={scrollToForm}
             className="final-cta__button"
           >
-            <span>Protéger mon entreprise maintenant</span>
+            <span>Obtenir mon devis maintenant</span>
             <ArrowRight className="final-cta__button-icon" strokeWidth={2.5} />
           </button>
 

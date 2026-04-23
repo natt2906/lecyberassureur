@@ -80,7 +80,7 @@ export default function OffersSection({ showHeading = true }: OffersSectionProps
               </ul>
 
               <div className="offers-section__cta">
-                Demander cette offre
+                Recevoir un devis pour cette offre
               </div>
             </article>
           ))}

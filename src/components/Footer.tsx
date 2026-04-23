@@ -77,7 +77,7 @@ export default function Footer() {
                 <span>Paris, France</span>
               </li>
               <li>
-                <Link to="/devis-assurance-cyber" className="site-footer__mini-cta">Demander un devis cyber</Link>
+                <Link to="/devis-assurance-cyber" className="site-footer__mini-cta">Recevoir mon devis cyber</Link>
               </li>
             </ul>
           </div>

@@ -117,7 +117,7 @@ export default function Hero() {
                 onClick={scrollToForm}
                 className="hero-section__primary-button"
               >
-                <span>Estimer ma protection financière</span>
+                <span>Recevoir mon devis cyber</span>
                 <ArrowRight className="hero-section__button-icon hero-section__button-icon--shift" />
               </button>
 
@@ -126,7 +126,7 @@ export default function Hero() {
                 className="hero-section__secondary-button"
               >
                 <Phone className="hero-section__button-icon" />
-                <span>Parler avec un expert</span>
+                <span>Être rappelé pour une offre</span>
               </button>
             </div>
           </div>

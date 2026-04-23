@@ -11,7 +11,7 @@ import {
 } from '../lib/leadReview';
 import { getLeadWebhookHint, resolveLeadWebhookUrl } from '../lib/leadWebhook';
 import { readSelectedOffer, writeSelectedOffer } from '../lib/selectedOffer';
-import { isOfferId, offerLabelById } from '../data/offers';
+import { isOfferId, offerLabelById, offers } from '../data/offers';
 
 declare global {
   interface Window {
@@ -212,6 +212,9 @@ export default function ContactForm() {
   const formOpenedAtRef = useRef(Date.now());
   const turnstileContainerRef = useRef<HTMLDivElement | null>(null);
   const turnstileWidgetIdRef = useRef<string | null>(null);
+  const selectedOffer = isOfferId(formData.offer)
+    ? offers.find((offer) => offer.id === formData.offer)
+    : undefined;
 
   useEffect(() => {
     formDataRef.current = formData;
@@ -602,10 +605,10 @@ export default function ContactForm() {
             <span className="contact-form-section__eyebrow-text">Protégez-vous dès aujourd'hui</span>
           </div>
           <h2 className="contact-form-section__title">
-            Recevez votre analyse de risque cyber
+            Recevez votre devis cyber ou demandez un rappel
           </h2>
           <p className="contact-form-section__description">
-            Pas de spam. Sans engagement. Contact d'experts uniquement.
+            Choisissez une offre, laissez vos coordonnées et un expert vous recontacte pour cadrer votre devis.
           </p>
         </div>
 
@@ -715,6 +718,23 @@ export default function ContactForm() {
                 <option value="silver">Silver</option>
                 <option value="gold">Gold</option>
               </select>
+              {selectedOffer && (
+                <div className={`contact-form-offer-summary contact-form-offer-summary--${selectedOffer.id}`}>
+                  <div className="contact-form-offer-summary__topline">
+                    <span className="contact-form-offer-summary__name">{selectedOffer.name}</span>
+                    <span className="contact-form-offer-summary__price">
+                      à partir de {selectedOffer.price}
+                    </span>
+                  </div>
+                  <p className="contact-form-offer-summary__highlight">{selectedOffer.highlight}</p>
+                  <p className="contact-form-offer-summary__description">{selectedOffer.description}</p>
+                  <ul className="contact-form-offer-summary__features">
+                    {selectedOffer.features.map((feature) => (
+                      <li key={feature}>{feature}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
 
             <div className="contact-form-field contact-form-field--full contact-form-field--turnstile">
@@ -731,7 +751,7 @@ export default function ContactForm() {
               disabled={isSubmitting || !isTurnstileReady}
               className="contact-form-grid__submit"
             >
-              <span>{isSubmitting ? 'Envoi en cours...' : "Recevoir mon analyse du risque et de l'exposition cyber"}</span>
+              <span>{isSubmitting ? 'Envoi en cours...' : 'Recevoir mon devis ou être rappelé'}</span>
               <Send className="w-5 h-5" />
             </button>
 
