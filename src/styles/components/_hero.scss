@@ -62,11 +62,83 @@
 
 .hero-section__title {
   color: var(--text-strong);
-  font-size: clamp(2.75rem, 6vw, 4.75rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.02;
+  font-size: clamp(3.25rem, 7vw, 5.75rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
   margin: 0;
+
+  span {
+    color: var(--accent);
+    display: inline-block;
+    isolation: isolate;
+    padding-inline: 0.05em;
+    position: relative;
+    text-shadow: 0 0 20px color-mix(in srgb, var(--accent) 28%, transparent);
+
+    &::before {
+      animation: hero-price-glow 2.4s ease-in-out infinite;
+      background: linear-gradient(90deg, rgba(37, 99, 235, 0.22), rgba(14, 165, 233, 0.28));
+      border-radius: 9999px;
+      bottom: 0.03em;
+      content: '';
+      height: 0.28em;
+      left: -0.05em;
+      position: absolute;
+      right: -0.05em;
+      z-index: -1;
+    }
+
+    &::after {
+      animation: hero-price-shine 2.8s ease-in-out infinite;
+      background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.95) 48%, transparent 76%);
+      border-radius: 9999px;
+      content: '';
+      inset: 0.05em -0.04em 0.03em;
+      opacity: 0;
+      position: absolute;
+      transform: translateX(-120%);
+      z-index: 1;
+    }
+  }
+}
+
+@keyframes hero-price-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(37, 99, 235, 0);
+    transform: scaleX(0.98);
+  }
+
+  45% {
+    box-shadow: 0 0 26px rgba(37, 99, 235, 0.32);
+    transform: scaleX(1.04);
+  }
+}
+
+@keyframes hero-price-shine {
+  0%,
+  35% {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  68%,
+  100% {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-section__title span::before,
+  .hero-section__title span::after {
+    animation: none;
+  }
 }
 
 .hero-section__description {
@@ -118,7 +190,7 @@
 .hero-section__actions {
   display: grid;
   gap: 1rem;
-  padding-top: 0.5rem;
+  padding-top: 0.25rem;
 
   @include respond-up(tablet) {
     align-items: center;
@@ -177,6 +249,15 @@
   }
 
   @include focus-ring(rgba(34, 211, 238, 0.22), 2px);
+}
+
+.hero-section__reassurance {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.55;
+  margin: -0.25rem 0 0;
+  max-width: 39rem;
 }
 
 .hero-section__button-icon {

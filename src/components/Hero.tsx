@@ -88,29 +88,17 @@ export default function Hero() {
           <div className="hero-section__content">
             <div className="hero-section__eyebrow-wrap">
               <span className="hero-section__eyebrow">
-                Assurance cyber pour professionnels
+                Offre cyber pro accessible maintenant
               </span>
             </div>
 
             <h1 className="hero-section__title">
-              Assurance cyber : protégez votre entreprise contre les cyber-risques majeurs.
+              Assurance cyber pro <span>dès 29,99 €.</span>
             </h1>
 
             <p className="hero-section__description">
-              Le Cyberassureur aide les entreprises, TPE et PME à absorber l&apos;impact financier d&apos;une cyberattaque : interruption d&apos;activité, remise en état, dommages subis, responsabilités liées aux données et scénarios de fraude selon les garanties retenues.
+              Comparez nos offres Basic, Silver et Gold, puis recevez un devis adapté à votre activité, vos garanties et votre budget.
             </p>
-
-            <div className="hero-section__topics">
-              <Link to="/assurance-cyber" className="hero-section__topic-link">
-                Assurance cyber
-              </Link>
-              <Link to="/offres" className="hero-section__topic-link">
-                Offres d&apos;assurance cyber
-              </Link>
-              <Link to="/assurance-cyber-risques" className="hero-section__topic-link">
-                Assurance cyber-risques
-              </Link>
-            </div>
 
             <div className="hero-section__actions">
               <button
@@ -128,6 +116,22 @@ export default function Hero() {
                 <Phone className="hero-section__button-icon" />
                 <span>Être rappelé pour une offre</span>
               </button>
+            </div>
+
+            <p className="hero-section__reassurance">
+              Demande sans engagement. Une offre Basic, Silver ou Gold peut être adaptée à votre activité.
+            </p>
+
+            <div className="hero-section__topics" aria-label="Accès rapides assurance cyber">
+              <Link to="/offres" className="hero-section__topic-link">
+                Voir les offres
+              </Link>
+              <Link to="/assurance-cyber-prix" className="hero-section__topic-link">
+                Comprendre le prix
+              </Link>
+              <Link to="/assurance-cyber-risques" className="hero-section__topic-link">
+                Risques couverts
+              </Link>
             </div>
           </div>
 
