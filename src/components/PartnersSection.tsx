@@ -1,4 +1,16 @@
-const leadPartners = [
+type PartnerLogo = {
+  name: string;
+  logoSrc: string;
+  logoAlt: string;
+  darkLogoSrc?: string;
+  darkLogoClassName?: string;
+};
+
+type LeadPartner = PartnerLogo & {
+  role: string;
+};
+
+const leadPartners: LeadPartner[] = [
   {
     name: 'PRORISK Assurances',
     role: 'Marque du groupe',
@@ -9,14 +21,16 @@ const leadPartners = [
     name: 'Kobalt',
     role: 'Partenaire principal',
     logoSrc: '/partners/logo-kobalt.png',
+    darkLogoSrc: '/partners/kobalt-logo-white.svg',
     logoAlt: 'Logo Kobalt',
   },
 ] as const;
 
-const supportPartners = [
+const supportPartners: PartnerLogo[] = [
   {
     name: 'Hiscox',
     logoSrc: '/partners/logo_hiscox_assurances.png',
+    darkLogoSrc: '/partners/hiscox-logo-dark.png',
     logoAlt: 'Logo Hiscox',
   },
   {
@@ -27,6 +41,7 @@ const supportPartners = [
   {
     name: 'Add Value',
     logoSrc: '/partners/logoAddValue.png',
+    darkLogoClassName: 'partners-section__support-logo--white-dark',
     logoAlt: 'Logo Add Value',
   },
 ] as const;
@@ -54,9 +69,17 @@ export default function PartnersSection() {
                 <img
                   src={partner.logoSrc}
                   alt={partner.logoAlt}
-                  className="partners-section__logo"
+                  className={`partners-section__logo ${partner.darkLogoSrc ? 'partners-section__logo--light-theme' : ''}`}
                   loading="lazy"
                 />
+                {partner.darkLogoSrc ? (
+                  <img
+                    src={partner.darkLogoSrc}
+                    alt={partner.logoAlt}
+                    className="partners-section__logo partners-section__logo--dark-theme"
+                    loading="lazy"
+                  />
+                ) : null}
               </div>
               <div className="partners-section__copy">
                 <p className="partners-section__kicker">{partner.role}</p>
@@ -74,9 +97,17 @@ export default function PartnersSection() {
                 <img
                   src={partner.logoSrc}
                   alt={partner.logoAlt}
-                  className="partners-section__support-logo"
+                  className={`partners-section__support-logo ${partner.darkLogoSrc ? 'partners-section__support-logo--light-theme' : ''} ${partner.darkLogoClassName ?? ''}`}
                   loading="lazy"
                 />
+                {partner.darkLogoSrc ? (
+                  <img
+                    src={partner.darkLogoSrc}
+                    alt={partner.logoAlt}
+                    className="partners-section__support-logo partners-section__support-logo--dark-theme"
+                    loading="lazy"
+                  />
+                ) : null}
                 <span className="partners-section__support-name">{partner.name}</span>
               </article>
             ))}

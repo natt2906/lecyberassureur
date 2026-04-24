@@ -497,6 +497,24 @@
   }
 }
 
+.partners-section__logo--light-theme {
+  display: none;
+}
+
+.partners-section__logo--dark-theme {
+  display: block;
+}
+
+html[data-theme='light'] {
+  .partners-section__logo--light-theme {
+    display: block;
+  }
+
+  .partners-section__logo--dark-theme {
+    display: none;
+  }
+}
+
 .partners-section__copy {
   display: grid;
   gap: 0.7rem;
@@ -556,11 +574,23 @@
 
 .partners-section__support-logo {
   display: block;
-  height: 3.5rem;
-  max-width: min(100%, 10rem);
+  height: 3.7rem;
+  max-width: min(100%, 11.5rem);
   object-fit: contain;
   object-position: center;
   width: 100%;
+}
+
+.partners-section__support-logo--light-theme {
+  display: none;
+}
+
+.partners-section__support-logo--dark-theme {
+  display: block;
+}
+
+.partners-section__support-logo--white-dark {
+  filter: brightness(0) invert(1);
 }
 
 .partners-section__support-name {
@@ -568,6 +598,20 @@
   font-size: 0.98rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+html[data-theme='light'] {
+  .partners-section__support-logo--light-theme {
+    display: block;
+  }
+
+  .partners-section__support-logo--dark-theme {
+    display: none;
+  }
+
+  .partners-section__support-logo--white-dark {
+    filter: none;
+  }
 }
 
 .faq-list {
