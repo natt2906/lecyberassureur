@@ -555,6 +555,7 @@ export default function ContactForm() {
         state: {
           trackConversion: leadStatus === 'accepted',
           conversionKey: createdAt,
+          conversionPhone: canonicalPhone,
           leadStatus,
           reviewReason: responsePayload.reviewReason || '',
         },

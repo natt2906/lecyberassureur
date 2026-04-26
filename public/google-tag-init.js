@@ -5,12 +5,16 @@ window.gtag =
     window.dataLayer.push(arguments);
   };
 
-window.gtag_report_conversion = function gtag_report_conversion(url) {
+window.gtag_report_conversion = function gtag_report_conversion(url, userData) {
   var callback = function () {
     if (typeof url !== 'undefined') {
       window.location = url;
     }
   };
+
+  if (userData && typeof userData === 'object') {
+    window.gtag('set', 'user_data', userData);
+  }
 
   window.gtag('event', 'conversion', {
     send_to: 'AW-11278008764/T9HmCN6H0MkYELyD44Eq',

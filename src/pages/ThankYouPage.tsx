@@ -7,7 +7,12 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 declare global {
   interface Window {
-    gtag_report_conversion?: (url?: string) => boolean;
+    gtag_report_conversion?: (
+      url?: string,
+      userData?: {
+        phone_number?: string;
+      },
+    ) => boolean;
   }
 }
 
@@ -28,7 +33,7 @@ export default function ThankYouPage() {
     }
 
     const state = location.state as
-      | { trackConversion?: boolean; conversionKey?: string }
+      | { trackConversion?: boolean; conversionKey?: string; conversionPhone?: string }
       | null;
 
     if (!state?.trackConversion) {
@@ -44,7 +49,10 @@ export default function ThankYouPage() {
     }
 
     window.sessionStorage.setItem(storageKey, conversionKey);
-    window.gtag_report_conversion?.();
+    window.gtag_report_conversion?.(
+      undefined,
+      state.conversionPhone ? { phone_number: state.conversionPhone } : undefined,
+    );
   }, [location.state]);
 
   return (
