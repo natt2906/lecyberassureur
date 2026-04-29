@@ -47,8 +47,7 @@ export default function StickyCTA() {
           <span className="sticky-cta__logo-face sticky-cta__logo-face--front">
             <img
               src="/brand-assets/logo-cropped-384.png"
-              alt=""
-              aria-hidden="true"
+              alt="Devis cyber Le Cyberassureur"
               className={logoClassName}
             />
           </span>

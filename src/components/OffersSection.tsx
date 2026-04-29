@@ -54,8 +54,7 @@ export default function OffersSection({ showHeading = true }: OffersSectionProps
               <div className="offers-section__plan-head">
                 <img
                   src="/brand-assets/logo-cropped-384.png"
-                  alt=""
-                  aria-hidden="true"
+                  alt={`Logo offre ${offer.name} Le Cyberassureur`}
                   className={offer.logoClassName}
                 />
                 <div className="offers-section__plan-copy">

@@ -444,7 +444,7 @@ function createStaticRoutes(content) {
   return [
     {
       path: '/',
-      title: 'Assurance cyber entreprise, TPE et PME : devis et accompagnement | Le Cyberassureur',
+      title: 'Assurance cyber TPE/PME dès 29,99 € | Le Cyberassureur',
       description:
         "Le Cyberassureur accompagne les TPE et PME avec une assurance cyber pensée pour absorber les pertes financières, l’arrêt d’activité et les frais de gestion de crise.",
       keywords:

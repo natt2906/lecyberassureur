@@ -142,8 +142,7 @@ export default function Header() {
           <Link to="/" className="site-header__brand">
             <img
               src="/brand-assets/logo-cropped-384.png"
-              alt=""
-              aria-hidden="true"
+              alt="Le Cyberassureur"
               className={logoClassName}
             />
             <span className="site-header__brand-text">Le Cyberassureur</span>

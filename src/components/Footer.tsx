@@ -13,8 +13,7 @@ export default function Footer() {
               <Link to="/" className="site-footer__brand-link" aria-label="Retour à l'accueil">
                 <img
                   src="/brand-assets/logo-cropped-384.png"
-                  alt=""
-                  aria-hidden="true"
+                  alt="Le Cyberassureur"
                   className="site-footer__brand-logo"
                 />
                 <span className="site-footer__brand-title">Le Cyberassureur</span>
