@@ -42,6 +42,114 @@ function removeStructuredData(html) {
   return html.replace(/\s*<script[^>]*data-seo-structured=["']true["'][^>]*>[\s\S]*?<\/script>/gi, '');
 }
 
+function titleToHeading(title) {
+  return title.split(' | ')[0].replace(/\s*:\s*/g, ' : ');
+}
+
+function getRouteFaqItems(structuredData = []) {
+  const faqEntry = structuredData.find((entry) => entry?.['@type'] === 'FAQPage');
+  if (!faqEntry?.mainEntity?.length) {
+    return [];
+  }
+
+  return faqEntry.mainEntity
+    .map((item) => ({
+      question: item?.name,
+      answer: item?.acceptedAnswer?.text,
+    }))
+    .filter((item) => item.question && item.answer);
+}
+
+function createKeywordList(keywords = '') {
+  return keywords
+    .split(',')
+    .map((keyword) => keyword.trim())
+    .filter(Boolean)
+    .slice(0, 6);
+}
+
+function renderStaticSections(sections = []) {
+  return sections
+    .map((section) => {
+      const paragraphs = (section.body || [])
+        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .join('');
+
+      return `<section><h2>${escapeHtml(section.title)}</h2>${paragraphs}</section>`;
+    })
+    .join('');
+}
+
+function createStaticSnapshot(route) {
+  const heading = titleToHeading(route.title);
+  const keywords = createKeywordList(route.keywords);
+  const faqItems = getRouteFaqItems(route.structuredData).slice(0, 4);
+  const staticSections = route.staticContent?.sections || [];
+  const takeaways = route.staticContent?.takeaways || [];
+
+  const keywordMarkup = keywords.length
+    ? `<ul>${keywords.map((keyword) => `<li>${escapeHtml(keyword)}</li>`).join('')}</ul>`
+    : '';
+
+  const faqMarkup = faqItems.length
+    ? `<section><h2>Questions fréquentes</h2>${faqItems
+        .map(
+          (item) =>
+            `<article><h3>${escapeHtml(item.question)}</h3><p>${escapeHtml(item.answer)}</p></article>`,
+        )
+        .join('')}</section>`
+    : '';
+
+  const takeawaysMarkup = takeaways.length
+    ? `<section><h2>Points clés</h2><ul>${takeaways
+        .map((takeaway) => `<li>${escapeHtml(takeaway)}</li>`)
+        .join('')}</ul></section>`
+    : '';
+
+  const introMarkup = route.staticContent?.intro
+    ? `<p>${escapeHtml(route.staticContent.intro)}</p>`
+    : '';
+
+  return [
+    '<main class="seo-static-content" aria-label="Contenu principal">',
+    `<h1>${escapeHtml(heading)}</h1>`,
+    `<p>${escapeHtml(route.description)}</p>`,
+    introMarkup,
+    keywordMarkup,
+    '<nav aria-label="Pages principales">',
+    '<a href="/">Accueil</a>',
+    '<a href="/assurance-cyber">Assurance cyber</a>',
+    '<a href="/offres">Offres</a>',
+    '<a href="/devis-assurance-cyber">Devis assurance cyber</a>',
+    '</nav>',
+    renderStaticSections(staticSections),
+    takeawaysMarkup,
+    faqMarkup,
+    '</main>',
+  ]
+    .filter(Boolean)
+    .join('');
+}
+
+function injectStaticSnapshot(html, route) {
+  const snapshot = createStaticSnapshot(route);
+  const staticStyle = [
+    '<style data-seo-static="true">',
+    '.seo-static-content{max-width:1040px;margin:0 auto;padding:48px 24px;font-family:Arial,sans-serif;line-height:1.65;color:#111827;background:#fff}',
+    '.seo-static-content h1{font-size:40px;line-height:1.1;margin:0 0 18px}',
+    '.seo-static-content h2{font-size:24px;margin:32px 0 12px}',
+    '.seo-static-content h3{font-size:18px;margin:20px 0 8px}',
+    '.seo-static-content p,.seo-static-content li{font-size:17px}',
+    '.seo-static-content nav{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}',
+    '.seo-static-content a{color:#1d4ed8;font-weight:700}',
+    '</style>',
+  ].join('');
+
+  let nextHtml = html.replace(/\s*<style[^>]*data-seo-static=["']true["'][^>]*>[\s\S]*?<\/style>/gi, '');
+  nextHtml = nextHtml.replace('</head>', `  ${staticStyle}\n</head>`);
+  return nextHtml.replace(/<div id=["']root["']>\s*<\/div>/i, `<div id="root">${snapshot}</div>`);
+}
+
 function applyMeta(baseHtml, meta) {
   const canonicalUrl = new URL(meta.path, `${siteUrl}/`).toString();
   const imageUrl = toAbsoluteUrl(meta.image || defaultImage);
@@ -137,7 +245,7 @@ function applyMeta(baseHtml, meta) {
     html = html.replace('</head>', `${scripts}\n</head>`);
   }
 
-  return html;
+  return injectStaticSnapshot(html, meta);
 }
 
 function extractAssignment(source, name, openToken, closeToken) {
@@ -524,6 +632,11 @@ function createArticleRoutes(content) {
         description: article.excerpt,
         image,
         type: 'article',
+        staticContent: {
+          intro: article.intro,
+          sections: article.sections,
+          takeaways: article.takeaways,
+        },
         structuredData: [
           {
             '@context': 'https://schema.org',
