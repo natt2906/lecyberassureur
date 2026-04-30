@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { getBrandLogo } from '../lib/brandLogo';
 import { useSelectedOffer } from '../lib/selectedOffer';
 
 export default function FinalCTA() {
@@ -13,6 +14,7 @@ export default function FinalCTA() {
   ]
     .filter(Boolean)
     .join(' ');
+  const logoSrc = getBrandLogo(selectedOffer);
 
   return (
     <section className="site-section site-section--deferred final-cta">
@@ -21,7 +23,7 @@ export default function FinalCTA() {
       <div className="site-section__container">
         <div className="final-cta__inner">
           <img
-            src="/brand-assets/logo-cropped-384.png"
+            src={logoSrc}
             alt="Le Cyberassureur"
             className={logoClassName}
           />

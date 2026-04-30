@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { offers } from '../data/offers';
+import { OFFER_BRAND_LOGOS } from '../lib/brandLogo';
 import { writeSelectedOffer } from '../lib/selectedOffer';
 
 type OffersSectionProps = {
@@ -53,7 +54,7 @@ export default function OffersSection({ showHeading = true }: OffersSectionProps
 
               <div className="offers-section__plan-head">
                 <img
-                  src="/brand-assets/logo-cropped-384.png"
+                  src={OFFER_BRAND_LOGOS[offer.id]}
                   alt={`Logo offre ${offer.name} Le Cyberassureur`}
                   className={offer.logoClassName}
                 />

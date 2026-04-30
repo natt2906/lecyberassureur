@@ -163,5 +163,5 @@ export const siteMeta = {
   siteName: SITE_NAME,
   siteUrl: (import.meta.env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, ''),
   defaultImage: DEFAULT_IMAGE,
-  logoUrl: '/brand-assets/logo-cropped-384.png',
+  logoUrl: '/brand-assets/logo-blue-hq.png',
 };

@@ -6,7 +6,7 @@ const distDir = path.join(projectRoot, 'dist');
 const siteUrl = (process.env.VITE_SITE_URL || 'https://lecyberassureur.fr').replace(/\/+$/, '');
 const defaultImage = '/hero-cyber.png';
 const siteName = 'Le Cyberassureur';
-const logoUrl = '/brand-assets/logo-cropped-384.png';
+const logoUrl = '/brand-assets/logo-blue-hq.png';
 const buildTimestamp = new Date().toISOString();
 
 function toAbsoluteUrl(value) {

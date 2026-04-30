@@ -1,6 +1,7 @@
 import { ChevronDown, Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { getBrandLogo } from '../lib/brandLogo';
 import { useSelectedOffer } from '../lib/selectedOffer';
 import { useTheme } from './theme-context';
 
@@ -123,6 +124,7 @@ export default function Header() {
   ]
     .filter(Boolean)
     .join(' ');
+  const logoSrc = getBrandLogo(selectedOffer);
 
   const renderNavigationItem = (item: NavigationItem, className: string) =>
     item.to ? (
@@ -141,7 +143,7 @@ export default function Header() {
         <div className="site-header__bar">
           <Link to="/" className="site-header__brand">
             <img
-              src="/brand-assets/logo-cropped-384.png"
+              src={logoSrc}
               alt="Le Cyberassureur"
               className={logoClassName}
             />

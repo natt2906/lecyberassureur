@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getBrandLogo } from '../lib/brandLogo';
 import { useSelectedOffer } from '../lib/selectedOffer';
 
 export default function StickyCTA() {
@@ -11,6 +12,7 @@ export default function StickyCTA() {
   ]
     .filter(Boolean)
     .join(' ');
+  const logoSrc = getBrandLogo(selectedOffer);
 
   const scrollToForm = () => {
     const contactForm = document.getElementById('devis-cyber');
@@ -46,7 +48,7 @@ export default function StickyCTA() {
         >
           <span className="sticky-cta__logo-face sticky-cta__logo-face--front">
             <img
-              src="/brand-assets/logo-cropped-384.png"
+              src={logoSrc}
               alt="Devis cyber Le Cyberassureur"
               className={logoClassName}
             />

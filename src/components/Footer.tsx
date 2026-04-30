@@ -12,7 +12,7 @@ export default function Footer() {
             <div className="site-footer__brand">
               <Link to="/" className="site-footer__brand-link" aria-label="Retour à l'accueil">
                 <img
-                  src="/brand-assets/logo-cropped-384.png"
+                  src="/brand-assets/logo-blue-hq.png"
                   alt="Le Cyberassureur"
                   className="site-footer__brand-logo"
                 />

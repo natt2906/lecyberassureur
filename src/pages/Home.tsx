@@ -30,7 +30,7 @@ export default function Home() {
         '@type': 'Organization',
         name: 'Le Cyberassureur',
         url: 'https://lecyberassureur.fr',
-        logo: 'https://lecyberassureur.fr/brand-assets/logo-cropped-384.png',
+        logo: 'https://lecyberassureur.fr/brand-assets/logo-blue-hq.png',
       },
       {
         '@context': 'https://schema.org',
