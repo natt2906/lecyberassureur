@@ -7,7 +7,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberPricePage() {
   usePageMeta({
-    title: 'Prix assurance cyber PME : comment estimer le bon budget | Le Cyberassureur',
+    title: 'Prix assurance cyber PME | Le Cyberassureur',
     description:
       "Prix assurance cyber PME : découvrez ce qui fait varier le tarif, comment lire un prix d'appel et comment demander un devis cohérent avec votre exposition réelle.",
     path: '/assurance-cyber-prix',

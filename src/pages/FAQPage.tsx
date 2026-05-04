@@ -6,7 +6,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function FAQPage() {
   usePageMeta({
-    title: 'FAQ assurance cyber : questions fréquentes | Le Cyberassureur',
+    title: 'FAQ assurance cyber | Le Cyberassureur',
     description:
       "Retrouvez les réponses clés sur l'assurance cyber, les garanties, les pertes d'exploitation, la fraude et les conditions de couverture pour les TPE et PME.",
     path: '/faq',

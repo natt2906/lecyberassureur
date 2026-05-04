@@ -7,7 +7,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberCoveragePage() {
   usePageMeta({
-    title: 'Que couvre une assurance cyber pour entreprise ? | Le Cyberassureur',
+    title: "Que couvre l'assurance cyber ? | Le Cyberassureur",
     description:
       "Découvrez ce que couvre une assurance cyber pour entreprise : interruption d'activité, frais d'experts, gestion de crise, responsabilités liées aux données, dommages subis et fraude selon les garanties.",
     path: '/assurance-cyber-que-couvre',

@@ -9,7 +9,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberPage() {
   usePageMeta({
-    title: "Comment fonctionne l'assurance cyber en entreprise | Le Cyberassureur",
+    title: 'Assurance cyber entreprise | Le Cyberassureur',
     description:
       "Guide pratique pour comprendre le rôle d'une assurance cyber en entreprise, ce qu'elle couvre, ce qu'elle ne remplace pas et comment choisir le bon niveau de protection.",
     path: '/assurance-cyber',

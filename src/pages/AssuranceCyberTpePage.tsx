@@ -7,7 +7,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberTpePage() {
   usePageMeta({
-    title: 'Assurance cyber TPE : protéger une petite entreprise contre le risque cyber | Le Cyberassureur',
+    title: 'Assurance cyber TPE | Le Cyberassureur',
     description:
       "Assurance cyber TPE : découvrez pourquoi une petite entreprise, une startup ou une structure agile reste exposée, quelles garanties regarder et comment demander un devis adapté.",
     path: '/assurance-cyber-tpe',

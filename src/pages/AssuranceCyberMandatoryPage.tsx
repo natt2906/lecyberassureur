@@ -7,7 +7,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberMandatoryPage() {
   usePageMeta({
-    title: 'Assurance cyber obligatoire ou non : ce qu’une entreprise doit savoir | Le Cyberassureur',
+    title: 'Assurance cyber obligatoire ? | Le Cyberassureur',
     description:
       "Assurance cyber obligatoire ou non : découvrez ce qu'une entreprise doit vérifier, quand la couverture n'est pas imposée par la loi mais devient nécessaire en pratique, et quels profils sont les plus exposés.",
     path: '/assurance-cyber-obligatoire',

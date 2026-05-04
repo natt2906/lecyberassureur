@@ -7,7 +7,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function AssuranceCyberPmePage() {
   usePageMeta({
-    title: 'Assurance cyber PME : couverture et devis pour votre activité | Le Cyberassureur',
+    title: 'Assurance cyber PME | Le Cyberassureur',
     description:
       "Assurance cyber PME : identifiez les risques les plus coûteux pour une PME, les garanties réellement utiles et la meilleure façon d'obtenir un devis cohérent avec votre activité.",
     path: '/assurance-cyber-pme',

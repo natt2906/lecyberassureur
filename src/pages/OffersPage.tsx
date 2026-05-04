@@ -8,7 +8,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function OffersPage() {
   usePageMeta({
-    title: 'Offre assurance cyber : Basic, Silver et Gold | Le Cyberassureur',
+    title: 'Offres cyber Basic Silver Gold | Le Cyberassureur',
     description:
       "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir une formule cohérente avec votre activité, votre exposition au risque et votre besoin de couverture.",
     path: '/offres',

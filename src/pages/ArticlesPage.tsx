@@ -8,7 +8,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlesPage() {
   usePageMeta({
-    title: 'Articles cyberassurance et risques cyber | Le Cyberassureur',
+    title: 'Articles assurance cyber | Le Cyberassureur',
     description:
       "Consultez nos articles sur les pertes financières, l'interruption d'activité, les garanties cyber, la fraude et les profils d'entreprises à protéger.",
     path: '/articles',

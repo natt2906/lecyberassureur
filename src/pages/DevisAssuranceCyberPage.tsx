@@ -9,7 +9,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function DevisAssuranceCyberPage() {
   usePageMeta({
-    title: 'Devis assurance cyber : demande rapide pour entreprise | Le Cyberassureur',
+    title: 'Devis assurance cyber rapide | Le Cyberassureur',
     description:
       "Demandez un devis assurance cyber pour votre entreprise. Décrivez votre activité, votre exposition et votre besoin de couverture pour obtenir un cadrage rapide et cohérent.",
     path: '/devis-assurance-cyber',

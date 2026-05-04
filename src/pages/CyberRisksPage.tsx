@@ -9,7 +9,7 @@ import { usePageMeta } from '../lib/usePageMeta';
 
 export default function CyberRisksPage() {
   usePageMeta({
-    title: 'Cyber-risques en entreprise : coûts, impacts et couverture | Le Cyberassureur',
+    title: 'Risques cyber entreprise | Le Cyberassureur',
     description:
       "Identifiez les cyber-risques les plus coûteux pour une entreprise, les impacts concrets sur l'activité et la manière dont une couverture adaptée peut limiter la perte.",
     path: '/assurance-cyber-risques',
