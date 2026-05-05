@@ -63,6 +63,7 @@ export default function OffersSection({ showHeading = true }: OffersSectionProps
                   <div className="offers-section__price-wrap">
                     <span className="offers-section__price-caption">a partir de</span>
                     <span className="offers-section__price">{offer.price}</span>
+                    <span className="offers-section__price-period">{offer.period}</span>
                   </div>
                   <p className="offers-section__plan-highlight">{offer.highlight}</p>
                 </div>

@@ -93,7 +93,7 @@ export default function Hero() {
             </div>
 
             <h1 className="hero-section__title">
-              Assurance cyber pro <span>dès 29,99 €.</span>
+              Assurance cyber pro <span>dès 29,99 € par mois.</span>
             </h1>
 
             <p className="hero-section__description">

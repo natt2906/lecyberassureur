@@ -724,7 +724,7 @@ export default function ContactForm() {
                   <div className="contact-form-offer-summary__topline">
                     <span className="contact-form-offer-summary__name">{selectedOffer.name}</span>
                     <span className="contact-form-offer-summary__price">
-                      à partir de {selectedOffer.price}
+                      à partir de {selectedOffer.price} {selectedOffer.period}
                     </span>
                   </div>
                   <p className="contact-form-offer-summary__highlight">{selectedOffer.highlight}</p>

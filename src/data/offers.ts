@@ -4,6 +4,7 @@ export type Offer = {
   id: OfferId;
   name: string;
   price: string;
+  period: string;
   subtitle: string;
   highlight: string;
   description: string;
@@ -17,7 +18,8 @@ export const offers: Offer[] = [
   {
     id: 'basic',
     name: 'Basic',
-    price: '29.99€',
+    price: '29,99 €',
+    period: 'par mois',
     subtitle: 'Socle de protection',
     highlight: 'Sans option supplémentaire',
     description:
@@ -34,7 +36,8 @@ export const offers: Offer[] = [
   {
     id: 'silver',
     name: 'Silver',
-    price: '49.99€',
+    price: '49,99 €',
+    period: 'par mois',
     subtitle: 'Protection renforcée',
     highlight: 'Inclut dommages subis',
     description:
@@ -51,7 +54,8 @@ export const offers: Offer[] = [
   {
     id: 'gold',
     name: 'Gold',
-    price: '99.99€',
+    price: '99,99 €',
+    period: 'par mois',
     subtitle: 'Protection premium',
     highlight: 'Inclut dommages subis + fraude',
     description:
