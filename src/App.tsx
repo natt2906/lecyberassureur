@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CookieConsent from './components/CookieConsent';
+import ChatBot from './components/ChatBot';
 import GoogleAdsTag from './components/GoogleAdsTag';
 import StickyCTA from './components/StickyCTA';
 import Home from './pages/Home';
@@ -52,6 +53,7 @@ function App() {
         </Routes>
       </Suspense>
       <StickyCTA />
+      <ChatBot />
       <CookieConsent />
     </>
   );
