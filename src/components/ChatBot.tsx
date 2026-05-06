@@ -36,6 +36,9 @@ export default function ChatBot() {
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const hasUserMessages = messages.some((message) => message.role === 'user');
+  const showQuickPrompts = !hasUserMessages;
+
   const openChat = () => {
     setIsOpen(true);
     window.setTimeout(() => inputRef.current?.focus(), 100);
@@ -138,18 +141,20 @@ export default function ChatBot() {
             ) : null}
           </div>
 
-          <div className="chatbot__quick-actions" aria-label="Questions rapides">
-            {quickPrompts.map((prompt) => (
-              <button
-                key={prompt}
-                type="button"
-                onClick={() => void sendMessage(prompt)}
-                disabled={isSending}
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
+          {showQuickPrompts ? (
+            <div className="chatbot__quick-actions" aria-label="Questions rapides">
+              {quickPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => void sendMessage(prompt)}
+                  disabled={isSending}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          ) : null}
 
           {error ? <p className="chatbot__error">{error}</p> : null}
 
