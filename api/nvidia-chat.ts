@@ -199,6 +199,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
         Authorization: `Bearer ${apiKey}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'User-Agent': 'LeCyberAssureur/1.0 (+https://lecyberassureur.fr)',
       },
       body: JSON.stringify({
         model: MODEL,
@@ -214,12 +215,19 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     if (!providerResponse.ok) {
       const providerStatus = providerResponse.status;
+      const providerError = (await providerResponse.text()).slice(0, 500);
       console.warn('[nvidia-chat] provider error', {
         ip,
         providerStatus,
+        providerError,
         messages: messages.length,
       });
-      return sendJson(res, 502, { error: 'provider_error' });
+      return sendJson(res, 502, {
+        error:
+          providerStatus === 401 || providerStatus === 403
+            ? 'provider_auth_error'
+            : 'provider_error',
+      });
     }
 
     const data = (await providerResponse.json()) as NvidiaChatResponse;
