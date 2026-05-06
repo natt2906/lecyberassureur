@@ -29,7 +29,7 @@ type NvidiaChatResponse = {
 };
 
 const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const MODEL = 'mistralai/mistral-7b-instruct-v0.3';
+const MODEL = 'mistralai/mistral-medium-3.5-128b';
 const MAX_USER_MESSAGE_LENGTH = 1200;
 const MAX_HISTORY_MESSAGES = 10;
 const MINUTE_LIMIT = 20; // Increased from 12
@@ -200,6 +200,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     const requestBody = {
       model: MODEL,
+      reasoning_effort: 'high',
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
       max_tokens: 900,
       temperature: 0.7,
