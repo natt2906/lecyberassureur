@@ -29,7 +29,7 @@ type NvidiaChatResponse = {
 };
 
 const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const MODEL = 'mistralai/mistral-7b-instruct-v0.3';
+const MODEL = 'meta/llama-3.1-8b-instruct';
 const MAX_USER_MESSAGE_LENGTH = 1200;
 const MAX_HISTORY_MESSAGES = 10;
 const MINUTE_LIMIT = 20; // Increased from 12
@@ -208,6 +208,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     };
 
     console.log('[nvidia-chat] provider request body size:', JSON.stringify(requestBody).length);
+    console.log('[nvidia-chat] Using model:', MODEL);
 
     const providerResponse = await fetch(NVIDIA_CHAT_URL, {
       method: 'POST',
