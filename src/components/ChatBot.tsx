@@ -7,7 +7,7 @@ type ChatMessage = {
   content: string;
 };
 
-const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || '/api/nvidia-chat';
+const CHAT_API_URL = '/api/nvidia-chat';
 
 const initialMessage: ChatMessage = {
   id: 'welcome',

@@ -69,6 +69,15 @@ const getIp = (req: RequestLike) => {
   return getHeader(req, 'x-real-ip') || req.socket?.remoteAddress || 'unknown';
 };
 
+const normalizeApiKey = (value: string | undefined) => {
+  const trimmed = value?.trim();
+  if (!trimmed) {
+    return '';
+  }
+
+  return trimmed.replace(/^Bearer\s+/i, '').trim();
+};
+
 const normalizeBody = (body: unknown) => {
   if (typeof body === 'string') {
     try {
@@ -166,7 +175,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     return sendJson(res, 429, { error: 'rate_limited' });
   }
 
-  const apiKey = process.env.NVIDIA_API_KEY;
+  const apiKey = normalizeApiKey(process.env.NVIDIA_API_KEY);
   if (!apiKey) {
     console.error('[nvidia-chat] missing NVIDIA_API_KEY');
     return sendJson(res, 500, { error: 'server_not_configured' });
@@ -225,7 +234,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     return sendJson(res, 200, { reply });
   } catch (error) {
     const isTimeout = error instanceof Error && error.name === 'AbortError';
-    console.warn('[nvidia-chat] request failed', { ip, isTimeout });
+    const message = error instanceof Error ? error.message : 'unknown_error';
+    console.warn('[nvidia-chat] request failed', { ip, isTimeout, message });
     return sendJson(res, isTimeout ? 504 : 502, {
       error: isTimeout ? 'provider_timeout' : 'provider_unreachable',
     });
