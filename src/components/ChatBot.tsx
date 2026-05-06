@@ -55,7 +55,10 @@ export default function ChatBot() {
       return;
     }
 
-    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+    messagesRef.current.scrollTo({
+      top: messagesRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
   }, [messages, isOpen]);
 
   const parseInline = (text: string): Array<string | JSX.Element> => {
@@ -144,10 +147,10 @@ export default function ChatBot() {
   const typeAssistantReply = async (reply: string) => {
     const assistantMessage = createMessage('assistant', '');
     setMessages((currentMessages) => [...currentMessages, assistantMessage]);
-    const speed = reply.length > 300 ? 35 : 45;
-    const chunkSize = reply.length > 300 ? 4 : 2;
+    const chunkSize = reply.length > 300 ? 8 : 12;
+    const speed = reply.length > 300 ? 30 : 20;
 
-    for (let i = 1; i <= reply.length; i += chunkSize) {
+    for (let i = chunkSize; i < reply.length; i += chunkSize) {
       await sleep(speed);
       const nextContent = reply.slice(0, i);
       setMessages((currentMessages) =>
@@ -159,13 +162,11 @@ export default function ChatBot() {
       );
     }
 
-    if (reply.length % chunkSize !== 0) {
-      setMessages((currentMessages) =>
-        currentMessages.map((message) =>
-          message.id === assistantMessage.id ? { ...message, content: reply } : message,
-        ),
-      );
-    }
+    setMessages((currentMessages) =>
+      currentMessages.map((message) =>
+        message.id === assistantMessage.id ? { ...message, content: reply } : message,
+      ),
+    );
   };
 
   const openChat = () => {
