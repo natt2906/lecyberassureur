@@ -75,7 +75,10 @@ const normalizeApiKey = (value: string | undefined) => {
     return '';
   }
 
-  return trimmed.replace(/^Bearer\s+/i, '').trim();
+  return trimmed
+    .replace(/^Bearer\s+/i, '')
+    .replace(/^['"]|['"]$/g, '')
+    .replace(/\s+/g, '');
 };
 
 const normalizeBody = (body: unknown) => {
