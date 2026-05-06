@@ -201,7 +201,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
     const requestBody = {
       model: MODEL,
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-      max_output_tokens: 256,
+      max_tokens: 900,
       temperature: 0.7,
       top_p: 1,
       stream: false,
