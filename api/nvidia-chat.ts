@@ -29,7 +29,7 @@ type NvidiaChatResponse = {
 };
 
 const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-const MODEL = 'meta/llama-3.1-8b-instruct';
+const MODEL = 'mistralai/mistral-7b-instruct-v0.3';
 const MAX_USER_MESSAGE_LENGTH = 1200;
 const MAX_HISTORY_MESSAGES = 10;
 const MINUTE_LIMIT = 20; // Increased from 12
