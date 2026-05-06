@@ -115,7 +115,7 @@ const sanitizeMessages = (body: unknown): ChatMessage[] | null => {
       }
 
       const trimmed = content.trim();
-      if (!trimmed || trimmed.length > MAX_USER_MESSAGE_LENGTH) {
+      if (!trimmed || (role === 'user' && trimmed.length > MAX_USER_MESSAGE_LENGTH)) {
         return null;
       }
 
