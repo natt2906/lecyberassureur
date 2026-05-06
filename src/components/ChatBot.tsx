@@ -144,15 +144,25 @@ export default function ChatBot() {
   const typeAssistantReply = async (reply: string) => {
     const assistantMessage = createMessage('assistant', '');
     setMessages((currentMessages) => [...currentMessages, assistantMessage]);
-    const speed = reply.length > 300 ? 10 : 18;
+    const speed = reply.length > 300 ? 35 : 45;
+    const chunkSize = reply.length > 300 ? 4 : 2;
 
-    for (let i = 1; i <= reply.length; i += 1) {
+    for (let i = 1; i <= reply.length; i += chunkSize) {
       await sleep(speed);
+      const nextContent = reply.slice(0, i);
       setMessages((currentMessages) =>
         currentMessages.map((message) =>
           message.id === assistantMessage.id
-            ? { ...message, content: reply.slice(0, i) }
+            ? { ...message, content: nextContent }
             : message,
+        ),
+      );
+    }
+
+    if (reply.length % chunkSize !== 0) {
+      setMessages((currentMessages) =>
+        currentMessages.map((message) =>
+          message.id === assistantMessage.id ? { ...message, content: reply } : message,
         ),
       );
     }
