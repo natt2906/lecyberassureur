@@ -39,6 +39,108 @@ export default function ChatBot() {
   const hasUserMessages = messages.some((message) => message.role === 'user');
   const showQuickPrompts = !hasUserMessages;
 
+  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const parseInline = (text: string): Array<string | JSX.Element> => {
+    const nodes: Array<string | JSX.Element> = [];
+    const regex = /(\*\*([^*]+)\*\*|\*([^*]+)\*|__([^_]+)__|_([^_]+)_)/g;
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    while ((match = regex.exec(text)) !== null) {
+      if (match.index > lastIndex) {
+        nodes.push(text.slice(lastIndex, match.index));
+      }
+
+      const [, , boldA, italicA, boldB, italicB] = match;
+      if (boldA || boldB) {
+        nodes.push(
+          <strong key={match.index}>{boldA || boldB}</strong>,
+        );
+      } else if (italicA || italicB) {
+        nodes.push(
+          <em key={match.index}>{italicA || italicB}</em>,
+        );
+      } else {
+        nodes.push(match[0]);
+      }
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    if (lastIndex < text.length) {
+      nodes.push(text.slice(lastIndex));
+    }
+
+    return nodes;
+  };
+
+  const renderMessageContent = (content: string) => {
+    const lines = content.split(/\r?\n/);
+    const nodes: JSX.Element[] = [];
+    let listItems: JSX.Element[] = [];
+
+    const flushList = () => {
+      if (listItems.length > 0) {
+        nodes.push(
+          <ul key={`list-${nodes.length}`} className="chatbot__message-list">
+            {listItems}
+          </ul>,
+        );
+        listItems = [];
+      }
+    };
+
+    lines.forEach((line, index) => {
+      const trimmed = line.trim();
+      const bulletMatch = trimmed.match(/^([*+-])\s+(.*)$/);
+      const numberedMatch = trimmed.match(/^\d+\.\s+(.*)$/);
+
+      if (bulletMatch) {
+        listItems.push(
+          <li key={`li-${index}`}>{parseInline(bulletMatch[2])}</li>,
+        );
+        return;
+      }
+
+      if (numberedMatch) {
+        listItems.push(
+          <li key={`li-${index}`}>{parseInline(numberedMatch[1])}</li>,
+        );
+        return;
+      }
+
+      flushList();
+
+      if (!trimmed) {
+        nodes.push(<p key={`empty-${index}`}>&nbsp;</p>);
+        return;
+      }
+
+      nodes.push(<p key={`p-${index}`}>{parseInline(line)}</p>);
+    });
+
+    flushList();
+    return nodes;
+  };
+
+  const typeAssistantReply = async (reply: string) => {
+    const assistantMessage = createMessage('assistant', '');
+    setMessages((currentMessages) => [...currentMessages, assistantMessage]);
+    const speed = reply.length > 300 ? 10 : 18;
+
+    for (let i = 1; i <= reply.length; i += 1) {
+      await sleep(speed);
+      setMessages((currentMessages) =>
+        currentMessages.map((message) =>
+          message.id === assistantMessage.id
+            ? { ...message, content: reply.slice(0, i) }
+            : message,
+        ),
+      );
+    }
+  };
+
   const openChat = () => {
     setIsOpen(true);
     window.setTimeout(() => inputRef.current?.focus(), 100);
@@ -77,10 +179,7 @@ export default function ChatBot() {
         throw new Error('Missing reply');
       }
 
-      setMessages((currentMessages) => [
-        ...currentMessages,
-        createMessage('assistant', data.reply || ''),
-      ]);
+      await typeAssistantReply(data.reply);
     } catch {
       setError(
         "Le chatbot n'est pas disponible pour le moment. Vous pouvez demander un devis directement via le formulaire.",
@@ -128,7 +227,9 @@ export default function ChatBot() {
                 <span className="chatbot__message-icon" aria-hidden="true">
                   {message.role === 'assistant' ? <Bot size={16} /> : <UserRound size={16} />}
                 </span>
-                <p>{message.content}</p>
+                <div className="chatbot__message-body">
+                  {renderMessageContent(message.content)}
+                </div>
               </article>
             ))}
             {isSending ? (
@@ -136,7 +237,9 @@ export default function ChatBot() {
                 <span className="chatbot__message-icon" aria-hidden="true">
                   <Bot size={16} />
                 </span>
-                <p>Je regarde la meilleure reponse...</p>
+                <div className="chatbot__message-body">
+                  <p>Je regarde la meilleure reponse...</p>
+                </div>
               </article>
             ) : null}
           </div>
