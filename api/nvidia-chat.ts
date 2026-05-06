@@ -198,6 +198,18 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   try {
     console.log('[nvidia-chat] Processing request for IP:', ip, 'with', messages.length, 'messages');
 
+    const requestBody = {
+      model: MODEL,
+      reasoning_effort: 'medium',
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
+      max_tokens: 500,
+      temperature: 0.7,
+      top_p: 1,
+      stream: false,
+    };
+
+    console.log('[nvidia-chat] provider request body size:', JSON.stringify(requestBody).length);
+
     const providerResponse = await fetch(NVIDIA_CHAT_URL, {
       method: 'POST',
       headers: {
@@ -206,15 +218,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
         'Content-Type': 'application/json',
         'User-Agent': 'LeCyberAssureur/1.0 (+https://lecyberassureur.fr)',
       },
-      body: JSON.stringify({
-        model: MODEL,
-        reasoning_effort: 'high',
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-        max_tokens: 900,
-        temperature: 0.7,
-        top_p: 1,
-        stream: false,
-      }),
+      body: JSON.stringify(requestBody),
       signal: controller.signal,
     });
 
