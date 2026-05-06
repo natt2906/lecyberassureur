@@ -193,7 +193,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 30_000);
+  const timeout = setTimeout(() => controller.abort(), 60_000);
 
   try {
     console.log('[nvidia-chat] Processing request for IP:', ip, 'with', messages.length, 'messages');
@@ -250,7 +250,10 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   } catch (error) {
     const isTimeout = error instanceof Error && error.name === 'AbortError';
     const message = error instanceof Error ? error.message : 'unknown_error';
-    console.warn('[nvidia-chat] request failed', { ip, isTimeout, message });
+    console.warn('[nvidia-chat] request failed', { ip, isTimeout, message, errorType: error?.constructor?.name });
+    if (isTimeout) {
+      console.error('[nvidia-chat] TIMEOUT: Request to NVIDIA API took longer than 60 seconds');
+    }
     return sendJson(res, isTimeout ? 504 : 502, {
       error: isTimeout ? 'provider_timeout' : 'provider_unreachable',
     });
