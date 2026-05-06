@@ -171,6 +171,8 @@ export default function ChatBot() {
       // Filter out the initial welcome message and only send conversation messages
       const conversationMessages = nextMessages.filter(msg => msg.id !== 'welcome');
 
+      console.log('[ChatBot] Sending request with', conversationMessages.length, 'messages');
+
       const response = await fetch(CHAT_API_URL, {
         method: 'POST',
         headers: {
@@ -181,17 +183,24 @@ export default function ChatBot() {
         }),
       });
 
+      console.log('[ChatBot] Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error(`Chat request failed with ${response.status}`);
+        const errorText = await response.text();
+        console.error('[ChatBot] API Error:', response.status, errorText);
+        throw new Error(`Chat request failed with ${response.status}: ${errorText}`);
       }
 
       const data = (await response.json()) as { reply?: string };
+      console.log('[ChatBot] Received reply:', data.reply ? 'yes' : 'no');
+
       if (!data.reply) {
-        throw new Error('Missing reply');
+        throw new Error('Missing reply in response');
       }
 
       await typeAssistantReply(data.reply);
-    } catch {
+    } catch (error) {
+      console.error('[ChatBot] Error:', error);
       setError(
         "Le chatbot n'est pas disponible pour le moment. Vous pouvez demander un devis directement via le formulaire.",
       );

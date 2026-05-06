@@ -32,8 +32,8 @@ const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const MODEL = 'mistralai/mistral-medium-3.5-128b';
 const MAX_USER_MESSAGE_LENGTH = 1200;
 const MAX_HISTORY_MESSAGES = 10;
-const MINUTE_LIMIT = 12;
-const HOUR_LIMIT = 40;
+const MINUTE_LIMIT = 20; // Increased from 12
+const HOUR_LIMIT = 60; // Increased from 40
 
 const rateBuckets = new Map<string, { minute: number[]; hour: number[] }>();
 
@@ -196,6 +196,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   const timeout = setTimeout(() => controller.abort(), 30_000);
 
   try {
+    console.log('[nvidia-chat] Processing request for IP:', ip, 'with', messages.length, 'messages');
+
     const providerResponse = await fetch(NVIDIA_CHAT_URL, {
       method: 'POST',
       headers: {
@@ -215,6 +217,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
       }),
       signal: controller.signal,
     });
+
+    console.log('[nvidia-chat] Provider response status:', providerResponse.status);
 
     if (!providerResponse.ok) {
       const providerStatus = providerResponse.status;
