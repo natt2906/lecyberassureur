@@ -357,7 +357,8 @@ function getHeader(req: RequestLike, name: string) {
     return headers.get(name) || headers.get(normalizedName) || '';
   }
 
-  const value = headers[normalizedName] ?? headers[name];
+  const plainHeaders = headers as Record<string, string | string[] | undefined>;
+  const value = plainHeaders[normalizedName] ?? plainHeaders[name];
 
   if (Array.isArray(value)) {
     return value[0] || '';
