@@ -31,7 +31,7 @@ type NvidiaChatResponse = {
 const NVIDIA_CHAT_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
 const MODEL = 'mistralai/mistral-medium-3.5-128b';
 const MAX_USER_MESSAGE_LENGTH = 1200;
-const MAX_HISTORY_MESSAGES = 12;
+const MAX_HISTORY_MESSAGES = 10;
 const MINUTE_LIMIT = 12;
 const HOUR_LIMIT = 40;
 
@@ -193,7 +193,7 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 18_000);
+  const timeout = setTimeout(() => controller.abort(), 30_000);
 
   try {
     const providerResponse = await fetch(NVIDIA_CHAT_URL, {

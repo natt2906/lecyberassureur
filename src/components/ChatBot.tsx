@@ -41,6 +41,14 @@ export default function ChatBot() {
 
   const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  const renderTypingDots = () => (
+    <span className="chatbot__typing-dots" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
+
   const parseInline = (text: string): Array<string | JSX.Element> => {
     const nodes: Array<string | JSX.Element> = [];
     const regex = /(\*\*([^*]+)\*\*|\*([^*]+)\*|__([^_]+)__|_([^_]+)_)/g;
@@ -233,12 +241,12 @@ export default function ChatBot() {
               </article>
             ))}
             {isSending ? (
-              <article className="chatbot__message chatbot__message--assistant">
+              <article className="chatbot__message chatbot__message--assistant chatbot__message--typing">
                 <span className="chatbot__message-icon" aria-hidden="true">
                   <Bot size={16} />
                 </span>
                 <div className="chatbot__message-body">
-                  <p>Je regarde la meilleure reponse...</p>
+                  {renderTypingDots()}
                 </div>
               </article>
             ) : null}
