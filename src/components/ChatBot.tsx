@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Bot, MessageCircle, Send, ShieldCheck, UserRound, X } from 'lucide-react';
 
 type ChatMessage = {
@@ -35,6 +35,7 @@ export default function ChatBot() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   const hasUserMessages = messages.some((message) => message.role === 'user');
   const showQuickPrompts = !hasUserMessages;
@@ -48,6 +49,14 @@ export default function ChatBot() {
       <span />
     </span>
   );
+
+  useEffect(() => {
+    if (!messagesRef.current) {
+      return;
+    }
+
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [messages, isOpen]);
 
   const parseInline = (text: string): Array<string | JSX.Element> => {
     const nodes: Array<string | JSX.Element> = [];
@@ -226,7 +235,7 @@ export default function ChatBot() {
             </button>
           </header>
 
-          <div className="chatbot__messages" role="log" aria-live="polite">
+          <div className="chatbot__messages" ref={messagesRef} role="log" aria-live="polite">
             {messages.map((message) => (
               <article
                 className={`chatbot__message chatbot__message--${message.role}`}

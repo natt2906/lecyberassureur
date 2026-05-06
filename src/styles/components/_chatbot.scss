@@ -121,7 +121,8 @@
   justify-content: flex-end;
   gap: 0.75rem;
   min-height: 14rem;
-  overflow: auto;
+  overflow-y: auto;
+  scroll-behavior: smooth;
   padding: 1rem;
 }
 
@@ -331,7 +332,17 @@
     box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
   }
 
-  .chatbot__message--assistant p,
+  .chatbot__message--assistant .chatbot__message-body {
+    background: #fff;
+    color: #0f172a;
+    border-color: rgba(148, 163, 184, 0.3);
+  }
+
+  .chatbot__message--assistant .chatbot__message-body p,
+  .chatbot__message--assistant .chatbot__message-body li {
+    color: #0f172a;
+  }
+
   .chatbot__close,
   .chatbot__form input {
     background: rgba(15, 23, 42, 0.72);
