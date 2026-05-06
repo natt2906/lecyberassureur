@@ -200,9 +200,8 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     const requestBody = {
       model: MODEL,
-      reasoning_effort: 'medium',
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-      max_tokens: 500,
+      max_output_tokens: 256,
       temperature: 0.7,
       top_p: 1,
       stream: false,
@@ -226,7 +225,9 @@ export default async function handler(req: RequestLike, res: ResponseLike) {
 
     if (!providerResponse.ok) {
       const providerStatus = providerResponse.status;
-      const providerError = (await providerResponse.text()).slice(0, 500);
+      const providerText = await providerResponse.text();
+      const providerError = providerText.slice(0, 500);
+      console.error('[nvidia-chat] provider error body:', providerText);
       console.warn('[nvidia-chat] provider error', {
         ip,
         providerStatus,
