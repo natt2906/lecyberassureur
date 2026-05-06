@@ -145,25 +145,8 @@ export default function ChatBot() {
   };
 
   const typeAssistantReply = async (reply: string) => {
-    const assistantMessage = createMessage('assistant', '');
+    const assistantMessage = createMessage('assistant', reply);
     setMessages((currentMessages) => [...currentMessages, assistantMessage]);
-
-    const initialDelay = 100;
-    const typingDelay = Math.min(300, Math.max(80, Math.round(reply.length / 10)));
-
-    await sleep(initialDelay);
-    setMessages((currentMessages) =>
-      currentMessages.map((message) =>
-        message.id === assistantMessage.id ? { ...message, content: '...' } : message,
-      ),
-    );
-
-    await sleep(typingDelay);
-    setMessages((currentMessages) =>
-      currentMessages.map((message) =>
-        message.id === assistantMessage.id ? { ...message, content: reply } : message,
-      ),
-    );
   };
 
   const openChat = () => {
@@ -185,13 +168,16 @@ export default function ChatBot() {
     setIsSending(true);
 
     try {
+      // Filter out the initial welcome message and only send conversation messages
+      const conversationMessages = nextMessages.filter(msg => msg.id !== 'welcome');
+
       const response = await fetch(CHAT_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: nextMessages.map(({ role, content }) => ({ role, content })),
+          messages: conversationMessages.map(({ role, content }) => ({ role, content })),
         }),
       });
 
