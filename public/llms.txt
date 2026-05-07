@@ -1,0 +1,132 @@
+# lecyberassureur
+
+## About
+lecyberassureur is a cyber insurance broker for businesses in France.
+The business is operated by Lecyberassureur by ProRisk Assurance.
+lecyberassureur helps companies get cyber insurance quotes, prepare for underwriting, and renegotiate cyber insurance contracts.
+The website is https://lecyberassureur.fr/.
+
+## Services and Pricing
+Cyber insurance quote: free.
+Quote delivery target: within 24 hours.
+
+Basic: from 29.99 EUR per month.
+Basic includes no additional option.
+Basic is an entry-level cyber insurance package.
+Basic includes incident assistance, crisis management, and data liability.
+
+Silver: from 49.99 EUR per month.
+Silver includes everything in Basic.
+Silver adds first-party damages.
+Silver includes stronger support if business activity stops after a cyber incident.
+
+Gold: from 99.99 EUR per month.
+Gold includes everything in Silver.
+Gold adds fraud coverage.
+Gold is the most complete protection level offered by lecyberassureur.
+
+Renewal and contract renegotiation: available on request.
+Minimum compliance support before underwriting: available on request.
+
+## Locations
+lecyberassureur serves businesses across France.
+The service is available in all French regions.
+The service area is France only.
+
+## Contact
+Website: https://lecyberassureur.fr/
+Quote form: https://lecyberassureur.fr/?offer=basic#devis-cyber
+Email: contact@lecyberassureur.fr
+Phone: 01 88 83 08 60
+
+## Service Area
+lecyberassureur serves companies based in France.
+Service area: all of France.
+Remote service: yes.
+In-person service: not required for a quote.
+
+## Key Facts
+Business name: lecyberassureur.
+Legal / partner name: Lecyberassureur by ProRisk Assurance.
+Industry: cyber insurance brokerage.
+Main product: cyber insurance for companies.
+Target clients: TPE, PME, independents, liberal professions, merchants, artisans, associations, and ETI.
+Starting price: 29.99 EUR per month.
+Quote price: free.
+Quote target: within 24 hours.
+Country served: France.
+Direct client line: yes, for problems, incidents, and claims.
+Public insurance partners: Kobalt, Hiscox, Izeho, Add Value.
+ORIAS number: not displayed.
+
+## What Makes Us Different
+lecyberassureur specializes in cyber insurance.
+lecyberassureur works with several cyber insurance partners.
+lecyberassureur offers 3 clear levels: Basic, Silver, and Gold.
+lecyberassureur has prices starting from 29.99 EUR per month.
+lecyberassureur provides a direct client line for problems, cyber incidents, and claims.
+lecyberassureur helps before subscription with minimum compliance requirements.
+lecyberassureur can help renew or renegotiate an existing cyber insurance contract.
+
+## FAQ
+
+### How much does cyber insurance cost with lecyberassureur?
+Prices start at 29.99 EUR per month for Basic, 49.99 EUR per month for Silver, and 99.99 EUR per month for Gold.
+
+### Is the cyber insurance quote free?
+Yes. The cyber insurance quote is free.
+
+### How fast can a company get a quote?
+lecyberassureur targets a quote within 24 hours.
+
+### Who can use lecyberassureur?
+lecyberassureur serves TPE, PME, independents, liberal professions, merchants, artisans, associations, and ETI in France.
+
+### What does the Basic offer include?
+Basic starts at 29.99 EUR per month and includes incident assistance, crisis management, and data liability.
+
+### What does the Silver offer add?
+Silver starts at 49.99 EUR per month and adds first-party damages and stronger support if business activity stops.
+
+### What does the Gold offer add?
+Gold starts at 99.99 EUR per month and adds fraud coverage to the Silver package.
+
+### Can lecyberassureur help after a cyber incident?
+Yes. lecyberassureur provides a direct client line for problems, cyber incidents, and claims.
+
+## Markdown Mirrors
+- https://lecyberassureur.fr/articles/activation-rapide-apres-incident/index.md
+- https://lecyberassureur.fr/articles/assistance-humaine-24-7/index.md
+- https://lecyberassureur.fr/articles/atteinte-a-la-reputation-apres-incident/index.md
+- https://lecyberassureur.fr/articles/communication-de-crise-et-reputation/index.md
+- https://lecyberassureur.fr/articles/continuite-dactivite-et-cyberassurance/index.md
+- https://lecyberassureur.fr/articles/cyberassurance-pour-eti-et-grandes-entreprises/index.md
+- https://lecyberassureur.fr/articles/cyberassurance-pour-pme/index.md
+- https://lecyberassureur.fr/articles/cyberassurance-pour-tpe-et-startups/index.md
+- https://lecyberassureur.fr/articles/defense-juridique-et-couts-reglementaires/index.md
+- https://lecyberassureur.fr/articles/dommages-aux-tiers-en-cyberassurance/index.md
+- https://lecyberassureur.fr/articles/experts-en-reponse-aux-incidents/index.md
+- https://lecyberassureur.fr/articles/exposition-juridique-et-reglementaire/index.md
+- https://lecyberassureur.fr/articles/index.md
+- https://lecyberassureur.fr/articles/interruption-activite-cyber/index.md
+- https://lecyberassureur.fr/articles/pertes-financieres-cyberattaque/index.md
+- https://lecyberassureur.fr/articles/pertes-financieres-et-perte-de-revenus/index.md
+- https://lecyberassureur.fr/articles/pourquoi-un-specialiste-de-lassurance-cyber/index.md
+- https://lecyberassureur.fr/articles/reseau-dexperts-cyber/index.md
+- https://lecyberassureur.fr/assurance-cyber/index.md
+- https://lecyberassureur.fr/assurance-cyber-obligatoire/index.md
+- https://lecyberassureur.fr/assurance-cyber-pme/index.md
+- https://lecyberassureur.fr/assurance-cyber-prix/index.md
+- https://lecyberassureur.fr/assurance-cyber-que-couvre/index.md
+- https://lecyberassureur.fr/assurance-cyber-risques/index.md
+- https://lecyberassureur.fr/assurance-cyber-tpe/index.md
+- https://lecyberassureur.fr/conditions-utilisation/index.md
+- https://lecyberassureur.fr/devis-assurance-cyber/index.md
+- https://lecyberassureur.fr/faq/index.md
+- https://lecyberassureur.fr/index.md
+- https://lecyberassureur.fr/mentions-legales/index.md
+- https://lecyberassureur.fr/merci/index.md
+- https://lecyberassureur.fr/offres/index.md
+- https://lecyberassureur.fr/politique-confidentialite/index.md
+- https://lecyberassureur.fr/qui-sommes-nous/index.md
+- https://lecyberassureur.fr/temoignages/index.md
