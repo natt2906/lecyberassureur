@@ -63,7 +63,7 @@ export default function Footer() {
             <ul className="site-footer__list">
               <li className="site-footer__contact-item">
                 <Phone className="site-footer__contact-icon" strokeWidth={2} />
-                <span>Rappel sous 24h ouvrées</span>
+                <span>01 88 83 08 60</span>
               </li>
               <li className="site-footer__contact-item">
                 <Mail className="site-footer__contact-icon" strokeWidth={2} />
