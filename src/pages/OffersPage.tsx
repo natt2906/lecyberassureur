@@ -10,7 +10,7 @@ export default function OffersPage() {
   usePageMeta({
     title: 'Offres cyber Basic Silver Gold | Le Cyberassureur',
     description:
-      "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir une formule cohérente avec votre activité, votre exposition au risque et votre besoin de couverture.",
+      "Comparez les offres cyber Basic, Silver et Gold, leurs garanties et options, puis obtenez un devis adapté à votre activité professionnelle.",
     path: '/offres',
     keywords:
       "offre assurance cyber, offres assurance cyber entreprise, formule assurance cyber, prix assurance cyber entreprise, niveau de couverture cyber",

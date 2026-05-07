@@ -11,7 +11,7 @@ export default function AssuranceCyberPage() {
   usePageMeta({
     title: 'Assurance cyber entreprise | Le Cyberassureur',
     description:
-      "Guide pratique pour comprendre le rôle d'une assurance cyber en entreprise, ce qu'elle couvre, ce qu'elle ne remplace pas et comment choisir le bon niveau de protection.",
+      "Assurance cyber entreprise : garanties, exclusions, gestion de crise et conseils pour choisir une couverture adaptée à vos risques numériques.",
     path: '/assurance-cyber',
     keywords:
       "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
