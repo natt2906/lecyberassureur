@@ -3,7 +3,7 @@ import path from 'node:path';
 
 const projectRoot = process.cwd();
 const siteUrl = (process.env.VITE_SITE_URL || 'https://lecyberassureur.fr').replace(/\/+$/, '');
-const indexNowKey = '8f3d9c1e7b7e4c22b4fd8ed8c9f13f6a';
+const indexNowKey = '9dfdc12a56384f23bd90cb1284d0add0';
 const keyLocation = `${siteUrl}/${indexNowKey}.txt`;
 const sitemapPath = path.join(projectRoot, 'dist', 'sitemap.xml');
 
