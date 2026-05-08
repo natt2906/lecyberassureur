@@ -54,7 +54,7 @@ export default function AssuranceCyberPricePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Ce qui fait varier le prix</span>
             </div>
-            <h2 className="site-section__title">Le tarif dépend surtout du risque économique porté par votre entreprise</h2>
+            <h2 className="site-section__title">Pourquoi les prix varient selon les entreprises ?</h2>
             <p className="site-section__intro">
               Deux entreprises de taille proche n&apos;ont pas toujours le même prix.
               Ce qui compte, c&apos;est votre dépendance aux outils numériques, la nature
@@ -118,7 +118,7 @@ export default function AssuranceCyberPricePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Tableau de tarification</span>
             </div>
-            <h2 className="site-section__title">Facteurs qui influencent le prix</h2>
+              <h2 className="site-section__title">Quels critères analysent les assureurs ?</h2>
           </div>
           <div className="site-card">
             <div className="seo-table-wrapper">
@@ -167,7 +167,7 @@ export default function AssuranceCyberPricePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Lecture du budget</span>
             </div>
-            <h2 className="site-section__title">Comment arbitrer entre prix, franchises et garanties ?</h2>
+              <h2 className="site-section__title">Plafond, franchise, garanties : quel impact sur le prix ?</h2>
           </div>
           <div className="site-card-grid site-card-grid--two">
             <article className="site-card">
@@ -183,11 +183,48 @@ export default function AssuranceCyberPricePage() {
               </p>
             </article>
           </div>
-          <div className="site-panel site-panel--accent topic-page__panel">
-            <p className="site-panel__eyebrow">Sources et repères</p>
+            <div className="site-panel site-panel--accent topic-page__panel">
+              <p className="site-panel__eyebrow">Sources et repères</p>
             <p className="site-panel__body">
               Pour structurer vos critères, consultez <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a> et <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>.
             </p>
+            </div>
+          </div>
+        </section>
+
+      <section className="site-section">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Profils comparatifs</span>
+            </div>
+            <h2 className="site-section__title">Exemples de profils TPE/PME et points d’attention</h2>
+          </div>
+          <div className="site-card">
+            <div className="seo-table-wrapper">
+              <table className="seo-table">
+                <thead>
+                  <tr>
+                    <th>Profil</th>
+                    <th>Points d’attention principaux</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>TPE de services très dépendante à la messagerie</td>
+                    <td>Compromission email, fraude, interruption d’activité courte mais critique</td>
+                  </tr>
+                  <tr>
+                    <td>PME industrielle avec ERP central</td>
+                    <td>Arrêt de production, retards logistiques, coûts de reprise élevés</td>
+                  </tr>
+                  <tr>
+                    <td>PME B2B avec données clients et fournisseurs</td>
+                    <td>Responsabilités liées aux données, exigences contractuelles et réputation</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -198,7 +235,7 @@ export default function AssuranceCyberPricePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Pour aller plus vite</span>
             </div>
-            <h2 className="site-section__title">Comment demander un devis assurance cyber plus efficacement ?</h2>
+            <h2 className="site-section__title">Comment réduire le coût sans réduire la protection essentielle ?</h2>
             <p className="site-section__intro">
               Plus les informations sont claires dès le départ, plus l’analyse du besoin
               et le cadrage du devis sont rapides.
@@ -226,6 +263,15 @@ export default function AssuranceCyberPricePage() {
                 Voir les offres d&apos;assurance cyber
               </Link>
             </article>
+          </div>
+          <div className="site-card mt-6">
+            <h2 className="site-card__title">Comment obtenir un tarif adapté ?</h2>
+            <p className="site-card__body">
+              Commencez par un devis précis, comparez les garanties sur vos scénarios clés, puis ajustez franchises et plafonds pour atteindre un équilibre entre budget et niveau de protection.
+            </p>
+            <p className="site-card__body">
+              Pour éviter les écarts d’interprétation, recoupez avec <Link to="/assurance-cyber" className="topic-page__inline-link">les fondamentaux de l’assurance cyber</Link>, <Link to="/assurance-cyber-pme" className="topic-page__inline-link">la page PME</Link> et <Link to="/assurance-cyber-tpe" className="topic-page__inline-link">la page TPE</Link> avant validation finale.
+            </p>
           </div>
         </div>
       </section>

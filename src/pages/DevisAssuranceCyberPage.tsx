@@ -52,7 +52,7 @@ export default function DevisAssuranceCyberPage() {
         <section className="site-section site-section--muted">
           <div className="site-section__container">
             <article className="site-card">
-              <h2 className="site-card__title">Comment obtenir un devis assurance cyber fiable ?</h2>
+              <h2 className="site-card__title">Comment obtenir un devis d’assurance cyber ?</h2>
               <p className="site-card__body">
                 Obtenir un devis assurance cyber utile consiste à qualifier votre risque réel avant de parler prix. Les informations clés sont votre activité, la taille de l’entreprise, vos outils critiques, les données traitées et les garanties recherchées. L’objectif n’est pas un montant standard mais une proposition cohérente avec votre exposition opérationnelle et financière. Une bonne demande de devis permet d’éviter deux erreurs fréquentes: sous-couverture (angles morts au sinistre) et sur-couverture (coût inutile). Le devis doit ensuite être lu avec attention: garanties activables, exclusions, plafonds, franchises, délais et périmètre d’intervention. Vérifiez aussi les conditions de déclaration et la disponibilité des experts en cas d’incident, ainsi que le support prévu lors de la reprise. Cette méthode vous aide à comparer des offres sur des bases concrètes et à choisir un contrat réellement exploitable.
               </p>
@@ -75,7 +75,7 @@ export default function DevisAssuranceCyberPage() {
               <div className="site-section__eyebrow">
                 <span className="site-section__eyebrow-text">Avant le formulaire</span>
               </div>
-              <h2 className="site-section__title">Un devis assurance cyber utile repose sur quelques informations simples</h2>
+              <h2 className="site-section__title">Quelles informations sont nécessaires ?</h2>
               <p className="site-section__intro">
                 Plus la demande est claire, plus il est possible d’orienter l’entreprise
                 vers un niveau de couverture réellement cohérent.
@@ -132,7 +132,7 @@ export default function DevisAssuranceCyberPage() {
               <div className="site-section__eyebrow">
                 <span className="site-section__eyebrow-text">Tableau pratique</span>
               </div>
-              <h2 className="site-section__title">Informations utiles pour obtenir un devis</h2>
+              <h2 className="site-section__title">Informations utiles pour préparer un devis</h2>
             </div>
             <div className="site-card">
               <div className="seo-table-wrapper">
@@ -177,7 +177,7 @@ export default function DevisAssuranceCyberPage() {
               <div className="site-section__eyebrow">
                 <span className="site-section__eyebrow-text">Étapes du devis</span>
               </div>
-              <h2 className="site-section__title">Quelles sont les étapes entre la demande et la proposition ?</h2>
+              <h2 className="site-section__title">Que se passe-t-il après la demande ?</h2>
               <p className="site-section__intro">
                 Le délai dépend de la qualité des informations transmises. Plus votre demande est précise, plus l’analyse est rapide.
               </p>
@@ -225,7 +225,7 @@ export default function DevisAssuranceCyberPage() {
           <div className="site-section__container">
             <div className="site-card-grid site-card-grid--two">
               <article className="site-card">
-                <h3 className="site-card__title">Comparer les niveaux d’offre</h3>
+                <h2 className="site-card__title">Pourquoi comparer les garanties et franchises ?</h2>
                 <p className="site-card__body">
                   Avant ou après votre demande, vous pouvez comparer les différences entre
                   Basic, Silver et Gold pour mieux positionner votre besoin.
@@ -235,7 +235,7 @@ export default function DevisAssuranceCyberPage() {
                 </Link>
               </article>
               <article className="site-card">
-                <h3 className="site-card__title">Comprendre le budget à prévoir</h3>
+                <h2 className="site-card__title">Quels critères influencent le prix ?</h2>
                 <p className="site-card__body">
                   Le devis dépend de votre exposition réelle. Si vous voulez comprendre
                   ce qui fait varier le prix, la page dédiée vous donne le bon cadrage.
@@ -244,6 +244,15 @@ export default function DevisAssuranceCyberPage() {
                   Comprendre le prix d’une assurance cyber
                 </Link>
               </article>
+            </div>
+            <div className="site-card mt-6">
+              <h2 className="site-card__title">Quand demander un devis ?</h2>
+              <p className="site-card__body">
+                Le meilleur moment est avant un changement majeur: croissance, nouvel outil métier, externalisation d’un service critique, ou nouvelle exigence contractuelle client. Demander tôt permet d’ajuster la couverture avant qu’un incident ne survienne.
+              </p>
+              <p className="site-card__body">
+                Pour préparer votre arbitrage, vous pouvez relier cette étape avec <Link to="/assurance-cyber" className="topic-page__inline-link">la page assurance cyber entreprise</Link>, <Link to="/assurance-cyber-pme" className="topic-page__inline-link">les besoins PME</Link> et <Link to="/assurance-cyber-tpe" className="topic-page__inline-link">les priorités TPE</Link>.
+              </p>
             </div>
           </div>
         </section>

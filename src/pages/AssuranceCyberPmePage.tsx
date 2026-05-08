@@ -54,11 +54,13 @@ export default function AssuranceCyberPmePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Les points de fragilité d’une PME</span>
             </div>
-            <h2 className="site-section__title">Le vrai risque cyber PME apparaît dès qu’un incident bloque les flux quotidiens</h2>
+            <h2 className="site-section__title">Pourquoi les PME ont besoin d’une assurance cyber ?</h2>
             <p className="site-section__intro">
               Dans une PME, la dépendance à quelques outils suffit à créer un impact fort.
               Quand la messagerie, l&apos;ERP, la facturation ou les dossiers clients deviennent
-              indisponibles, le sujet devient immédiatement opérationnel et financier.
+              indisponibles, le sujet devient immédiatement opérationnel et financier. Une couverture
+              pertinente sert surtout à gagner du temps dans les premières heures: accès à des experts,
+              organisation des priorités, limitation des pertes et reprise encadrée.
             </p>
           </div>
 
@@ -96,7 +98,9 @@ export default function AssuranceCyberPmePage() {
               <p className="site-panel__body">
                 Une PME a besoin d&apos;une lecture claire du risque: combien coûte un arrêt,
                 quelle part du chiffre d&apos;affaires dépend des outils, quelles données sont
-                manipulées, et quelles conséquences elle peut supporter seule.
+                manipulées, et quelles conséquences elle peut supporter seule. Cette approche évite
+                de choisir une formule sur un prix isolé, sans vérifier les limites contractuelles
+                qui deviennent décisives en situation réelle.
               </p>
               <ul className="topic-page__list">
                 <li>Interruption d’activité et perte de revenus</li>
@@ -104,6 +108,12 @@ export default function AssuranceCyberPmePage() {
                 <li>Exposition aux données et à des tiers</li>
                 <li>Dommages subis et fraude selon les besoins réels</li>
               </ul>
+              <p className="site-panel__body">
+                Pour comparer les scénarios et les postes de coûts, consultez aussi{' '}
+                <Link to="/assurance-cyber-prix" className="topic-page__inline-link">la page dédiée au prix</Link>{' '}
+                et{' '}
+                <Link to="/assurance-cyber-que-couvre" className="topic-page__inline-link">le détail des garanties couvertes</Link>.
+              </p>
             </div>
           </div>
         </div>
@@ -115,7 +125,7 @@ export default function AssuranceCyberPmePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Les bonnes étapes</span>
             </div>
-            <h2 className="site-section__title">Comment cadrer une assurance cyber cohérente pour une PME ?</h2>
+            <h2 className="site-section__title">Quelles garanties privilégier ?</h2>
             <p className="site-section__intro">
               L’objectif n’est pas de multiplier les garanties, mais de couvrir ce qui
               déséquilibrerait réellement votre entreprise en cas d’incident.
@@ -153,7 +163,7 @@ export default function AssuranceCyberPmePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Scénarios PME fréquents</span>
             </div>
-            <h2 className="site-section__title">Quels risques cyber touchent le plus les PME ?</h2>
+            <h2 className="site-section__title">Quels risques cyber touchent les PME ?</h2>
           </div>
           <div className="site-card-grid site-card-grid--three">
             <article className="site-card">
@@ -179,6 +189,29 @@ export default function AssuranceCyberPmePage() {
             <p className="site-panel__eyebrow">Exigences clients et fournisseurs</p>
             <p className="site-panel__body">
               De plus en plus de PME doivent démontrer leur niveau de protection cyber dans des appels d’offres, contrats-cadres ou relations donneurs d’ordre. Une couverture lisible peut devenir un facteur de maintien d’activité commerciale.
+            </p>
+            <h2 className="site-panel__title">Combien peut coûter une interruption d’activité ?</h2>
+            <p className="site-panel__body">
+              Le coût dépend de la durée d’arrêt, du niveau de dépendance numérique et des flux commerciaux concernés. Même quelques jours peuvent générer un effet significatif sur la trésorerie d’une PME.
+            </p>
+            <h2 className="site-panel__title">Comment préparer son dossier ?</h2>
+            <p className="site-panel__body">
+              Préparez une vue claire de vos outils critiques, des données traitées, des mesures de sécurité et des scénarios redoutés pour accélérer la qualification du devis.
+            </p>
+            <h2 className="site-panel__title">Comment choisir une couverture adaptée ?</h2>
+            <p className="site-panel__body">
+              Comparez garanties, franchises et plafonds sur des cas concrets puis validez une formule cohérente avec vos contraintes opérationnelles.
+            </p>
+            <p className="site-panel__body">
+              Deux exemples concrets observés en PME: premièrement, une compromission de messagerie avec changement de RIB fournisseur peut entraîner des pertes directes et une mobilisation comptable urgente; deuxièmement, une indisponibilité ERP pendant plusieurs jours retarde livraisons et facturation, avec effet immédiat sur la trésorerie. Dans ces deux cas, la valeur d’un contrat tient à la rapidité d’activation des assistances et au niveau des garanties réellement mobilisables.
+            </p>
+            <p className="site-panel__body">
+              Pour finaliser votre choix, vous pouvez comparer{' '}
+              <Link to="/offres" className="topic-page__inline-link">les niveaux d’offres</Link>,{' '}
+              vérifier les{' '}
+              <Link to="/assurance-cyber" className="topic-page__inline-link">fondamentaux de l’assurance cyber entreprise</Link>{' '}
+              puis lancer une{' '}
+              <Link to="/devis-assurance-cyber" className="topic-page__inline-link">demande de devis détaillée</Link>.
             </p>
             <p className="site-panel__body">
               Sources de référence: <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a> et <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.

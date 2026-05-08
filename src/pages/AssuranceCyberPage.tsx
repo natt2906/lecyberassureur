@@ -146,7 +146,7 @@ export default function AssuranceCyberPage() {
               <div className="site-section__eyebrow">
                 <span className="site-section__eyebrow-text">Ce qui est couvert ou non</span>
               </div>
-              <h2 className="site-section__title">Ce qui est généralement couvert et ce qui est souvent exclu</h2>
+              <h2 className="site-section__title">Que couvre une assurance cyber ?</h2>
               <p className="site-section__intro">
                 Les contrats se ressemblent parfois sur la forme, mais diffèrent dans la façon dont les garanties se déclenchent.
               </p>
@@ -181,6 +181,12 @@ export default function AssuranceCyberPage() {
                 </table>
               </div>
             </div>
+            <div className="site-card mt-6">
+              <h2 className="site-card__title">Ce qui est souvent exclu ou limité</h2>
+              <p className="site-card__body">
+                Les exclusions fréquentes concernent les incidents antérieurs à la souscription, certains manquements graves aux mesures de sécurité prévues, ou des postes non inclus dans la formule choisie. Il faut aussi vérifier les franchises et plafonds qui peuvent limiter la protection économique réelle au moment du sinistre.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -190,7 +196,7 @@ export default function AssuranceCyberPage() {
               <div className="site-section__eyebrow">
                 <span className="site-section__eyebrow-text">Différence avec la RC Pro</span>
               </div>
-              <h2 className="site-section__title">Assurance cyber et RC Pro : quelles différences concrètes ?</h2>
+              <h2 className="site-section__title">Assurance cyber et RC Pro : quelles différences ?</h2>
             </div>
             <div className="site-card-grid site-card-grid--two">
               <article className="site-card">
@@ -220,6 +226,60 @@ export default function AssuranceCyberPage() {
               <p className="site-panel__body">
                 Pour cadrer votre niveau de protection, consultez aussi <a className="topic-page__inline-link" href="/assurance-cyber-prix">le prix d’une assurance cyber</a> et <a className="topic-page__inline-link" href="/devis-assurance-cyber">la page devis</a>.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Adaptation TPE/PME</span>
+              </div>
+              <h2 className="site-section__title">Comment adapter la couverture à une TPE ou PME ?</h2>
+              <p className="site-section__intro">
+                Le choix dépend des outils critiques, des données manipulées et du coût d’un arrêt. Une petite structure peut privilégier un socle de continuité, alors qu’une PME plus digitalisée peut étendre le périmètre.
+              </p>
+            </div>
+            <div className="site-card-grid site-card-grid--two">
+              <article className="site-card">
+                <h3 className="site-card__title">Pour une TPE</h3>
+                <p className="site-card__body">
+                  Commencer par les garanties essentielles et une franchise supportable pour protéger la trésorerie sur les scénarios les plus fréquents.
+                </p>
+                <a className="site-card__meta" href="/assurance-cyber-tpe">Voir l’angle TPE</a>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">Pour une PME</h3>
+                <p className="site-card__body">
+                  Ajouter une lecture fine des dépendances métiers, de l’exposition aux tiers et des obligations contractuelles avec clients et fournisseurs.
+                </p>
+                <a className="site-card__meta" href="/assurance-cyber-pme">Voir l’angle PME</a>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Étape suivante</span>
+              </div>
+              <h2 className="site-section__title">Comment demander un devis ?</h2>
+              <p className="site-section__intro">
+                Préparez activité, taille, outils critiques et garanties attendues pour obtenir un cadrage cohérent avec votre exposition réelle.
+              </p>
+            </div>
+            <div className="site-card-grid site-card-grid--two">
+              <article className="site-card">
+                <h3 className="site-card__title">Comprendre le budget</h3>
+                <a className="site-card__meta" href="/assurance-cyber-prix">Voir les facteurs de prix</a>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">Lancer la demande</h3>
+                <a className="site-card__meta" href="/devis-assurance-cyber">Demander un devis assurance cyber</a>
+              </article>
             </div>
           </div>
         </section>

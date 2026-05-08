@@ -497,6 +497,25 @@ export const articles: Article[] = [
           "Si vous souhaitez passer à l'étape opérationnelle, utilisez la page /devis-assurance-cyber puis comparez les formules sur /offres avant de finaliser la souscription.",
         ],
       },
+      {
+        title: 'Checklist et informations éditoriales',
+        body: [
+          "Checklist PME avant devis: lister les outils critiques, estimer le coût d'un arrêt, identifier les données sensibles, vérifier MFA/sauvegardes et comparer les garanties sur des cas concrets.",
+          "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+          "Références utiles: /qui-sommes-nous, /mentions-legales, /assurance-cyber, /assurance-cyber-prix, /devis-assurance-cyber.",
+        ],
+      },
+      {
+        title: 'Gouvernance interne PME : qui pilote le sujet cyberassurance ?',
+        body: [
+          "Dans beaucoup de PME, la gouvernance cyber est répartie entre direction générale, direction financière, IT interne ou prestataire externe. Cette répartition peut ralentir les décisions en cas d'incident si les rôles ne sont pas clarifiés à l'avance.",
+          "Une bonne pratique consiste à définir un responsable de coordination, un circuit de validation des décisions urgentes et un point de contact unique pour l'assureur et les experts mobilisés.",
+          "Le pilotage ne doit pas rester théorique. Il faut documenter qui déclare l'incident, qui valide les communications clients, qui arbitre les priorités de reprise et qui suit l'impact financier au quotidien.",
+          "Cette gouvernance améliore la valeur du contrat: les garanties deviennent plus rapidement activables, la collecte des preuves est mieux structurée et les délais de reprise diminuent.",
+          "En pratique, ce cadre peut être formalisé dans une note interne simple, revue au moins une fois par an, en lien avec les évolutions d'outils, de prestataires et d'obligations contractuelles.",
+          "Pour sécuriser cette coordination, la PME peut aussi prévoir un exercice court de simulation: incident messagerie, arrêt d'outil critique ou suspicion de fraude. Tester le rôle de chaque acteur avant crise améliore nettement la réactivité et la qualité des décisions lorsque l'événement survient réellement.",
+        ],
+      },
     ],
     takeaways: [
       "La PME est exposée à des impacts opérationnels et financiers en cascade.",

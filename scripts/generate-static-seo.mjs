@@ -68,14 +68,37 @@ function createKeywordList(keywords = '') {
     .slice(0, 6);
 }
 
+function linkifyText(value) {
+  const escaped = escapeHtml(value);
+  const withExternalLinks = escaped.replace(
+    /(https?:\/\/[^\s<]+)/g,
+    '<a href="$1" target="_blank" rel="noreferrer">$1</a>',
+  );
+
+  return withExternalLinks.replace(
+    /(^|\s)(\/[a-z0-9\-\/]+)(?=[\s.,;:!?)]|$)/gi,
+    (match, prefix, route) => `${prefix}<a href="${route}">${route}</a>`,
+  );
+}
+
 function renderStaticSections(sections = []) {
   return sections
     .map((section) => {
       const paragraphs = (section.body || [])
-        .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
+        .map((paragraph) => `<p>${linkifyText(paragraph)}</p>`)
         .join('');
+      const table = section.table
+        ? `<div class="seo-static-table-wrapper"><table class="seo-static-table"><thead><tr>${section.table.headers
+            .map((header) => `<th>${escapeHtml(header)}</th>`)
+            .join('')}</tr></thead><tbody>${section.table.rows
+            .map(
+              (row) =>
+                `<tr>${row.map((cell) => `<td>${linkifyText(String(cell))}</td>`).join('')}</tr>`,
+            )
+            .join('')}</tbody></table></div>`
+        : '';
 
-      return `<section><h2>${escapeHtml(section.title)}</h2>${paragraphs}</section>`;
+      return `<section><h2>${escapeHtml(section.title)}</h2>${paragraphs}${table}</section>`;
     })
     .join('');
 }
@@ -142,6 +165,10 @@ function injectStaticSnapshot(html, route) {
     '.seo-static-content p,.seo-static-content li{font-size:17px}',
     '.seo-static-content nav{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0}',
     '.seo-static-content a{color:#1d4ed8;font-weight:700}',
+    '.seo-static-table-wrapper{overflow-x:auto;margin:16px 0 8px}',
+    '.seo-static-table{width:100%;border-collapse:collapse;min-width:620px}',
+    '.seo-static-table th,.seo-static-table td{border:1px solid #d1d5db;padding:10px 12px;text-align:left;vertical-align:top}',
+    '.seo-static-table th{background:#eff6ff}',
     '</style>',
   ].join('');
 
@@ -490,6 +517,46 @@ function createStaticRoutes(content) {
         },
         toFaqStructuredData(content.homeFaqItems),
       ],
+      staticContent: {
+        intro:
+          "Page d'accueil dédiée à l'assurance cyber pour TPE et PME, avec un cadrage opérationnel des risques, des garanties et des étapes de devis.",
+        sections: [
+          {
+            title: 'Pourquoi assurer une TPE ou PME contre le risque cyber ?',
+            body: [
+              "Une petite ou moyenne entreprise dépend souvent de quelques outils clés: messagerie, facturation, ERP, CRM, partage documentaire et accès à distance. Quand l'un de ces outils devient indisponible, l'impact économique est immédiat.",
+              "L'assurance cyber permet de protéger la continuité d'activité en couvrant certains coûts d'interruption, d'expertise et de gestion de crise selon le contrat. Elle réduit le risque qu'un incident technique se transforme en choc durable pour la trésorerie.",
+              "Le sujet concerne autant les structures de service que les entreprises industrielles, commerciales ou artisanales. Dans chaque cas, la question n'est pas seulement de prévenir l'incident, mais aussi de savoir comment redémarrer vite, qui contacter, quels coûts peuvent être absorbés et quels coûts doivent être transférés.",
+              "Une approche utile consiste à relier la couverture à trois enjeux concrets: le maintien de la relation client, la reprise des opérations essentielles et la protection de la trésorerie pendant la période de perturbation. Cette logique évite une sous-couverture qui paraît économique avant sinistre mais devient coûteuse au moment critique.",
+            ],
+          },
+          {
+            title: 'Ce que couvre une assurance cyber',
+            body: [
+              "La couverture peut inclure l'interruption d'activité, des frais d'experts techniques et juridiques, ainsi que des postes complémentaires selon la formule. Les garanties varient selon le contrat, d'où l'importance de lire les exclusions, plafonds et franchises.",
+              "Une lecture utile du contrat relie toujours les garanties aux scénarios concrets: compromission de messagerie, rançongiciel, indisponibilité d'outil critique ou fraude selon options.",
+              "La qualité d'un contrat se mesure sur la capacité d'activation réelle des garanties: conditions de déclenchement explicites, accompagnement joignable rapidement, articulation claire entre assistance et indemnisation, et transparence sur les limites de prise en charge.",
+              "Avant de choisir, il est recommandé de comparer les formules sur un même scénario: arrêt de facturation pendant plusieurs jours, compromission d'un compte de direction, indisponibilité d'un logiciel central ou fuite de données. Cette méthode rend la comparaison plus factuelle que la simple lecture d'un tarif.",
+            ],
+          },
+          {
+            title: 'Comment obtenir un devis adapté ?',
+            body: [
+              "Un devis pertinent repose sur des informations simples: activité, taille, outils critiques, données traitées, niveau de sécurité et besoins de couverture. Ce cadrage permet de comparer les offres sur des bases concrètes.",
+              "Ressources internes: /assurance-cyber, /assurance-cyber-prix, /devis-assurance-cyber, /offres.",
+              "Le devis permet aussi d'identifier les arbitrages possibles: franchises plus hautes pour réduire la prime, plafonds renforcés sur les postes les plus sensibles, ou options ciblées selon le profil de risque. L'objectif n'est pas de tout couvrir, mais de protéger les zones qui peuvent fragiliser l'entreprise après un incident.",
+              "Si votre activité dépend fortement de la disponibilité numérique, comparez toujours les délais et conditions d'intervention prévus au contrat. La rapidité de mobilisation des experts peut avoir autant d'impact que le niveau d'indemnisation sur la continuité opérationnelle.",
+            ],
+          },
+          {
+            title: 'Méthode éditoriale et confiance',
+            body: [
+              "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances. Pour l'identité du cabinet et les informations réglementaires, consultez /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet.",
+              "Sources publiques: https://www.ssi.gouv.fr/, https://www.cybermalveillance.gouv.fr/, https://www.cnil.fr/, https://www.francenum.gouv.fr/.",
+            ],
+          },
+        ],
+      },
     },
     {
       path: '/qui-sommes-nous',
@@ -516,6 +583,55 @@ function createStaticRoutes(content) {
       keywords:
         "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
       structuredData: [toFaqStructuredData(content.assuranceCyberFaqItems)],
+      staticContent: {
+        intro:
+          "Guide complet pour comprendre le rôle d'une assurance cyber en entreprise, ses garanties, ses limites et les critères de choix adaptés aux TPE/PME.",
+        sections: [
+          { title: "Qu’est-ce qu’une assurance cyber entreprise ?", body: [
+            "Une assurance cyber entreprise couvre les conséquences financières et opérationnelles d'un incident numérique qui perturbe l'activité. Elle intervient quand la prévention ne suffit plus à éviter l'arrêt ou la dégradation des flux métiers.",
+            "Son utilité se mesure au moment du sinistre: continuité d'activité, mobilisation d'experts, gestion de crise et protection économique de la trésorerie."
+          ]},
+          { title: "Que couvre une assurance cyber ?", body: [
+            "Selon les contrats, la couverture peut inclure interruption d'activité, frais d'expertise technique, accompagnement juridique et autres garanties complémentaires.",
+            "La lecture doit porter sur les conditions d'activation, les plafonds, les franchises et la durée d'indemnisation.",
+            "Le dirigeant doit aussi vérifier la cohérence entre garanties et dépendances critiques: facturation, production, relation client, gestion des accès, obligations vis-à-vis de partenaires. Une garantie non alignée avec les flux réels apporte peu de valeur en cas de crise.",
+            "La transparence contractuelle est un critère central: quels frais sont pris en charge, à quelles conditions, sur quelle durée, avec quelles limites. Cette lisibilité évite les malentendus lors de la déclaration de sinistre."
+          ],
+          table: {
+            headers: ["Garanties généralement couvertes", "Limites fréquentes ou exclusions"],
+            rows: [
+              ["Interruption d'activité selon conditions du contrat", "Durée d'indemnisation limitée ou délais de carence"],
+              ["Frais d'experts techniques pour analyse et remédiation", "Incidents antérieurs à la souscription non couverts"],
+              ["Accompagnement juridique et gestion de crise selon formule", "Non-respect de certaines exigences de sécurité prévues au contrat"],
+              ["Assistance à la reprise d'activité", "Plafonds insuffisants face à un incident long"],
+            ],
+          }},
+          { title: "Ce qui est souvent exclu ou limité", body: [
+            "Les exclusions fréquentes concernent les incidents antérieurs à la souscription, certains défauts de sécurité prévus au contrat, ou des postes non inclus dans la formule choisie.",
+            "Une vérification fine des limites évite les mauvaises surprises au moment de la déclaration."
+          ]},
+          { title: "Assurance cyber et RC Pro : quelles différences ?", body: [
+            "La RC Pro couvre la responsabilité civile professionnelle générale. L'assurance cyber cible les conséquences spécifiques des incidents numériques.",
+            "Les deux approches peuvent être complémentaires, mais leurs mécanismes et périmètres sont différents."
+          ]},
+          { title: "Comment adapter la couverture à une TPE ou PME ?", body: [
+            "Une TPE peut prioriser un socle de continuité simple, alors qu'une PME plus digitalisée doit analyser davantage ses dépendances, ses tiers et ses obligations contractuelles.",
+            "Liens utiles: /assurance-cyber-tpe, /assurance-cyber-pme, /assurance-cyber-prix, /offres.",
+            "Pour une TPE, la priorité est souvent la reprise rapide des opérations clés avec un budget maîtrisé. Pour une PME, il faut ajouter une lecture plus fine des flux inter-équipes, des obligations clients/fournisseurs et des risques liés aux prestataires.",
+            "Dans les deux cas, un contrat utile répond à des scénarios concrets définis en amont: arrêt partiel d'activité, indisponibilité d'un logiciel métier, fraude par compromission de compte ou exposition de données."
+          ]},
+          { title: "Comment demander un devis ?", body: [
+            "Préparez activité, taille, outils critiques, données traitées et scénarios de risque pour obtenir un devis cohérent avec l'exposition réelle.",
+            "Demande: /devis-assurance-cyber. Références: https://www.ssi.gouv.fr/ et https://www.cybermalveillance.gouv.fr/.",
+            "Un dossier bien préparé améliore la qualité de la comparaison entre offres et limite les angles morts. Il faut notamment préciser les outils indispensables au chiffre d'affaires et les conséquences d'un arrêt de quelques jours.",
+            "Après réception des propositions, vérifiez poste par poste la cohérence entre prime, franchises, plafonds et exclusions. Cette relecture est essentielle pour sécuriser la décision de souscription."
+          ]},
+          { title: "Bloc E-E-A-T", body: [
+            "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+            "Voir /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet."
+          ]},
+        ],
+      },
     },
     {
       path: '/assurance-cyber-prix',
@@ -525,6 +641,56 @@ function createStaticRoutes(content) {
       keywords:
         'assurance cyber prix pme, prix assurance cyber, tarif assurance cyber entreprise, devis assurance cyber, budget assurance cyber',
       structuredData: [toFaqStructuredData(content.assuranceCyberPriceFaqItems)],
+      staticContent: {
+        intro:
+          "Page de référence pour comprendre le prix d'une assurance cyber, les critères de tarification et les arbitrages utiles pour TPE/PME.",
+        sections: [
+          { title: "Combien coûte une assurance cyber ?", body: [
+            "Il n'existe pas de tarif unique. Le montant dépend du profil de risque, du niveau de garanties choisi et de la structure financière de l'entreprise.",
+            "La comparaison doit intégrer plafonds, franchises et mécanismes d'indemnisation."
+          ]},
+          { title: "Pourquoi les prix varient selon les entreprises ?", body: [
+            "Deux entreprises proches en taille peuvent avoir des prix différents selon leur dépendance aux outils numériques, leur secteur et les données traitées.",
+            "Le niveau de sécurité de base et les scénarios redoutés influencent également le cadrage."
+          ]},
+          { title: "Quels critères analysent les assureurs ?", body: [
+            "Taille, chiffre d'affaires, activité, dépendance IT, mesures de sécurité, garanties demandées et historique de risques sont des éléments structurants.",
+            "Ces critères orientent la profondeur du contrat et la qualité de la proposition."
+          ]},
+          { title: "Plafond, franchise, garanties : quel impact sur le prix ?", body: [
+            "Une franchise plus élevée peut réduire la prime mais augmente le reste à charge. Un plafond trop bas peut limiter la protection en cas de sinistre majeur.",
+            "L'équilibre dépend de la capacité d'absorption financière de l'entreprise."
+          ]},
+          { title: "Facteurs qui influencent le prix", body: [
+            "Tableau inclus sur la page: taille, secteur, dépendance numérique, niveau de sécurité, franchises/plafonds, options complémentaires.",
+            "Tableau complémentaire: exemples de profils TPE/PME et points d'attention."
+          ],
+          table: {
+            headers: ["Facteur analysé", "Impact possible sur le prix", "Point de vigilance"],
+            rows: [
+              ["Taille de l'entreprise et chiffre d'affaires", "Le besoin de capacité d'indemnisation peut augmenter", "Vérifier l'adéquation entre plafond et exposition réelle"],
+              ["Secteur d'activité", "Certains secteurs sont plus exposés à l'arrêt numérique", "Comparer les exclusions spécifiques au secteur"],
+              ["Dépendance aux outils numériques", "Forte dépendance = enjeu continuité plus élevé", "Ne pas sous-estimer le coût d'un arrêt court"],
+              ["Niveau de sécurité opérationnelle", "Des mesures solides peuvent stabiliser le risque", "Documenter les pratiques réellement appliquées"],
+              ["Franchise et plafonds", "Franchise haute peut réduire la prime", "Évaluer le reste à charge supportable"],
+            ],
+          }},
+          { title: "Comment réduire le coût sans réduire la protection essentielle ?", body: [
+            "Priorisez les risques majeurs, améliorez les mesures minimales de sécurité, comparez les garanties sur des scénarios concrets et ajustez les franchises de manière réaliste.",
+            "Liens internes: /assurance-cyber, /offres, /devis-assurance-cyber, /assurance-cyber-que-couvre."
+          ]},
+          { title: "Comment obtenir un tarif adapté ?", body: [
+            "Construisez un devis détaillé, relisez les exclusions et validez l'adéquation entre budget et continuité d'activité.",
+            "Sources: https://www.cnil.fr/ et https://www.francenum.gouv.fr/.",
+            "Le meilleur tarif n'est pas nécessairement le plus bas, mais celui qui conserve les protections essentielles sur les scénarios critiques de votre entreprise. Une économie apparente peut coûter plus cher si les garanties décisives sont absentes.",
+            "Avant validation, confrontez le contrat à deux ou trois cas de sinistre plausibles. Cette simulation simple permet de vérifier si le budget et le niveau de couverture restent cohérents."
+          ]},
+          { title: "Bloc E-E-A-T", body: [
+            "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+            "Voir /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet."
+          ]},
+        ],
+      },
     },
     {
       path: '/devis-assurance-cyber',
@@ -534,6 +700,58 @@ function createStaticRoutes(content) {
       keywords:
         'devis assurance cyber, demande devis assurance cyber, devis cyber entreprise, prix assurance cyber devis, formulaire assurance cyber',
       structuredData: [toFaqStructuredData(content.devisAssuranceCyberFaqItems)],
+      staticContent: {
+        intro:
+          "Page conversion pour demander un devis d'assurance cyber en transmettant les informations utiles à une analyse fiable et rapide.",
+        sections: [
+          { title: "Comment obtenir un devis d’assurance cyber ?", body: [
+            "Un devis pertinent commence par un cadrage de l'exposition réelle de l'entreprise: activité, taille, dépendances numériques, données sensibles et priorités de couverture.",
+            "La qualité de ces informations accélère l'analyse et améliore la comparaison des offres."
+          ]},
+          { title: "Quelles informations sont nécessaires ?", body: [
+            "Préparez activité, chiffre d'affaires, outils critiques, mesures de sécurité, scénarios redoutés et objectifs de couverture.",
+            "Ces données permettent d'évaluer les garanties vraiment utiles et les limites à vérifier."
+          ]},
+          { title: "Informations utiles pour préparer un devis", body: [
+            "Tableau inclus: informations à préparer et utilité de chaque élément pour qualifier le risque.",
+            "L'objectif est d'éviter les propositions génériques et de réduire les écarts de compréhension."
+          ],
+          table: {
+            headers: ["Information à préparer", "Pourquoi c'est utile", "Exemple concret"],
+            rows: [
+              ["Activité et organisation", "Comprendre les flux métiers critiques", "Entreprise de service dépendante à la messagerie et au CRM"],
+              ["Taille et chiffre d'affaires", "Évaluer les besoins de plafonds", "PME multi-sites avec processus de facturation quotidien"],
+              ["Outils et dépendances numériques", "Identifier les points de rupture", "ERP et logiciel de caisse indispensables à l'encaissement"],
+              ["Mesures de sécurité en place", "Qualifier le niveau de maturité", "Sauvegardes, MFA, gestion des accès administrateurs"],
+              ["Scénarios redoutés", "Cadrer les garanties prioritaires", "Rançongiciel bloquant la production pendant 3 jours"],
+            ],
+          }},
+          { title: "Quels critères influencent le prix ?", body: [
+            "Les critères principaux sont la dépendance aux outils numériques, les données traitées, les garanties retenues, les plafonds et franchises, ainsi que le niveau de sécurité.",
+            "Voir aussi /assurance-cyber-prix."
+          ]},
+          { title: "Pourquoi comparer les garanties et franchises ?", body: [
+            "Deux offres au prix proche peuvent produire des protections très différentes selon les exclusions et les mécanismes d'indemnisation.",
+            "Comparer uniquement la prime annuelle peut conduire à une sous-protection."
+          ]},
+          { title: "Que se passe-t-il après la demande ?", body: [
+            "Après qualification, une proposition est construite avec des arbitrages de couverture adaptés au profil de risque.",
+            "Cette étape sert à valider cohérence budgétaire et lisibilité contractuelle avant souscription.",
+            "Le rôle du courtier consiste à expliciter les différences entre formules: franchises, plafonds, exclusions et conditions de déclenchement. Cette pédagogie réduit le risque de choisir un contrat uniquement sur le prix.",
+            "Lorsque plusieurs offres sont disponibles, une comparaison scénario par scénario facilite la décision: continuité d'activité, prise en charge des frais techniques, appui juridique et niveau d'accompagnement pendant la crise."
+          ]},
+          { title: "Quand demander un devis ?", body: [
+            "Avant une croissance, un changement d'outil critique, une exigence client ou une externalisation majeure. Anticiper réduit le risque d'angles morts.",
+            "Source utile: https://www.cybermalveillance.gouv.fr/. Liens internes: /offres, /assurance-cyber, /assurance-cyber-pme.",
+            "Il est aussi pertinent de demander un devis avant un renouvellement de contrat, une évolution du modèle économique ou l'ouverture de nouveaux accès distants. Ces changements modifient souvent l'exposition réelle.",
+            "Demander tôt permet de comparer calmement les options et d'ajuster la couverture sans pression opérationnelle."
+          ]},
+          { title: "Bloc E-E-A-T", body: [
+            "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+            "Voir /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet."
+          ]},
+        ],
+      },
     },
     {
       path: '/assurance-cyber-obligatoire',
@@ -561,6 +779,42 @@ function createStaticRoutes(content) {
       keywords:
         'assurance cyber pme, devis assurance cyber pme, couverture cyber pme, cyber risques pme, prix assurance cyber pme',
       structuredData: [toFaqStructuredData(content.assuranceCyberPmeFaqItems)],
+      staticContent: {
+        intro:
+          "Page dédiée aux besoins spécifiques des PME: exposition opérationnelle, risques majeurs, garanties pertinentes et méthode de choix.",
+        sections: [
+          { title: "Pourquoi les PME ont besoin d’une assurance cyber ?", body: [
+            "Les PME cumulent outils métiers, données clients, flux de facturation et dépendances prestataires. Un incident cyber peut donc impacter rapidement la continuité d'activité et la trésorerie.",
+            "La couverture cyber aide à absorber ces conséquences et à structurer la reprise."
+          ]},
+          { title: "Quels risques cyber touchent les PME ?", body: [
+            "Compromission de messagerie, rançongiciel, indisponibilité d'ERP, fraude et exposition de données figurent parmi les scénarios fréquents.",
+            "Ces risques créent des coûts techniques, commerciaux et parfois juridiques."
+          ]},
+          { title: "Quelles garanties privilégier ?", body: [
+            "Interruption d'activité, frais d'expertise, réponse de crise, responsabilités liées aux données et options complémentaires selon profil.",
+            "Les garanties doivent être reliées à des cas d'usage concrets."
+          ]},
+          { title: "Combien peut coûter une interruption d’activité ?", body: [
+            "Le coût dépend de la durée d'arrêt, du poids des outils critiques et des flux d'encaissement interrompus.",
+            "Même une interruption courte peut déstabiliser une PME avec trésorerie tendue."
+          ]},
+          { title: "Comment préparer son dossier ?", body: [
+            "Rassembler informations d'activité, dépendances numériques, mesures de sécurité et scénarios redoutés améliore la qualité du devis.",
+            "Liens internes: /assurance-cyber-risques, /assurance-cyber-prix, /devis-assurance-cyber."
+          ]},
+          { title: "Comment choisir une couverture adaptée ?", body: [
+            "Comparer garanties, exclusions, plafonds et franchises sur des scénarios PME réels. Éviter le choix uniquement par prix.",
+            "Exemples de sinistres PME: fraude via messagerie compromise, arrêt de facturation après incident ERP.",
+            "Une décision robuste inclut une revue des obligations clients et fournisseurs, notamment lorsque des clauses de sécurité ou de continuité sont prévues dans les contrats commerciaux.",
+            "Pour renforcer votre analyse, comparez aussi /assurance-cyber, /offres, /assurance-cyber-que-couvre et /devis-assurance-cyber avant arbitrage final."
+          ]},
+          { title: "Bloc E-E-A-T", body: [
+            "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+            "Voir /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet. Sources: https://www.ssi.gouv.fr/ et https://www.francenum.gouv.fr/."
+          ]},
+        ],
+      },
     },
     {
       path: '/assurance-cyber-tpe',
@@ -570,6 +824,40 @@ function createStaticRoutes(content) {
       keywords:
         'assurance cyber tpe, assurance cyber petite entreprise, devis assurance cyber tpe, cyber risque tpe, assurance cyber startup',
       structuredData: [toFaqStructuredData(content.assuranceCyberTpeFaqItems)],
+      staticContent: {
+        intro:
+          "Page pédagogique pour expliquer aux TPE les risques cyber concrets, les garanties prioritaires et la façon d'obtenir une couverture simple.",
+        sections: [
+          { title: "Une TPE est-elle vraiment exposée au risque cyber ?", body: [
+            "Oui. Une petite structure peut être fortement dépendante à la messagerie, à la facturation et au cloud, avec peu de ressources internes pour absorber un incident.",
+            "Le risque n'est pas la taille technique mais l'impact économique d'un arrêt."
+          ]},
+          { title: "Que couvre une assurance cyber pour TPE ?", body: [
+            "Interruption d'activité, frais d'experts, remise en état et autres garanties selon formule.",
+            "Le contrat doit rester lisible et adapté à la réalité opérationnelle de la TPE."
+          ]},
+          { title: "Quelles garanties sont prioritaires avec un petit budget ?", body: [
+            "Prioriser la continuité d'activité, l'accès rapide à des experts et des franchises supportables.",
+            "Comparer le socle essentiel avant d'ajouter des options."
+          ]},
+          { title: "Quel prix prévoir ?", body: [
+            "Le prix dépend de l'activité, de la dépendance numérique et du niveau de garanties. Un devis bien cadré évite les écarts entre budget et protection réelle.",
+            "Voir /assurance-cyber-prix."
+          ]},
+          { title: "Comment obtenir une couverture simple ?", body: [
+            "Préparer un dossier court mais précis: outils critiques, données, mesures de sécurité, scénarios redoutés.",
+            "Liens internes: /devis-assurance-cyber, /offres, /assurance-cyber."
+          ]},
+          { title: "Pourquoi ne pas attendre un incident ?", body: [
+            "La couverture doit être active avant l'événement. Anticiper permet de protéger la trésorerie et de réduire le temps de crise.",
+            "Exemples TPE: faux virement après compromission email, outil de facturation indisponible plusieurs jours."
+          ]},
+          { title: "Bloc E-E-A-T", body: [
+            "Mis à jour le 8 mai 2026. Rédigé par l'équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances.",
+            "Voir /qui-sommes-nous et /mentions-legales. Numéro ORIAS: se référer aux mentions légales du cabinet. Source: https://www.cybermalveillance.gouv.fr/."
+          ]},
+        ],
+      },
     },
     {
       path: '/assurance-cyber-risques',

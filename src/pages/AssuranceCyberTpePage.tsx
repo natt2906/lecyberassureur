@@ -54,7 +54,7 @@ export default function AssuranceCyberTpePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Pourquoi une TPE est concernée</span>
             </div>
-            <h2 className="site-section__title">La petite taille ne réduit pas le risque, elle réduit surtout la capacité à absorber le choc</h2>
+            <h2 className="site-section__title">Une TPE est-elle vraiment exposée au risque cyber ?</h2>
             <p className="site-section__intro">
               Une petite structure peut être très digitale avec peu de moyens internes.
               C’est précisément ce qui rend un incident cyber plus critique: tout repose
@@ -115,7 +115,7 @@ export default function AssuranceCyberTpePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Pour avancer</span>
             </div>
-            <h2 className="site-section__title">Les deux sujets à cadrer en priorité pour une TPE</h2>
+            <h2 className="site-section__title">Que couvre une assurance cyber pour TPE ?</h2>
             <p className="site-section__intro">
               Une petite entreprise n’a pas besoin d’un dispositif compliqué. Elle a besoin
               d’une vision claire de son risque et d’un devis lisible.
@@ -153,7 +153,7 @@ export default function AssuranceCyberTpePage() {
             <div className="site-section__eyebrow">
               <span className="site-section__eyebrow-text">Budget et simplicité</span>
             </div>
-            <h2 className="site-section__title">Quelle couverture cyber reste essentielle pour une TPE ?</h2>
+            <h2 className="site-section__title">Quelles garanties sont prioritaires avec un petit budget ?</h2>
           </div>
           <div className="site-card-grid site-card-grid--two">
             <article className="site-card">
@@ -188,6 +188,24 @@ export default function AssuranceCyberTpePage() {
             </p>
             <p className="site-panel__body">
               Sources utiles: <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a> et <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.
+            </p>
+            <h2 className="site-panel__title">Quel prix prévoir ?</h2>
+            <p className="site-panel__body">
+              Le prix varie selon l’activité, la dépendance aux outils et le niveau de garanties retenu. Une TPE gagne à comparer le coût annuel avec le coût potentiel d’un arrêt.
+            </p>
+            <p className="site-panel__body">
+              Pour cadrer ce budget, consultez aussi <Link to="/assurance-cyber-prix" className="topic-page__inline-link">la page prix assurance cyber</Link> et <Link to="/offres" className="topic-page__inline-link">les niveaux d’offres</Link>.
+            </p>
+            <h2 className="site-panel__title">Comment obtenir une couverture simple ?</h2>
+            <p className="site-panel__body">
+              Un dossier clair, avec activité, outils critiques et besoins essentiels, permet d’obtenir une proposition lisible sans complexité inutile.
+            </p>
+            <p className="site-panel__body">
+              Vous pouvez ensuite comparer les garanties avec <Link to="/assurance-cyber-que-couvre" className="topic-page__inline-link">le détail des couvertures</Link> et valider votre demande sur <Link to="/devis-assurance-cyber" className="topic-page__inline-link">la page devis</Link>.
+            </p>
+            <h2 className="site-panel__title">Pourquoi ne pas attendre un incident ?</h2>
+            <p className="site-panel__body">
+              La couverture doit être active avant l’événement. Une souscription anticipée protège la continuité d’activité et réduit le stress de décision en crise.
             </p>
           </div>
         </div>

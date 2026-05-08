@@ -2,6 +2,7 @@ import { Suspense, lazy } from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import TrustBar from '../components/TrustBar';
+import EditorialTrustNote from '../components/EditorialTrustNote';
 import PartnersSection from '../components/PartnersSection';
 import ContactForm from '../components/ContactForm';
 import { homeFaqItems } from '../data/faqs';
@@ -86,26 +87,38 @@ export default function Home() {
       <TrustBar />
       <section className="site-section">
         <div className="site-section__container">
-          <article className="site-card">
-            <h2 className="site-card__title">Assurance cyber TPE/PME : définition, garanties et limites à connaître</h2>
-            <p className="site-card__body">
-              Une assurance cyber est un contrat qui aide l’entreprise à absorber les conséquences économiques d’un incident numérique: interruption d’activité, frais d’experts techniques, dépenses juridiques, atteinte aux données, et autres postes selon la formule retenue. Pour une TPE ou une PME, l’objectif principal est de préserver la continuité d’activité et la trésorerie quand les outils critiques sont indisponibles.
+          <div className="site-card-grid site-card-grid--three">
+            <article className="site-card">
+              <h2 className="site-card__title">Pourquoi assurer une TPE ou PME contre le risque cyber ?</h2>
+              <p className="site-card__body">
+                Une TPE ou une PME dépend souvent d’un nombre limité d’outils: messagerie, facturation, ERP, caisse, CRM, stockage cloud. Quand un incident bloque ces briques, l’impact n’est pas seulement technique: l’activité ralentit, les encaissements se décalent et la relation client se tend. L’assurance cyber aide à absorber ces conséquences financières et à mobiliser rapidement les bons experts. L’objectif est de réduire le temps de crise et d’éviter qu’un incident ponctuel se transforme en fragilité durable. Cette logique est particulièrement utile pour les structures qui n’ont pas d’équipe cyber interne dédiée. En pratique, la couverture devient un outil de continuité: elle permet de financer l’assistance technique, l’appui juridique et la coordination de crise sans attendre. Pour aller plus loin sur les scénarios concrets, consultez <a className="topic-page__inline-link" href="/assurance-cyber-risques">les risques cyber en entreprise</a> et <a className="topic-page__inline-link" href="/articles/cyberassurance-pour-pme">notre guide cyberassurance pour PME</a>.
+              </p>
+            </article>
+            <article className="site-card">
+              <h2 className="site-card__title">Ce que couvre une assurance cyber</h2>
+              <p className="site-card__body">
+                Une assurance cyber peut couvrir l’interruption d’activité, les frais d’expertise technique, des coûts juridiques liés aux données, et d’autres postes selon le niveau de formule choisi. Les contrats varient: il faut comparer les garanties activables, les exclusions, les plafonds et les franchises. Le point clé est la cohérence entre la couverture et vos scénarios de risque concrets: rançongiciel, compromission de messagerie, indisponibilité d’un outil critique, fraude selon options. Certaines entreprises donnent la priorité à la reprise opérationnelle rapide, d’autres à la protection financière face aux incidents longs. Pour cadrer précisément le périmètre, consultez <a className="topic-page__inline-link" href="/assurance-cyber">la page assurance cyber</a> puis <a className="topic-page__inline-link" href="/assurance-cyber-que-couvre">les garanties détaillées</a>. Vous pouvez aussi comparer les profils <a className="topic-page__inline-link" href="/assurance-cyber-tpe">TPE</a> et <a className="topic-page__inline-link" href="/assurance-cyber-pme">PME</a> avant de sélectionner un niveau de couverture.
+              </p>
+            </article>
+            <article className="site-card">
+              <h2 className="site-card__title">Comment obtenir un devis adapté ?</h2>
+              <p className="site-card__body">
+                Un devis utile repose sur des informations simples: activité, taille, outils critiques, données traitées, mesures de sécurité, garanties attendues. Cette préparation permet de comparer des offres sur des bases concrètes et d’éviter les contrats trop courts ou surdimensionnés. Un bon devis ne se limite pas à un montant mensuel: il précise les conditions de déclenchement, le niveau de franchise, les plafonds et les options complémentaires. Pour estimer le budget, consultez <a className="topic-page__inline-link" href="/assurance-cyber-prix">les critères de prix</a>, puis lancez une demande sur <a className="topic-page__inline-link" href="/devis-assurance-cyber">la page devis assurance cyber</a>. Vous pouvez ensuite affiner le niveau de protection via <a className="topic-page__inline-link" href="/offres">les offres</a> et vérifier les différences avec <a className="topic-page__inline-link" href="/assurance-cyber-obligatoire">les obligations éventuelles selon votre contexte contractuel</a>.
+              </p>
+            </article>
+          </div>
+          <div className="site-panel site-panel--accent topic-page__panel">
+            <p className="site-panel__eyebrow">Sources fiables</p>
+            <p className="site-panel__body">
+              Références utiles: <a className="topic-page__inline-link" href="https://www.ssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a>, <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.
             </p>
-            <p className="site-card__body">
-              Les bénéfices concrets sont opérationnels: accès à des interlocuteurs mobilisables rapidement, réduction du temps de crise, meilleure capacité à reprendre l’activité, et visibilité financière plus claire sur les scénarios les plus lourds. Les garanties varient selon les contrats: il faut lire précisément les plafonds, franchises, conditions de déclenchement et exclusions.
-            </p>
-            <p className="site-card__body">
-              Le prix dépend de critères structurants: activité, chiffre d’affaires, dépendance aux systèmes d’information, données traitées, mesures de sécurité minimales (MFA, sauvegardes, gestion des accès), et niveau de protection souhaité. Le bon réflexe est de comparer les offres sur le périmètre réel, puis de demander un devis aligné avec l’exposition de l’entreprise.
-            </p>
-            <p className="site-card__body">
-              Méthode de cadrage recommandée: 1) identifier vos scénarios de sinistre critiques, 2) estimer l’impact financier d’un arrêt, 3) vérifier les garanties clés et exclusions, 4) arbitrer entre budget et profondeur de couverture, 5) formaliser un devis. Pour continuer, consultez <a className="topic-page__inline-link" href="/assurance-cyber">la vue d’ensemble assurance cyber</a>, <a className="topic-page__inline-link" href="/assurance-cyber-que-couvre">ce que couvre le contrat</a>, <a className="topic-page__inline-link" href="/assurance-cyber-prix">les critères de prix</a> et <a className="topic-page__inline-link" href="/offres">la comparaison des offres</a>.
-            </p>
-            <p className="site-card__body">
-              Références publiques: <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a>.
-            </p>
-          </article>
+          </div>
         </div>
       </section>
+      <EditorialTrustNote
+        updatedAt="8 mai 2026"
+        reviewer="Rédigé par l’équipe Le Cyberassureur"
+      />
       <PartnersSection />
       <Suspense fallback={null}>
         <SeoEntryPointsSection />

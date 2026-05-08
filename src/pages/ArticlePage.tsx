@@ -131,6 +131,17 @@ export default function ArticlePage() {
                   <p className="leading-relaxed text-gray-300">
                     Une PME doit choisir une assurance cyber en fonction de son exposition réelle: dépendance aux outils numériques, coût d’un arrêt d’activité, sensibilité des données et capacité de trésorerie à absorber un incident. Le bon contrat n’est pas seulement celui qui affiche un tarif attractif, mais celui dont les garanties restent activables sur vos scénarios concrets: rançongiciel, compromission de messagerie, fraude ou indisponibilité d’un outil métier. Avant de souscrire, comparez les exclusions, plafonds, franchises et délais d’intervention. Ensuite, validez le niveau de couverture avec un devis détaillé. Cette approche réduit les angles morts et améliore la continuité d’activité si un sinistre survient. Elle facilite aussi les échanges avec clients et partenaires qui demandent des preuves de maîtrise du risque cyber, notamment dans les appels d’offres et contrats-cadres.
                   </p>
+                  <h3 className="mb-4 mt-6 text-xl font-bold text-white">Checklist rapide PME avant devis</h3>
+                  <ul className="list-disc space-y-2 pl-6 text-gray-300">
+                    <li>Identifier les outils critiques (messagerie, ERP, facturation, CRM)</li>
+                    <li>Estimer le coût d’un arrêt de 24 à 72 heures</li>
+                    <li>Cartographier les données sensibles traitées</li>
+                    <li>Vérifier les mesures minimales de sécurité (MFA, sauvegardes)</li>
+                    <li>Comparer garanties, franchises et plafonds sur des scénarios concrets</li>
+                  </ul>
+                  <p className="mt-6 leading-relaxed text-gray-300">
+                    Mis à jour le 8 mai 2026. Rédigé par l’équipe Le Cyberassureur. Le Cyberassureur, marque spécialisée de Prorisk Assurances. Pour le cadre société et réglementaire, consultez <Link className="text-cyan-400 hover:text-cyan-300" to="/qui-sommes-nous">qui sommes-nous</Link> et <Link className="text-cyan-400 hover:text-cyan-300" to="/mentions-legales">mentions légales</Link>. Numéro ORIAS: se référer aux mentions légales officielles du cabinet.
+                  </p>
                 </section>
               ) : null}
 
