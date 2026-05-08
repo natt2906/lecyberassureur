@@ -495,7 +495,7 @@ function createStaticRoutes(content) {
       path: '/qui-sommes-nous',
       title: 'Qui sommes-nous ? | Le Cyberassureur',
       description:
-        "Découvrez Le Cyberassureur, la marque spécialisée de Prorisk Assurances dédiée à l'assurance cyber entreprise, à la protection financière et à l'accompagnement des organisations face aux cyber-risques.",
+        "Découvrez Le Cyberassureur, marque de Prorisk Assurances: expertise cyber, méthode de conseil et accompagnement dédié aux entreprises françaises.",
       keywords:
         'qui sommes nous cyberassurance, le cyberassureur, prorisk assurances, courtier assurance cyber entreprise, specialiste assurance cyber',
     },
@@ -539,7 +539,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-obligatoire',
     title: 'Assurance cyber obligatoire ? | Le Cyberassureur',
       description:
-        "Assurance cyber obligatoire ou non : découvrez ce qu'une entreprise doit vérifier, quand la couverture n'est pas imposée par la loi mais devient nécessaire en pratique, et quels profils sont les plus exposés.",
+        "Assurance cyber obligatoire ou non: vérifiez vos obligations légales, contractuelles et les cas où une couverture devient nécessaire en pratique.",
       keywords:
         'assurance cyber obligatoire, assurance cyber obligatoire ou non, obligation assurance cyber entreprise, assurance cyber profession reglementee',
       structuredData: [toFaqStructuredData(content.assuranceCyberMandatoryFaqItems)],
@@ -575,7 +575,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-risques',
     title: 'Risques cyber entreprise | Le Cyberassureur',
       description:
-        "Identifiez les cyber-risques les plus coûteux pour une entreprise, les impacts concrets sur l'activité et la manière dont une couverture adaptée peut limiter la perte.",
+        "Cyber-risques entreprise: identifiez les impacts les plus coûteux, les scénarios critiques et les garanties d’assurance utiles pour limiter les pertes.",
       keywords:
         'cyber risques entreprise, risques cyber PME, cout cyberattaque entreprise, exposition cyber entreprise, couverture cyber risques',
       structuredData: [toFaqStructuredData(content.cyberRisksFaqItems)],

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import ContactForm from './ContactForm';
+import EditorialTrustNote from './EditorialTrustNote';
 import FAQ from './FAQ';
 import Footer from './Footer';
 import Header from './Header';
@@ -17,6 +18,7 @@ type TopicPageLayoutProps = {
     question: string;
     answer: string;
   };
+  showTrustNote?: boolean;
   children: ReactNode;
 };
 
@@ -29,6 +31,7 @@ export default function TopicPageLayout({
   faqTitle,
   faqIntro,
   directAnswer,
+  showTrustNote = false,
   children,
 }: TopicPageLayoutProps) {
   return (
@@ -53,6 +56,12 @@ export default function TopicPageLayout({
               </article>
             </div>
           </section>
+        )}
+        {showTrustNote && (
+          <EditorialTrustNote
+            updatedAt="8 mai 2026"
+            reviewer="Relu par un conseiller spécialisé en assurance cyber"
+          />
         )}
 
         {children}

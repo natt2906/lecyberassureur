@@ -39,8 +39,9 @@ export default function AssuranceCyberTpePage() {
       directAnswer={{
         question: "Qu’est-ce qu’une assurance cyber pour TPE ?",
         answer:
-          "Une assurance cyber pour TPE protège la petite entreprise contre les conséquences financières d’un incident numérique : arrêt d’activité, frais d’experts, remise en état, atteinte aux données, et parfois fraude selon la formule. Elle ne remplace pas la cybersécurité, mais prend le relais quand la prévention ne suffit plus. Pour une TPE, l’objectif principal est de préserver la trésorerie, redémarrer vite et éviter qu’un incident technique devienne une crise commerciale. Le niveau de couverture dépend surtout de vos outils critiques, des données manipulées et du coût d’un arrêt de quelques jours.",
+          "Une assurance cyber pour TPE protège la petite structure quand un incident numérique bloque l’activité ou génère des coûts difficiles à absorber. Elle peut couvrir l’interruption d’activité, les frais d’experts, la remise en état et, selon les garanties, d’autres impacts comme certaines fraudes. Elle ne remplace pas la prévention informatique: elle prend le relais quand l’attaque a déjà produit ses effets. Pour une TPE, le sujet est simple: préserver la trésorerie, redémarrer rapidement et éviter qu’un incident technique devienne une crise client. Le choix dépend surtout de vos outils critiques, des données manipulées et de votre capacité financière à supporter plusieurs jours d’arrêt. Un devis bien cadré permet ensuite de prioriser les garanties essentielles sans complexifier inutilement le budget, avec une lecture claire des limites du contrat.",
       }}
+      showTrustNote
     >
       <PageFeatureImage
         src="/card-images/tpe-startups.jpg"
@@ -142,6 +143,52 @@ export default function AssuranceCyberTpePage() {
                 Demander un devis assurance cyber
               </Link>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section site-section--muted">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Budget et simplicité</span>
+            </div>
+            <h2 className="site-section__title">Quelle couverture cyber reste essentielle pour une TPE ?</h2>
+          </div>
+          <div className="site-card-grid site-card-grid--two">
+            <article className="site-card">
+              <h3 className="site-card__title">Priorité 1: continuité d’activité</h3>
+              <p className="site-card__body">
+                Une TPE dépend souvent de peu d’outils. Quand ils tombent, la perte d’activité est immédiate. L’interruption d’activité reste donc la première garantie à vérifier.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Priorité 2: accès à des experts</h3>
+              <p className="site-card__body">
+                Sans équipe interne dédiée, la capacité à joindre rapidement les bons interlocuteurs techniques et juridiques est déterminante.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Priorité 3: lisibilité du contrat</h3>
+              <p className="site-card__body">
+                Il faut un contrat compréhensible: garanties activables, limites claires, exclusions explicites et niveau de franchise supportable.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Priorité 4: devis adapté au budget</h3>
+              <p className="site-card__body">
+                Le bon devis n’est pas le moins cher: c’est celui qui protège les risques principaux sans surcharger inutilement le coût annuel.
+              </p>
+            </article>
+          </div>
+          <div className="site-panel site-panel--accent topic-page__panel">
+            <p className="site-panel__eyebrow">Exemples simples</p>
+            <p className="site-panel__body">
+              Exemple 1: boîte mail compromise, faux ordre de virement et tension de trésorerie. Exemple 2: poste chiffré, devis en retard et relation client dégradée. Exemple 3: outil de facturation indisponible plusieurs jours.
+            </p>
+            <p className="site-panel__body">
+              Sources utiles: <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a> et <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.
+            </p>
           </div>
         </div>
       </section>

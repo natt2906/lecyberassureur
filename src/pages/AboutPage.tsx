@@ -15,7 +15,7 @@ export default function AboutPage() {
   usePageMeta({
     title: 'Qui sommes-nous ? | Le Cyberassureur',
     description:
-      "Découvrez Le Cyberassureur, la marque spécialisée de Prorisk Assurances dédiée à l'assurance cyber entreprise, à la protection financière et à l'accompagnement des organisations face aux cyber-risques.",
+      "Découvrez Le Cyberassureur, marque de Prorisk Assurances: expertise cyber, méthode de conseil et accompagnement dédié aux entreprises françaises.",
     path: '/qui-sommes-nous',
     keywords:
       'qui sommes nous cyberassurance, le cyberassureur, prorisk assurances, courtier assurance cyber entreprise, specialiste assurance cyber',

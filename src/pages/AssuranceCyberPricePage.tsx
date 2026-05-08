@@ -39,8 +39,9 @@ export default function AssuranceCyberPricePage() {
       directAnswer={{
         question: "Combien coûte une assurance cyber pour une TPE ou une PME ?",
         answer:
-          "Le prix d’une assurance cyber dépend surtout de votre profil de risque, pas d’un tarif universel. Les assureurs regardent la taille de l’entreprise, la dépendance aux outils numériques, la nature des données traitées, les garanties demandées, les plafonds et franchises, ainsi que votre niveau de sécurité de base. Deux structures proches en chiffre d’affaires peuvent donc avoir des montants différents. Pour obtenir un prix utile, il faut décrire votre activité, vos scénarios critiques et le niveau de protection attendu. Un devis bien cadré évite les contrats trop limités ou surdimensionnés.",
+          "Le prix d’une assurance cyber varie selon le profil de risque de l’entreprise, pas selon une grille unique. Les assureurs évaluent la taille, le chiffre d’affaires, le secteur, la dépendance aux outils numériques, la sensibilité des données, le niveau de sécurité en place et la profondeur des garanties demandées. Les franchises, plafonds et options (par exemple sur la fraude) influencent aussi le tarif final. Deux entreprises de taille comparable peuvent donc recevoir des propositions différentes. Pour obtenir un montant pertinent, il faut décrire vos usages critiques et vos scénarios de sinistre les plus probables. Un devis bien qualifié évite les contrats trop courts, mais aussi les protections surdimensionnées. Il permet également de comparer la qualité réelle de couverture et pas seulement le coût annuel affiché, sur des bases réellement comparables.",
       }}
+      showTrustNote
     >
       <PageFeatureImage
         src="/seo-images/assurance-cyber-prix.png"
@@ -107,6 +108,86 @@ export default function AssuranceCyberPricePage() {
                 <li>Capacité de l’entreprise à absorber seule le choc financier</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Tableau de tarification</span>
+            </div>
+            <h2 className="site-section__title">Facteurs qui influencent le prix</h2>
+          </div>
+          <div className="site-card">
+            <div className="seo-table-wrapper">
+              <table className="seo-table">
+                <thead>
+                  <tr>
+                    <th>Facteur</th>
+                    <th>Effet possible sur le tarif</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Taille de l’entreprise et chiffre d’affaires</td>
+                    <td>Augmente généralement le niveau de risque assuré et les plafonds à envisager</td>
+                  </tr>
+                  <tr>
+                    <td>Secteur d’activité</td>
+                    <td>Certains secteurs très digitalisés ou sensibles peuvent nécessiter une couverture plus large</td>
+                  </tr>
+                  <tr>
+                    <td>Dépendance aux outils numériques</td>
+                    <td>Plus l’arrêt d’outils critiques coûte cher, plus le contrat doit être robuste</td>
+                  </tr>
+                  <tr>
+                    <td>Niveau de sécurité (MFA, sauvegardes, accès)</td>
+                    <td>Peut faciliter la souscription et améliorer la qualité de proposition</td>
+                  </tr>
+                  <tr>
+                    <td>Franchises et plafonds</td>
+                    <td>Franchise haute = coût souvent plus bas, mais reste à charge plus important en sinistre</td>
+                  </tr>
+                  <tr>
+                    <td>Garanties complémentaires (dommages subis, fraude)</td>
+                    <td>Étend le périmètre du contrat et peut augmenter le prix selon les options</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section site-section--muted">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Lecture du budget</span>
+            </div>
+            <h2 className="site-section__title">Comment arbitrer entre prix, franchises et garanties ?</h2>
+          </div>
+          <div className="site-card-grid site-card-grid--two">
+            <article className="site-card">
+              <h3 className="site-card__title">Franchise supportable</h3>
+              <p className="site-card__body">
+                Une franchise faible réduit le reste à charge, mais peut augmenter le coût annuel. La bonne valeur dépend de votre trésorerie disponible en cas de crise.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Plafond réaliste</h3>
+              <p className="site-card__body">
+                Le plafond doit être aligné avec le coût potentiel d’un arrêt, des frais d’experts et des impacts juridiques pour éviter une couverture insuffisante.
+              </p>
+            </article>
+          </div>
+          <div className="site-panel site-panel--accent topic-page__panel">
+            <p className="site-panel__eyebrow">Sources et repères</p>
+            <p className="site-panel__body">
+              Pour structurer vos critères, consultez <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a> et <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>.
+            </p>
           </div>
         </div>
       </section>

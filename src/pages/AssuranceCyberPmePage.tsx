@@ -39,8 +39,9 @@ export default function AssuranceCyberPmePage() {
       directAnswer={{
         question: "Qu’est-ce qu’une assurance cyber pour PME ?",
         answer:
-          "Une assurance cyber pour PME couvre l’impact financier d’une attaque ou d’un incident qui perturbe vos opérations numériques. Elle peut inclure l’interruption d’activité, les frais d’experts techniques et juridiques, certains coûts de gestion de crise, ainsi que des garanties complémentaires selon les contrats. Pour une PME, l’enjeu est de protéger la continuité d’activité, les données clients et la trésorerie lorsque la messagerie, l’ERP, la facturation ou les accès distants sont touchés. Le bon contrat se choisit sur vos scénarios de risque réels, vos limites d’absorption et la lisibilité des exclusions.",
+          "Une assurance cyber pour PME couvre les conséquences financières et opérationnelles d’un incident numérique qui bloque les flux quotidiens. Elle peut inclure l’interruption d’activité, les frais d’experts techniques et juridiques, la gestion de crise et, selon contrat, des garanties complémentaires comme les dommages subis ou la fraude. L’objectif principal est de protéger la continuité d’activité, la relation client et la trésorerie lorsque la messagerie, l’ERP, la facturation ou les accès distants sont touchés. Une PME choisit son contrat en fonction de scénarios concrets: rançongiciel, compromission de messagerie, indisponibilité d’outil métier ou exposition de données. Les points décisifs restent les exclusions, plafonds, franchises et conditions de déclenchement, ainsi que la capacité de l’assureur à mobiliser rapidement les intervenants adaptés, y compris pendant les premières heures de crise.",
       }}
+      showTrustNote
     >
       <PageFeatureImage
         src="/card-images/pme.jpg"
@@ -142,6 +143,46 @@ export default function AssuranceCyberPmePage() {
                 Demander un devis assurance cyber
               </Link>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="site-section site-section--muted">
+        <div className="site-section__container">
+          <div className="site-section__header">
+            <div className="site-section__eyebrow">
+              <span className="site-section__eyebrow-text">Scénarios PME fréquents</span>
+            </div>
+            <h2 className="site-section__title">Quels risques cyber touchent le plus les PME ?</h2>
+          </div>
+          <div className="site-card-grid site-card-grid--three">
+            <article className="site-card">
+              <h3 className="site-card__title">Interruption d’activité</h3>
+              <p className="site-card__body">
+                Un incident sur la messagerie ou l’ERP peut stopper la production, retarder les livraisons et ralentir la facturation.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Fraude et usurpation</h3>
+              <p className="site-card__body">
+                Les compromissions de comptes email peuvent mener à des virements frauduleux ou à des changements de RIB non détectés.
+              </p>
+            </article>
+            <article className="site-card">
+              <h3 className="site-card__title">Rançongiciel et crise client</h3>
+              <p className="site-card__body">
+                La restauration technique prend du temps et peut s’accompagner d’une crise de confiance côté clients et partenaires.
+              </p>
+            </article>
+          </div>
+          <div className="site-panel site-panel--accent topic-page__panel">
+            <p className="site-panel__eyebrow">Exigences clients et fournisseurs</p>
+            <p className="site-panel__body">
+              De plus en plus de PME doivent démontrer leur niveau de protection cyber dans des appels d’offres, contrats-cadres ou relations donneurs d’ordre. Une couverture lisible peut devenir un facteur de maintien d’activité commerciale.
+            </p>
+            <p className="site-panel__body">
+              Sources de référence: <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a> et <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.
+            </p>
           </div>
         </div>
       </section>

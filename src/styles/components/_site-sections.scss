@@ -138,6 +138,9 @@
   letter-spacing: -0.04em;
   line-height: 1.04;
   margin: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  hyphens: auto;
 }
 
 .site-section__intro {
@@ -202,6 +205,33 @@
   @include respond-up(tablet) {
     padding: 1.8rem;
   }
+}
+
+.seo-table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.seo-table {
+  border-collapse: collapse;
+  min-width: 640px;
+  width: 100%;
+}
+
+.seo-table th,
+.seo-table td {
+  border: 1px solid var(--border-soft);
+  font-size: 0.96rem;
+  line-height: 1.6;
+  padding: 0.7rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.seo-table th {
+  background: color-mix(in srgb, var(--surface-strong) 90%, transparent);
+  color: var(--text-strong);
+  font-weight: 700;
 }
 
 .site-card--interactive {

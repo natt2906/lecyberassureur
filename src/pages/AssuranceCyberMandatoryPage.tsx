@@ -9,7 +9,7 @@ export default function AssuranceCyberMandatoryPage() {
   usePageMeta({
     title: 'Assurance cyber obligatoire ? | Le Cyberassureur',
     description:
-      "Assurance cyber obligatoire ou non : découvrez ce qu'une entreprise doit vérifier, quand la couverture n'est pas imposée par la loi mais devient nécessaire en pratique, et quels profils sont les plus exposés.",
+      "Assurance cyber obligatoire ou non: vérifiez vos obligations légales, contractuelles et les cas où une couverture devient nécessaire en pratique.",
     path: '/assurance-cyber-obligatoire',
     keywords:
       'assurance cyber obligatoire, assurance cyber obligatoire ou non, obligation assurance cyber entreprise, assurance cyber profession reglementee',

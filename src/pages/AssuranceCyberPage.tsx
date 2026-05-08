@@ -1,5 +1,6 @@
 import ContactForm from '../components/ContactForm';
 import CardIllustration from '../components/CardIllustration';
+import EditorialTrustNote from '../components/EditorialTrustNote';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -52,13 +53,17 @@ export default function AssuranceCyberPage() {
         <section className="site-section site-section--muted">
           <div className="site-section__container">
             <article className="site-card">
-              <h2 className="site-card__title">Qu’est-ce qu’une assurance cyber pour PME ?</h2>
+              <h2 className="site-card__title">Qu’est-ce qu’une assurance cyber pour entreprise ?</h2>
               <p className="site-card__body">
-                Une assurance cyber pour PME couvre l’impact financier d’un incident numérique qui bloque les opérations, expose des données ou déclenche une crise. Elle peut prendre en charge l’interruption d’activité, des frais d’expertise, certains coûts juridiques, et d’autres postes selon le contrat. Elle ne remplace pas les outils de cybersécurité : elle protège l’entreprise quand l’incident est déjà là. Pour choisir correctement, il faut vérifier les garanties incluses, les exclusions, les plafonds et la rapidité de mobilisation des experts. Ensuite, comparez les offres et demandez un devis basé sur vos usages réels, pas sur un prix standard.
+                Une assurance cyber pour entreprise protège la continuité d’activité lorsque la cybersécurité ne suffit plus. Elle intervient après un incident qui bloque la production, perturbe la facturation, expose des données ou déclenche une crise client. Le contrat peut inclure l’interruption d’activité, des frais d’experts techniques et juridiques, et d’autres postes selon les garanties retenues. Elle ne remplace pas un prestataire IT: elle couvre les conséquences financières et opérationnelles du sinistre. Pour choisir un contrat utile, il faut comparer les garanties réellement activables, les exclusions, les plafonds, les franchises et la rapidité de mobilisation. Il faut aussi vérifier la durée d’indemnisation et le niveau d’accompagnement en gestion de crise. L’objectif n’est pas un prix d’appel, mais une protection cohérente avec les risques de votre activité.
               </p>
             </article>
           </div>
         </section>
+        <EditorialTrustNote
+          updatedAt="8 mai 2026"
+          reviewer="Relu par un conseiller spécialisé en assurance cyber entreprise"
+        />
 
         <PageFeatureImage
           src="/seo-images/assurance-cyber-overview.png"
@@ -131,6 +136,90 @@ export default function AssuranceCyberPage() {
                   Sources utiles : <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a>.
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Ce qui est couvert ou non</span>
+              </div>
+              <h2 className="site-section__title">Ce qui est généralement couvert et ce qui est souvent exclu</h2>
+              <p className="site-section__intro">
+                Les contrats se ressemblent parfois sur la forme, mais diffèrent dans la façon dont les garanties se déclenchent.
+              </p>
+            </div>
+            <div className="site-card">
+              <div className="seo-table-wrapper">
+                <table className="seo-table">
+                  <thead>
+                    <tr>
+                      <th>Ce qui est généralement couvert</th>
+                      <th>Ce qui est souvent exclu ou limité</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Interruption d’activité liée à un incident cyber déclaré</td>
+                      <td>Incidents antérieurs à la souscription ou non déclarés dans les délais</td>
+                    </tr>
+                    <tr>
+                      <td>Frais d’experts techniques et pilotage de crise</td>
+                      <td>Absence de mesures minimales de sécurité prévues au contrat</td>
+                    </tr>
+                    <tr>
+                      <td>Accompagnement juridique et obligations liées aux données selon contrat</td>
+                      <td>Sanctions, amendes ou postes spécifiques non prévus dans les conditions</td>
+                    </tr>
+                    <tr>
+                      <td>Dommages subis ou fraude selon formule et options</td>
+                      <td>Fraude non incluse dans la formule choisie ou plafonds insuffisants</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Différence avec la RC Pro</span>
+              </div>
+              <h2 className="site-section__title">Assurance cyber et RC Pro : quelles différences concrètes ?</h2>
+            </div>
+            <div className="site-card-grid site-card-grid--two">
+              <article className="site-card">
+                <h3 className="site-card__title">RC Pro</h3>
+                <p className="site-card__body">
+                  La RC Pro protège principalement la responsabilité civile de l’entreprise dans le cadre de son activité professionnelle générale.
+                </p>
+                <p className="site-card__body">
+                  Elle n’est pas conçue pour couvrir l’ensemble des conséquences d’un sinistre numérique complexe: arrêt des systèmes, crise IT, remédiation technique ou pertes d’exploitation cyber.
+                </p>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">Assurance cyber</h3>
+                <p className="site-card__body">
+                  L’assurance cyber cible les événements numériques: compromission de messagerie, rançongiciel, indisponibilité d’outils, exfiltration de données, fraude selon contrat.
+                </p>
+                <p className="site-card__body">
+                  Elle doit être lue comme une protection de continuité d’activité et de résilience financière, avec des garanties, des limites et des conditions spécifiques.
+                </p>
+              </article>
+            </div>
+            <div className="site-panel site-panel--accent topic-page__panel">
+              <p className="site-panel__eyebrow">Exemples de sinistres</p>
+              <p className="site-panel__body">
+                Exemple 1: compromission d’un compte email de direction suivie d’une fraude fournisseur. Exemple 2: rançongiciel bloquant l’ERP et la facturation pendant plusieurs jours. Exemple 3: exposition de données clients nécessitant analyse technique, gestion juridique et communication.
+              </p>
+              <p className="site-panel__body">
+                Pour cadrer votre niveau de protection, consultez aussi <a className="topic-page__inline-link" href="/assurance-cyber-prix">le prix d’une assurance cyber</a> et <a className="topic-page__inline-link" href="/devis-assurance-cyber">la page devis</a>.
+              </p>
             </div>
           </div>
         </section>

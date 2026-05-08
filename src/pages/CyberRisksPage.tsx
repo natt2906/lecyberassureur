@@ -11,7 +11,7 @@ export default function CyberRisksPage() {
   usePageMeta({
     title: 'Risques cyber entreprise | Le Cyberassureur',
     description:
-      "Identifiez les cyber-risques les plus coûteux pour une entreprise, les impacts concrets sur l'activité et la manière dont une couverture adaptée peut limiter la perte.",
+      "Cyber-risques entreprise: identifiez les impacts les plus coûteux, les scénarios critiques et les garanties d’assurance utiles pour limiter les pertes.",
     path: '/assurance-cyber-risques',
     keywords:
       'cyber risques entreprise, risques cyber PME, cout cyberattaque entreprise, exposition cyber entreprise, couverture cyber risques',

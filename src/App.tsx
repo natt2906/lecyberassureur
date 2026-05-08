@@ -1,7 +1,6 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import CookieConsent from './components/CookieConsent';
-import ChatBot from './components/ChatBot';
 import GoogleAdsTag from './components/GoogleAdsTag';
 import StickyCTA from './components/StickyCTA';
 import Home from './pages/Home';
@@ -24,8 +23,27 @@ const AssuranceCyberPmePage = lazy(() => import('./pages/AssuranceCyberPmePage')
 const AssuranceCyberTpePage = lazy(() => import('./pages/AssuranceCyberTpePage'));
 const CyberRisksPage = lazy(() => import('./pages/CyberRisksPage'));
 const DevisAssuranceCyberPage = lazy(() => import('./pages/DevisAssuranceCyberPage'));
+const ChatBot = lazy(() => import('./components/ChatBot'));
 
 function App() {
+  const [showChatBot, setShowChatBot] = useState(false);
+
+  useEffect(() => {
+    const activate = () => setShowChatBot(true);
+    const idleId =
+      typeof window !== 'undefined' && 'requestIdleCallback' in window
+        ? window.requestIdleCallback(activate, { timeout: 2200 })
+        : null;
+    const timeoutId = window.setTimeout(activate, 2200);
+
+    return () => {
+      if (idleId && 'cancelIdleCallback' in window) {
+        window.cancelIdleCallback(idleId);
+      }
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <>
       <GoogleAdsTag />
@@ -53,7 +71,11 @@ function App() {
         </Routes>
       </Suspense>
       <StickyCTA />
-      <ChatBot />
+      {showChatBot ? (
+        <Suspense fallback={null}>
+          <ChatBot />
+        </Suspense>
+      ) : null}
       <CookieConsent />
     </>
   );

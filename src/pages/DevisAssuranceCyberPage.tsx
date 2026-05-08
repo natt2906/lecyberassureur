@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ContactForm from '../components/ContactForm';
+import EditorialTrustNote from '../components/EditorialTrustNote';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
@@ -53,11 +54,15 @@ export default function DevisAssuranceCyberPage() {
             <article className="site-card">
               <h2 className="site-card__title">Comment obtenir un devis assurance cyber fiable ?</h2>
               <p className="site-card__body">
-                Un devis assurance cyber fiable repose sur des informations simples mais précises : activité, taille, dépendance aux outils numériques, type de données manipulées, mesures de sécurité en place et niveau de couverture visé. L’objectif n’est pas de produire un tarif générique, mais de calibrer une protection cohérente avec votre exposition réelle. Ce cadrage permet d’éviter deux erreurs coûteuses : une couverture trop faible qui laisse des angles morts, ou une couverture trop large qui pèse inutilement sur le budget. Une fois le devis qualifié, comparez les offres et validez les exclusions avant toute souscription.
+                Obtenir un devis assurance cyber utile consiste à qualifier votre risque réel avant de parler prix. Les informations clés sont votre activité, la taille de l’entreprise, vos outils critiques, les données traitées et les garanties recherchées. L’objectif n’est pas un montant standard mais une proposition cohérente avec votre exposition opérationnelle et financière. Une bonne demande de devis permet d’éviter deux erreurs fréquentes: sous-couverture (angles morts au sinistre) et sur-couverture (coût inutile). Le devis doit ensuite être lu avec attention: garanties activables, exclusions, plafonds, franchises, délais et périmètre d’intervention. Vérifiez aussi les conditions de déclaration et la disponibilité des experts en cas d’incident, ainsi que le support prévu lors de la reprise. Cette méthode vous aide à comparer des offres sur des bases concrètes et à choisir un contrat réellement exploitable.
               </p>
             </article>
           </div>
         </section>
+        <EditorialTrustNote
+          updatedAt="8 mai 2026"
+          reviewer="Relu par un conseiller spécialisé en souscription cyber"
+        />
 
         <PageFeatureImage
           src="/seo-images/assurance-cyber-prix.png"
@@ -117,6 +122,91 @@ export default function DevisAssuranceCyberPage() {
                   <li>Accélérer le traitement du devis avec des données fiables</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Tableau pratique</span>
+              </div>
+              <h2 className="site-section__title">Informations utiles pour obtenir un devis</h2>
+            </div>
+            <div className="site-card">
+              <div className="seo-table-wrapper">
+                <table className="seo-table">
+                  <thead>
+                    <tr>
+                      <th>Information à préparer</th>
+                      <th>Pourquoi c’est important</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Activité, effectif, chiffre d’affaires</td>
+                      <td>Permet de calibrer le niveau d’exposition et les plafonds pertinents</td>
+                    </tr>
+                    <tr>
+                      <td>Outils critiques (messagerie, ERP, caisse, cloud)</td>
+                      <td>Aide à estimer l’impact d’un arrêt d’activité et la priorité des garanties</td>
+                    </tr>
+                    <tr>
+                      <td>Type de données traitées (clients, RH, finance)</td>
+                      <td>Oriente les besoins sur les volets juridiques et responsabilités</td>
+                    </tr>
+                    <tr>
+                      <td>Mesures de sécurité en place (MFA, sauvegardes)</td>
+                      <td>Influence l’analyse du risque, les conditions d’acceptation et parfois le tarif</td>
+                    </tr>
+                    <tr>
+                      <td>Scénarios redoutés (fraude, rançongiciel, indisponibilité)</td>
+                      <td>Permet de comparer les garanties sur des cas concrets</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <div className="site-section__header">
+              <div className="site-section__eyebrow">
+                <span className="site-section__eyebrow-text">Étapes du devis</span>
+              </div>
+              <h2 className="site-section__title">Quelles sont les étapes entre la demande et la proposition ?</h2>
+              <p className="site-section__intro">
+                Le délai dépend de la qualité des informations transmises. Plus votre demande est précise, plus l’analyse est rapide.
+              </p>
+            </div>
+            <div className="site-card-grid site-card-grid--three">
+              <article className="site-card">
+                <h3 className="site-card__title">1. Qualification initiale</h3>
+                <p className="site-card__body">
+                  Vérification des informations essentielles et du périmètre d’activité pour cadrer les besoins prioritaires.
+                </p>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">2. Analyse des garanties</h3>
+                <p className="site-card__body">
+                  Comparaison des garanties, exclusions, plafonds et franchises selon vos scénarios de sinistre probables.
+                </p>
+              </article>
+              <article className="site-card">
+                <h3 className="site-card__title">3. Restitution et arbitrage</h3>
+                <p className="site-card__body">
+                  Présentation d’un cadrage clair pour choisir une formule cohérente, puis passage à la souscription si validé.
+                </p>
+              </article>
+            </div>
+            <div className="site-panel site-panel--accent topic-page__panel">
+              <p className="site-panel__eyebrow">Sources utiles</p>
+              <p className="site-panel__body">
+                Pour préparer la demande, vous pouvez aussi consulter <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a> et <a className="topic-page__inline-link" href="https://www.francenum.gouv.fr/" target="_blank" rel="noreferrer">France Num</a>.
+              </p>
             </div>
           </div>
         </section>

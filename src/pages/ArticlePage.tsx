@@ -76,6 +76,7 @@ export default function ArticlePage() {
   }
 
   const image = cardImages[article.variant];
+  const isPmeGuide = article.slug === 'cyberassurance-pour-pme';
 
   return (
     <div className="page-shell">
@@ -103,7 +104,7 @@ export default function ArticlePage() {
               {article.intro}
             </p>
             <p className="mt-4 text-sm text-gray-400">
-              Auteur: Équipe Le Cyberassureur · Relecture: expert assurance cyber · Dernière mise à jour: 8 mai 2026
+              Auteur: Équipe Le Cyberassureur · Relecture: expert assurance cyber · Dernière mise à jour: 8 mai 2026 · Le Cyberassureur, marque spécialisée de Prorisk Assurances
             </p>
           </header>
 
@@ -124,6 +125,14 @@ export default function ArticlePage() {
               <div className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-6 sm:p-8">
                 <p className="text-lg leading-relaxed text-gray-200">{article.excerpt}</p>
               </div>
+              {isPmeGuide ? (
+                <section className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-6 sm:p-8">
+                  <h2 className="mb-5 text-2xl font-bold text-white">Quelle assurance cyber choisir pour une PME ?</h2>
+                  <p className="leading-relaxed text-gray-300">
+                    Une PME doit choisir une assurance cyber en fonction de son exposition réelle: dépendance aux outils numériques, coût d’un arrêt d’activité, sensibilité des données et capacité de trésorerie à absorber un incident. Le bon contrat n’est pas seulement celui qui affiche un tarif attractif, mais celui dont les garanties restent activables sur vos scénarios concrets: rançongiciel, compromission de messagerie, fraude ou indisponibilité d’un outil métier. Avant de souscrire, comparez les exclusions, plafonds, franchises et délais d’intervention. Ensuite, validez le niveau de couverture avec un devis détaillé. Cette approche réduit les angles morts et améliore la continuité d’activité si un sinistre survient. Elle facilite aussi les échanges avec clients et partenaires qui demandent des preuves de maîtrise du risque cyber, notamment dans les appels d’offres et contrats-cadres.
+                  </p>
+                </section>
+              ) : null}
 
               {article.sections.map((section) => (
                 <section key={section.title} className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-6 sm:p-8">
@@ -146,6 +155,9 @@ export default function ArticlePage() {
                   </p>
                   <p className="leading-relaxed text-gray-300">
                     Continuer: <Link className="text-cyan-400 hover:text-cyan-300" to="/assurance-cyber">Assurance cyber</Link> · <Link className="text-cyan-400 hover:text-cyan-300" to="/offres">Offres</Link> · <Link className="text-cyan-400 hover:text-cyan-300" to="/devis-assurance-cyber">Demander un devis</Link>.
+                  </p>
+                  <p className="leading-relaxed text-gray-300">
+                    Confiance et cadre réglementaire: <Link className="text-cyan-400 hover:text-cyan-300" to="/qui-sommes-nous">Qui sommes-nous</Link> · <Link className="text-cyan-400 hover:text-cyan-300" to="/mentions-legales">Mentions légales</Link>.
                   </p>
                 </div>
               </section>

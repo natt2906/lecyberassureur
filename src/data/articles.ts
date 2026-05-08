@@ -25,7 +25,7 @@ export const articles: Article[] = [
     variant: 'finance-impact',
     readTime: '9 min',
     excerpt:
-      "Une cyberattaque ne provoque pas seulement un incident technique : elle déclenche immédiatement des sorties de trésorerie, des frais imprévus et des tensions sur l'exploitation.",
+      "Pertes financières cyberattaque: coûts d’urgence, trésorerie sous tension, retards d’encaissement et points de couverture pour protéger l’activité.",
     intro:
       "Pour une entreprise, le choc cyber se lit d'abord dans les comptes. Même un incident de taille moyenne peut générer des coûts d'urgence, retarder les encaissements et désorganiser toute la chaîne opérationnelle.",
     sections: [
@@ -396,48 +396,112 @@ export const articles: Article[] = [
     title: 'PME',
     category: 'Cible',
     variant: 'sme-ops',
-    readTime: '10 min',
+    readTime: '14 min',
     excerpt:
       "Les PME cumulent souvent données clients, RH, finance et outils métiers, avec une exposition forte et une gouvernance cyber encore inégale.",
     intro:
       "La PME moderne concentre une quantité importante d'actifs numériques : données, flux financiers, outils de pilotage, dépendance à des prestataires et obligations réglementaires. Cette combinaison crée un risque cyber très tangible.",
     sections: [
       {
-        title: 'Une PME a souvent plusieurs points de fragilité simultanés',
+        title: 'Pourquoi la cyberassurance PME est un sujet de continuité d’activité',
         body: [
-          "Messagerie, facturation, ERP, paie, dossiers clients et accès distants multiplient les scénarios possibles : phishing, compromission, fuite, indisponibilité ou fraude. Le risque n'est pas ponctuel, il est structurel.",
-          "C'est cette densité d'usages numériques qui rend la PME particulièrement exposée.",
-          "Cette exposition est renforcée quand les outils ne sont pas redondants ou quand un prestataire unique concentre des fonctions critiques.",
+          "Dans une PME, la dépendance numérique n'est plus limitée au service informatique. Les ventes, la production, la relation client, la facturation, les paiements et la coordination des équipes reposent souvent sur quelques outils critiques.",
+          "Quand un incident cyber survient, l'effet domino est rapide: les opérations ralentissent, les équipes contournent les processus, la trésorerie se tend et la communication client devient fragile.",
+          "La cyberassurance est alors un dispositif de continuité d’activité. Elle sert à financer la réponse, structurer les décisions et limiter le temps pendant lequel l’entreprise opère en mode dégradé.",
         ],
       },
       {
-        title: 'La PME a besoin d’une couverture lisible et opérationnelle',
+        title: 'Les points de fragilité les plus fréquents en PME',
         body: [
-          "Les dirigeants n'ont pas besoin d'un contrat théorique. Ils ont besoin d'un mécanisme compréhensible, mobilisable vite et adapté à la réalité de leurs opérations.",
-          "La bonne approche consiste à aligner le contrat sur les flux critiques et les conséquences économiques concrètes d'un incident.",
+          "Messagerie compromise, comptes administrateurs mal protégés, dépendance à un ERP, accès distants non segmentés, prestataire unique sur un outil métier: ces situations sont fréquentes et augmentent la surface d'impact.",
+          "Le risque ne se résume pas à un vol de données. Il inclut aussi l'arrêt de production, l'incapacité à facturer, l'impossibilité de traiter les commandes et la perte de confiance clients.",
+          "Les PME qui ont grandi rapidement sont souvent les plus exposées: les process ont évolué plus vite que la gouvernance cyber, ce qui crée des zones de fragilité invisibles jusqu'au premier incident.",
         ],
       },
       {
-        title: 'Que doit couvrir en priorité un contrat PME ?',
+        title: 'Que doit couvrir en priorité une assurance cyber PME ?',
         body: [
-          "Interruption d'activité et perte d'exploitation.",
-          "Frais d'expertise technique, juridique et pilotage de crise.",
-          "Responsabilités liées aux données et impacts potentiels sur des tiers.",
+          "Interruption d'activité et perte d'exploitation: poste central dès qu'un incident bloque les flux commerciaux ou opérationnels.",
+          "Frais d'expertise technique et pilotage de crise: indispensables pour qualifier l'incident, contenir la propagation et organiser la reprise.",
+          "Volet juridique et données: utile quand des informations clients, partenaires ou RH sont concernées par l'événement.",
+          "Garanties complémentaires (dommages subis, fraude) selon le profil: à arbitrer selon les scénarios réellement redoutés.",
         ],
       },
       {
-        title: 'Exemples de situations fréquentes en PME',
+        title: 'Exclusions et limites : ce que la PME doit vérifier avant de signer',
         body: [
-          "Compromission de messagerie déclenchant une fraude fournisseur.",
-          "Indisponibilité de l'outil de facturation entraînant un trou de trésorerie.",
-          "Exposition de données clients nécessitant accompagnement juridique et communication maîtrisée.",
+          "Présence d'un sinistre antérieur non déclaré, défaut de mesures minimales prévues au contrat, périmètre technique incomplet ou usage non précisé: ces points peuvent limiter l'indemnisation.",
+          "Les franchises doivent être compatibles avec la capacité financière réelle de la PME. Une franchise mal calibrée peut annuler l'intérêt de la couverture au moment critique.",
+          "Les plafonds doivent rester cohérents avec l'impact estimé d'un arrêt de plusieurs jours. Un plafond trop bas peut laisser un reste à charge significatif.",
+        ],
+      },
+      {
+        title: 'Prix de la cyberassurance PME : comment le lire sans erreur',
+        body: [
+          "Le prix est la conséquence d'un arbitrage entre périmètre de garanties, plafonds, franchises et niveau d'exposition observé.",
+          "Deux PME de taille similaire peuvent avoir des devis différents selon leur secteur, leur dépendance aux outils numériques, la nature des données traitées et leur maturité de sécurité.",
+          "Comparer uniquement la prime annuelle est trompeur. Il faut comparer la mécanique d'indemnisation, la rapidité de mobilisation des experts et les limites réelles du contrat.",
+        ],
+      },
+      {
+        title: 'Exemples concrets de sinistres PME',
+        body: [
+          "Compromission de messagerie: un email de faux fournisseur modifie un RIB, des virements partent vers un compte frauduleux, puis la PME doit gérer vérifications internes, communication et tension de trésorerie.",
+          "Rançongiciel sur un serveur de fichiers: les équipes ne peuvent plus accéder aux documents de production, la livraison ralentit et la facturation prend du retard pendant plusieurs jours.",
+          "Incident chez un prestataire critique: un outil cloud central devient indisponible, la PME bascule en mode manuel et perd temporairement en qualité de service.",
+          "Exposition de données clients: il faut qualifier les faits, cadrer la communication et assurer le suivi juridique et opérationnel.",
+        ],
+      },
+      {
+        title: 'Méthode recommandée pour choisir sa couverture PME',
+        body: [
+          "Étape 1: cartographier les flux critiques (vente, facturation, production, relation client) et identifier le coût d’un arrêt.",
+          "Étape 2: sélectionner les garanties qui protègent d'abord la continuité d'activité et la trésorerie.",
+          "Étape 3: vérifier exclusions, plafonds, franchises et modalités d'activation pour éviter les angles morts.",
+          "Étape 4: comparer plusieurs formules sur des scénarios concrets, pas seulement sur la prime annuelle.",
+          "Étape 5: formaliser un devis avec des informations fiables pour accélérer la qualification et limiter les écarts entre promesse et réalité contractuelle.",
+        ],
+      },
+      {
+        title: 'Sources utiles et ressources pour dirigeants de PME',
+        body: [
+          "Pour structurer votre démarche, appuyez-vous sur des ressources publiques fiables: ANSSI (guides et bonnes pratiques), Cybermalveillance.gouv.fr (prévention et assistance), CNIL (données et conformité), France Num (accompagnement des PME).",
+          "Ces sources ne remplacent pas le contrat d'assurance, mais elles aident à formuler une demande de devis plus solide et à réduire les erreurs de cadrage.",
+          "Liens internes recommandés: /assurance-cyber, /assurance-cyber-prix, /offres, /devis-assurance-cyber.",
+        ],
+      },
+      {
+        title: 'Comment préparer la PME avant incident pour améliorer la couverture',
+        body: [
+          "La qualité d'un contrat cyber dépend aussi de la préparation interne. Une PME qui documente ses actifs critiques, ses accès sensibles, ses dépendances prestataires et son plan de sauvegarde formule une demande plus précise.",
+          "Ce travail permet de mieux justifier les garanties demandées et de réduire les écarts entre le besoin opérationnel et la proposition reçue. Il facilite également la gestion de crise, car les informations structurantes sont déjà disponibles.",
+          "Concrètement, un état des lieux simple peut suffire: cartographie des outils indispensables, inventaire des comptes à privilèges, fréquence des sauvegardes, procédures de validation des paiements et contacts d'urgence internes/externes.",
+          "L'objectif n'est pas d'atteindre une maturité parfaite, mais de disposer d'un socle de pilotage qui sécurise la décision d'assurance et accélère la reprise en cas d'incident.",
+        ],
+      },
+      {
+        title: 'Questions à poser avant de comparer deux contrats cyber PME',
+        body: [
+          "Les mêmes intitulés de garanties peuvent recouvrir des réalités différentes. Une PME doit donc poser des questions précises: quel événement déclenche la garantie, quelles dépenses sont réellement prises en charge, et quelles pièces sont exigées pour l'indemnisation.",
+          "Il faut aussi clarifier la disponibilité des experts en cas de crise, les modalités de coordination avec votre prestataire IT et la couverture en cas d'incident touchant un partenaire critique.",
+          "La temporalité est un autre point décisif: durée d'indemnisation de l'interruption d'activité, délais déclaratifs, et limites sur les coûts de reprise progressive.",
+          "Enfin, l'analyse ne doit pas isoler le prix. Le contrat le plus économique peut devenir le plus coûteux si les franchises, plafonds ou exclusions neutralisent la protection sur vos scénarios majeurs.",
+        ],
+      },
+      {
+        title: 'Conclusion : transformer le devis cyber en décision stratégique PME',
+        body: [
+          "Pour une PME, la cyberassurance ne doit pas être traitée comme une formalité administrative. C'est une décision de continuité d'activité qui conditionne la capacité à absorber un choc numérique sans rupture durable.",
+          "Une démarche robuste repose sur trois principes: partir des risques concrets, vérifier le fonctionnement réel des garanties, et arbitrer le budget en fonction de la trésorerie mobilisable en crise.",
+          "Avec cette méthode, le devis devient un outil de pilotage plutôt qu'un simple document commercial. Vous comparez des scénarios, pas des slogans, et vous pouvez justifier vos choix auprès de la direction, des clients ou des partenaires.",
+          "Si vous souhaitez passer à l'étape opérationnelle, utilisez la page /devis-assurance-cyber puis comparez les formules sur /offres avant de finaliser la souscription.",
         ],
       },
     ],
     takeaways: [
-      "La PME concentre plusieurs risques cyber à la fois.",
-      "Le contrat doit suivre les usages numériques réels de l'entreprise.",
-      "La clarté opérationnelle du contrat est un critère clé.",
+      "La PME est exposée à des impacts opérationnels et financiers en cascade.",
+      "Le bon contrat cyber se lit sur ses conditions réelles d'activation et ses limites.",
+      "Comparer les garanties sur des scénarios concrets améliore la qualité du devis et de la souscription.",
     ],
   },
   {
