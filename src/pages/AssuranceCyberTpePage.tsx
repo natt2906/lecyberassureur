@@ -9,7 +9,7 @@ export default function AssuranceCyberTpePage() {
   usePageMeta({
     title: 'Assurance cyber TPE | Le Cyberassureur',
     description:
-      "Assurance cyber TPE : découvrez pourquoi une petite entreprise, une startup ou une structure agile reste exposée, quelles garanties regarder et comment demander un devis adapté.",
+      "Assurance cyber TPE : garanties utiles, limites à connaître et devis clair pour protéger trésorerie, activité et données de votre petite entreprise.",
     path: '/assurance-cyber-tpe',
     keywords:
       'assurance cyber tpe, assurance cyber petite entreprise, devis assurance cyber tpe, cyber risque tpe, assurance cyber startup',
@@ -36,6 +36,11 @@ export default function AssuranceCyberTpePage() {
       faqSectionId="assurance-cyber-tpe-faq"
       faqTitle="Questions fréquentes sur l’assurance cyber pour TPE"
       faqIntro="Cette page aide les petites structures à comprendre pourquoi le risque cyber les concerne directement et comment choisir une protection réaliste."
+      directAnswer={{
+        question: "Qu’est-ce qu’une assurance cyber pour TPE ?",
+        answer:
+          "Une assurance cyber pour TPE protège la petite entreprise contre les conséquences financières d’un incident numérique : arrêt d’activité, frais d’experts, remise en état, atteinte aux données, et parfois fraude selon la formule. Elle ne remplace pas la cybersécurité, mais prend le relais quand la prévention ne suffit plus. Pour une TPE, l’objectif principal est de préserver la trésorerie, redémarrer vite et éviter qu’un incident technique devienne une crise commerciale. Le niveau de couverture dépend surtout de vos outils critiques, des données manipulées et du coût d’un arrêt de quelques jours.",
+      }}
     >
       <PageFeatureImage
         src="/card-images/tpe-startups.jpg"

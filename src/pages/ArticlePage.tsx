@@ -102,6 +102,9 @@ export default function ArticlePage() {
             <p className="max-w-3xl text-lg leading-relaxed text-gray-300">
               {article.intro}
             </p>
+            <p className="mt-4 text-sm text-gray-400">
+              Auteur: Équipe Le Cyberassureur · Relecture: expert assurance cyber · Dernière mise à jour: 8 mai 2026
+            </p>
           </header>
 
           <div className="mb-12 overflow-hidden rounded-3xl border border-cyan-500/20 bg-slate-900">
@@ -134,6 +137,18 @@ export default function ArticlePage() {
                   </div>
                 </section>
               ))}
+
+              <section className="rounded-2xl border border-cyan-500/20 bg-slate-900/70 p-6 sm:p-8">
+                <h2 className="mb-5 text-2xl font-bold text-white">Sources utiles et pages liées</h2>
+                <div className="space-y-4">
+                  <p className="leading-relaxed text-gray-300">
+                    Références externes: <a className="text-cyan-400 hover:text-cyan-300" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="text-cyan-400 hover:text-cyan-300" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="text-cyan-400 hover:text-cyan-300" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a>.
+                  </p>
+                  <p className="leading-relaxed text-gray-300">
+                    Continuer: <Link className="text-cyan-400 hover:text-cyan-300" to="/assurance-cyber">Assurance cyber</Link> · <Link className="text-cyan-400 hover:text-cyan-300" to="/offres">Offres</Link> · <Link className="text-cyan-400 hover:text-cyan-300" to="/devis-assurance-cyber">Demander un devis</Link>.
+                  </p>
+                </div>
+              </section>
             </div>
 
             <aside className="h-fit rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 shadow-xl shadow-cyan-500/10">

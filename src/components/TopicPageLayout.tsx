@@ -13,6 +13,10 @@ type TopicPageLayoutProps = {
   faqSectionId: string;
   faqTitle: string;
   faqIntro: string;
+  directAnswer?: {
+    question: string;
+    answer: string;
+  };
   children: ReactNode;
 };
 
@@ -24,6 +28,7 @@ export default function TopicPageLayout({
   faqSectionId,
   faqTitle,
   faqIntro,
+  directAnswer,
   children,
 }: TopicPageLayoutProps) {
   return (
@@ -39,6 +44,16 @@ export default function TopicPageLayout({
             <p className="site-section__intro mt-6">{intro}</p>
           </div>
         </section>
+        {directAnswer && (
+          <section className="site-section site-section--muted">
+            <div className="site-section__container">
+              <article className="site-card">
+                <h2 className="site-card__title">{directAnswer.question}</h2>
+                <p className="site-card__body">{directAnswer.answer}</p>
+              </article>
+            </div>
+          </section>
+        )}
 
         {children}
 

@@ -7,7 +7,7 @@ export const homeFaqItems: FAQItem[] = [
   {
     question: 'Nous sommes trop petits pour être ciblés par des cyberattaques',
     answer:
-      "Les TPE et PME sont en réalité des cibles principales. Les attaquants savent que les petites entreprises disposent souvent de moins de moyens de sécurité, tout en traitant des données et des paiements de valeur. Plus de 60 % des cyberattaques ciblent les PME, précisément parce qu'elles sont perçues comme des cibles plus faciles et moins protégées.",
+      "Les TPE et PME sont directement concernées. Les attaquants cherchent souvent des organisations avec des moyens internes limités, mais des données exploitables, des accès de paiement et des flux opérationnels critiques. Le risque doit donc être évalué selon vos usages numériques réels et votre capacité à absorber un arrêt d'activité.",
   },
   {
     question: 'Notre prestataire IT nous protège déjà',

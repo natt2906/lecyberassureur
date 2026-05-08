@@ -94,6 +94,15 @@ export default function CookieConsent() {
 
   const shouldShowBanner = consent === null;
 
+  useEffect(() => {
+    document.documentElement.dataset.cookieBanner =
+      shouldShowBanner && !isPreferencesOpen ? 'visible' : 'hidden';
+
+    return () => {
+      delete document.documentElement.dataset.cookieBanner;
+    };
+  }, [isPreferencesOpen, shouldShowBanner]);
+
   const consentSummary = useMemo(() => {
     if (!consent) {
       return 'Aucun cookie non essentiel n’est déposé sans votre accord.';

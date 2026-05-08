@@ -9,7 +9,7 @@ export default function AssuranceCyberPmePage() {
   usePageMeta({
     title: 'Assurance cyber PME | Le Cyberassureur',
     description:
-      "Assurance cyber PME : identifiez les risques les plus coûteux pour une PME, les garanties réellement utiles et la meilleure façon d'obtenir un devis cohérent avec votre activité.",
+      "Assurance cyber PME : couvrez les risques les plus coûteux, clarifiez garanties et exclusions, puis obtenez un devis aligné avec votre activité réelle.",
     path: '/assurance-cyber-pme',
     keywords:
       'assurance cyber pme, devis assurance cyber pme, couverture cyber pme, cyber risques pme, prix assurance cyber pme',
@@ -36,6 +36,11 @@ export default function AssuranceCyberPmePage() {
       faqSectionId="assurance-cyber-pme-faq"
       faqTitle="Questions fréquentes sur l’assurance cyber pour PME"
       faqIntro="Cette page aide les dirigeants de PME à comprendre les risques cyber les plus coûteux, les garanties utiles et la logique d’un devis bien calibré."
+      directAnswer={{
+        question: "Qu’est-ce qu’une assurance cyber pour PME ?",
+        answer:
+          "Une assurance cyber pour PME couvre l’impact financier d’une attaque ou d’un incident qui perturbe vos opérations numériques. Elle peut inclure l’interruption d’activité, les frais d’experts techniques et juridiques, certains coûts de gestion de crise, ainsi que des garanties complémentaires selon les contrats. Pour une PME, l’enjeu est de protéger la continuité d’activité, les données clients et la trésorerie lorsque la messagerie, l’ERP, la facturation ou les accès distants sont touchés. Le bon contrat se choisit sur vos scénarios de risque réels, vos limites d’absorption et la lisibilité des exclusions.",
+      }}
     >
       <PageFeatureImage
         src="/card-images/pme.jpg"

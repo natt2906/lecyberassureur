@@ -22,6 +22,9 @@ export default function Footer() {
                 Marque spécialisée de Prorisk Assurances, nous structurons des solutions de cyberassurance claires,
                 réactives et adaptées aux entreprises exposées aux risques numériques.
               </p>
+              <p className="site-footer__brand-text">
+                Informations réglementaires (identité du cabinet, immatriculation ORIAS le cas échéant, RCP et mentions) disponibles sur la page Mentions légales.
+              </p>
             </div>
           </div>
           <div className="site-footer__hero-tags" aria-label="Points clés">

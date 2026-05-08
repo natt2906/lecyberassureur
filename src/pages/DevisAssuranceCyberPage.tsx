@@ -11,7 +11,7 @@ export default function DevisAssuranceCyberPage() {
   usePageMeta({
     title: 'Devis assurance cyber rapide | Le Cyberassureur',
     description:
-      "Demandez un devis assurance cyber pour votre entreprise. Décrivez votre activité, votre exposition et votre besoin de couverture pour obtenir un cadrage rapide et cohérent.",
+      "Devis assurance cyber : décrivez votre activité et vos risques pour obtenir rapidement un cadrage clair, utile et cohérent avec votre niveau d’exposition.",
     path: '/devis-assurance-cyber',
     keywords:
       'devis assurance cyber, demande devis assurance cyber, devis cyber entreprise, prix assurance cyber devis, formulaire assurance cyber',
@@ -46,6 +46,16 @@ export default function DevisAssuranceCyberPage() {
               obtenir un cadrage rapide du besoin. L’objectif n’est pas de produire un
               prix générique, mais un devis assurance cyber cohérent avec votre réalité.
             </p>
+          </div>
+        </section>
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <article className="site-card">
+              <h2 className="site-card__title">Comment obtenir un devis assurance cyber fiable ?</h2>
+              <p className="site-card__body">
+                Un devis assurance cyber fiable repose sur des informations simples mais précises : activité, taille, dépendance aux outils numériques, type de données manipulées, mesures de sécurité en place et niveau de couverture visé. L’objectif n’est pas de produire un tarif générique, mais de calibrer une protection cohérente avec votre exposition réelle. Ce cadrage permet d’éviter deux erreurs coûteuses : une couverture trop faible qui laisse des angles morts, ou une couverture trop large qui pèse inutilement sur le budget. Une fois le devis qualifié, comparez les offres et validez les exclusions avant toute souscription.
+              </p>
+            </article>
           </div>
         </section>
 

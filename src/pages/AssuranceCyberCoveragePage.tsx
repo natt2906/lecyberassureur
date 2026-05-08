@@ -9,7 +9,7 @@ export default function AssuranceCyberCoveragePage() {
   usePageMeta({
     title: "Que couvre l'assurance cyber ? | Le Cyberassureur",
     description:
-      "Découvrez ce que couvre une assurance cyber pour entreprise : interruption d'activité, frais d'experts, gestion de crise, responsabilités liées aux données, dommages subis et fraude selon les garanties.",
+      "Que couvre l’assurance cyber : interruption d’activité, experts, crise, données, limites et exclusions pour choisir un contrat adapté à votre entreprise.",
     path: '/assurance-cyber-que-couvre',
     keywords:
       'assurance cyber que couvre, que couvre assurance cyber, garanties assurance cyber, couverture assurance cyber entreprise, assurance cyber fraude',
@@ -36,6 +36,11 @@ export default function AssuranceCyberCoveragePage() {
       faqSectionId="assurance-cyber-coverage-faq"
       faqTitle="Questions fréquentes sur la couverture d’une assurance cyber"
       faqIntro="Cette page détaille les principaux postes de couverture à vérifier avant de choisir un contrat ou une formule cyber."
+      directAnswer={{
+        question: "Que couvre une assurance cyber pour entreprise ?",
+        answer:
+          "Une assurance cyber couvre généralement les conséquences d’un incident numérique : pertes liées à l’interruption d’activité, frais d’experts techniques, accompagnement juridique, communication de crise et certains dommages selon le contrat. Le périmètre exact varie selon les formules, les plafonds, les franchises et les exclusions. Certaines garanties comme la fraude ou des dommages spécifiques peuvent être optionnelles. La bonne pratique consiste à lire non seulement la liste des garanties, mais aussi leurs conditions de déclenchement et leurs limites. Le contrat doit rester cohérent avec vos usages, vos données et votre capacité financière à absorber un sinistre.",
+      }}
     >
       <PageFeatureImage
         src="/seo-images/assurance-cyber-que-couvre.png"

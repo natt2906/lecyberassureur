@@ -23,7 +23,7 @@ export const articles: Article[] = [
     title: 'Pertes financières',
     category: 'Impact',
     variant: 'finance-impact',
-    readTime: '4 min',
+    readTime: '9 min',
     excerpt:
       "Une cyberattaque ne provoque pas seulement un incident technique : elle déclenche immédiatement des sorties de trésorerie, des frais imprévus et des tensions sur l'exploitation.",
     intro:
@@ -34,6 +34,7 @@ export const articles: Article[] = [
         body: [
           "Dès les premières heures, l'entreprise peut devoir mobiliser un prestataire, isoler ses postes, rétablir des accès ou suspendre certains flux. Ces décisions ont un coût immédiat, souvent avant même de comprendre l'origine exacte du problème.",
           "À cela s'ajoutent les heures internes perdues, les arbitrages de priorité, les délais commerciaux et parfois le recours à des solutions provisoires plus coûteuses que le fonctionnement normal.",
+          "Dans les TPE et PME, cette phase peut aussi geler la direction: on suspend des décisions commerciales, on reporte des signatures et on mobilise des équipes non prévues pour la crise. Ces heures ne sont pas toujours comptabilisées, mais elles pèsent lourd dans le coût final.",
         ],
       },
       {
@@ -41,6 +42,23 @@ export const articles: Article[] = [
         body: [
           "Quand la trésorerie est déjà tendue, une cyberattaque agit comme un accélérateur de fragilité. Les paiements clients peuvent être bloqués, la facturation retardée ou les équipes comptables paralysées par l'indisponibilité des outils.",
           "Le sujet n'est donc pas seulement le montant du sinistre, mais la capacité de l'entreprise à absorber plusieurs semaines de friction financière sans dégrader son activité.",
+          "Ce point est souvent sous-estimé lors de la souscription. Beaucoup d'entreprises évaluent le coût de remise en état IT mais oublient la perte de marge pendant la reprise et le délai de retour au rythme normal.",
+        ],
+      },
+      {
+        title: 'Exemples concrets de sinistres qui dégradent la trésorerie',
+        body: [
+          "Compromission de messagerie avec fraude au changement de RIB: des paiements partent vers un compte frauduleux, puis il faut financer des investigations et gérer les impacts clients.",
+          "Rançongiciel sur un serveur de production: l'entreprise redémarre lentement, facture moins pendant plusieurs semaines et supporte des coûts de restauration non prévus.",
+          "Indisponibilité d'un outil clé de gestion: retards de livraison, litiges commerciaux et allongement du cycle d'encaissement.",
+        ],
+      },
+      {
+        title: 'Ce qu’il faut vérifier dans le contrat cyber',
+        body: [
+          "Vérifiez les mécanismes d'indemnisation des pertes d'exploitation, les plafonds, les franchises et la durée de couverture pendant la période de reprise.",
+          "Examinez aussi les exclusions fréquentes: négligence grave, préexistence de l'incident, défaut de mesures minimales de sécurité, ou périmètre technique insuffisant.",
+          "Le bon contrat est celui qui protège à la fois les dépenses d'urgence et la dynamique de trésorerie pendant la reprise.",
         ],
       },
     ],
@@ -55,7 +73,7 @@ export const articles: Article[] = [
     title: "Interruption d'activité",
     category: 'Impact',
     variant: 'downtime-impact',
-    readTime: '4 min',
+    readTime: '9 min',
     excerpt:
       "L'arrêt partiel ou total d'un système d'information coupe rapidement la production, le service client et la facturation.",
     intro:
@@ -66,6 +84,7 @@ export const articles: Article[] = [
         body: [
           "Quand les outils métiers tombent, les conséquences dépassent très vite le service informatique. Les commandes ne partent plus, les équipes ne travaillent plus correctement et les flux internes se dégradent en cascade.",
           "Même quand l'entreprise continue officiellement de fonctionner, la qualité de service et la capacité de production peuvent chuter assez fortement pour créer une perte économique tangible.",
+          "Dans une PME industrielle, de services ou de négoce, quelques briques indisponibles suffisent à casser les flux: planification, relation client, devis, facturation et support.",
         ],
       },
       {
@@ -73,6 +92,23 @@ export const articles: Article[] = [
         body: [
           "Le retour à la normale n'est pas instantané. Il faut parfois restaurer, contrôler, reconfigurer, communiquer et tester avant de reprendre un rythme acceptable. Cette phase de reprise pèse souvent autant que l'arrêt initial.",
           "C'est précisément là que la continuité d'activité et la protection des pertes d'exploitation deviennent des sujets majeurs dans l'assurance cyber.",
+          "La reprise opérationnelle n'est pas binaire. Les entreprises passent souvent par un mode dégradé avant un retour complet, ce qui prolonge la perte de productivité.",
+        ],
+      },
+      {
+        title: "Quels scénarios d'interruption touchent le plus les TPE/PME ?",
+        body: [
+          "Compte administrateur compromis empêchant l'accès à la messagerie et aux outils cloud.",
+          "Blocage de l'ERP ou du logiciel métier pendant plusieurs jours.",
+          "Incident chez un prestataire IT ou SaaS critique qui empêche la facturation et la gestion commerciale.",
+        ],
+      },
+      {
+        title: "Comment limiter l'impact business avant et après incident ?",
+        body: [
+          "Avant incident: définir les fonctions critiques, tester les sauvegardes, documenter un plan de reprise et les contacts d'urgence.",
+          "Après incident: déclarer vite, prioriser les flux économiques essentiels, informer clients/fournisseurs de façon structurée et documenter les pertes.",
+          "Côté assurance: vérifier la période d'indemnisation, les conditions de déclenchement et le traitement des coûts de remise en route.",
         ],
       },
     ],
@@ -311,7 +347,7 @@ export const articles: Article[] = [
     title: 'TPE & Startups',
     category: 'Cible',
     variant: 'startup-stack',
-    readTime: '4 min',
+    readTime: '10 min',
     excerpt:
       "Les petites structures numériques sont souvent très exposées, car elles dépendent d'outils cloud, de paiements en ligne et de ressources limitées.",
     intro:
@@ -322,6 +358,7 @@ export const articles: Article[] = [
         body: [
           "Email, CRM, paiements, visio, stockage, outils SaaS et accès distants suffisent à créer une exposition cyber importante. La complexité technique n'est pas nécessaire pour subir un incident coûteux.",
           "La concentration des opérations sur quelques outils critiques augmente même parfois la vulnérabilité globale.",
+          "Une indisponibilité même courte peut paralyser la production commerciale, la relation client et la capacité d'encaissement.",
         ],
       },
       {
@@ -329,6 +366,22 @@ export const articles: Article[] = [
         body: [
           "Une jeune structure ou une très petite entreprise supporte moins facilement un arrêt, une perte de trésorerie ou des frais imprévus. Le moindre incident peut avoir un effet disproportionné sur l'activité.",
           "La cyberassurance a ici un rôle de stabilisation financière et d'accès rapide à des ressources externes que l'entreprise n'a pas en interne.",
+        ],
+      },
+      {
+        title: 'Garanties prioritaires pour TPE et startups',
+        body: [
+          "Interruption d'activité et perte de revenus: souvent le premier poste critique.",
+          "Frais d'experts et assistance de crise: utile quand il n'existe pas d'équipe cyber interne.",
+          "Responsabilités liées aux données: essentielle si l'entreprise traite des données clients ou RH.",
+        ],
+      },
+      {
+        title: 'Prix, exclusions et méthode de choix',
+        body: [
+          "Le tarif dépend du niveau de dépendance numérique, du volume de données, des mesures de sécurité minimales et du périmètre de garanties.",
+          "Les exclusions à relire: incidents préexistants, défaut de sécurité manifeste, périmètre technique non déclaré, ou franchises trop lourdes pour une petite structure.",
+          "Commencez par un devis précis et comparez ensuite les formules en regardant les conditions d'activation et les limites réelles.",
         ],
       },
     ],
@@ -343,7 +396,7 @@ export const articles: Article[] = [
     title: 'PME',
     category: 'Cible',
     variant: 'sme-ops',
-    readTime: '4 min',
+    readTime: '10 min',
     excerpt:
       "Les PME cumulent souvent données clients, RH, finance et outils métiers, avec une exposition forte et une gouvernance cyber encore inégale.",
     intro:
@@ -354,6 +407,7 @@ export const articles: Article[] = [
         body: [
           "Messagerie, facturation, ERP, paie, dossiers clients et accès distants multiplient les scénarios possibles : phishing, compromission, fuite, indisponibilité ou fraude. Le risque n'est pas ponctuel, il est structurel.",
           "C'est cette densité d'usages numériques qui rend la PME particulièrement exposée.",
+          "Cette exposition est renforcée quand les outils ne sont pas redondants ou quand un prestataire unique concentre des fonctions critiques.",
         ],
       },
       {
@@ -361,6 +415,22 @@ export const articles: Article[] = [
         body: [
           "Les dirigeants n'ont pas besoin d'un contrat théorique. Ils ont besoin d'un mécanisme compréhensible, mobilisable vite et adapté à la réalité de leurs opérations.",
           "La bonne approche consiste à aligner le contrat sur les flux critiques et les conséquences économiques concrètes d'un incident.",
+        ],
+      },
+      {
+        title: 'Que doit couvrir en priorité un contrat PME ?',
+        body: [
+          "Interruption d'activité et perte d'exploitation.",
+          "Frais d'expertise technique, juridique et pilotage de crise.",
+          "Responsabilités liées aux données et impacts potentiels sur des tiers.",
+        ],
+      },
+      {
+        title: 'Exemples de situations fréquentes en PME',
+        body: [
+          "Compromission de messagerie déclenchant une fraude fournisseur.",
+          "Indisponibilité de l'outil de facturation entraînant un trou de trésorerie.",
+          "Exposition de données clients nécessitant accompagnement juridique et communication maîtrisée.",
         ],
       },
     ],
@@ -407,7 +477,7 @@ export const articles: Article[] = [
     title: "Spécialiste de l'assurance cyber",
     category: 'Expertise',
     variant: 'specialist-focus',
-    readTime: '4 min',
+    readTime: '10 min',
     excerpt:
       "La cyberassurance demande une lecture technique, juridique et opérationnelle qu'un intermédiaire généraliste ne maîtrise pas toujours.",
     intro:
@@ -418,6 +488,7 @@ export const articles: Article[] = [
         body: [
           "La matière cyber mélange interruption d'activité, réponse technique, obligations de données, fraude, responsabilité, communication et parfois gestion de crise internationale. Cette combinaison ne se traite pas comme un risque standard.",
           "Un spécialiste lit le contrat à partir des sinistres concrets, pas seulement à partir des conditions générales.",
+          "Il sait aussi relier les clauses techniques aux conséquences business: arrêt de production, pertes commerciales, obligations réglementaires et gestion de crise.",
         ],
       },
       {
@@ -425,6 +496,22 @@ export const articles: Article[] = [
         body: [
           "Le bon accompagnement ne consiste pas uniquement à trouver un prix. Il consiste à traduire l'exposition réelle de l'entreprise en priorités de couverture compréhensibles et défendables.",
           "C'est ce travail de cadrage qui évite les contrats mal alignés avec la réalité du risque.",
+        ],
+      },
+      {
+        title: 'Différence concrète entre approche généraliste et spécialisée',
+        body: [
+          "Une approche généraliste compare surtout des tarifs et des libellés.",
+          "Une approche spécialisée qualifie vos scénarios de sinistre, vos dépendances numériques et la capacité réelle d'indemnisation.",
+          "Le résultat attendu est un contrat plus robuste, avec moins de zones d'ambiguïté au moment du sinistre.",
+        ],
+      },
+      {
+        title: 'Quand faire appel à un spécialiste devient critique',
+        body: [
+          "Quand votre activité dépend fortement d'un ERP, de la messagerie ou d'applications cloud critiques.",
+          "Quand vous traitez des données sensibles ou répondez à des exigences contractuelles fortes de clients/donneurs d'ordre.",
+          "Quand vous devez arbitrer entre plusieurs offres avec des garanties proches en apparence mais très différentes dans les détails.",
         ],
       },
     ],

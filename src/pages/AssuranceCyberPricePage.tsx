@@ -9,7 +9,7 @@ export default function AssuranceCyberPricePage() {
   usePageMeta({
     title: 'Prix assurance cyber PME | Le Cyberassureur',
     description:
-      "Prix assurance cyber PME : découvrez ce qui fait varier le tarif, comment lire un prix d'appel et comment demander un devis cohérent avec votre exposition réelle.",
+      "Prix assurance cyber : comprenez les critères de tarif, évitez les garanties inadaptées et demandez un devis cohérent avec votre exposition réelle.",
     path: '/assurance-cyber-prix',
     keywords:
       'assurance cyber prix pme, prix assurance cyber, tarif assurance cyber entreprise, devis assurance cyber, budget assurance cyber',
@@ -36,6 +36,11 @@ export default function AssuranceCyberPricePage() {
       faqSectionId="assurance-cyber-prix-faq"
       faqTitle="Questions fréquentes sur le prix d’une assurance cyber"
       faqIntro="Cette page répond aux questions les plus utiles pour comprendre ce qui fait varier le prix d’une assurance cyber et comment demander un devis plus rapidement."
+      directAnswer={{
+        question: "Combien coûte une assurance cyber pour une TPE ou une PME ?",
+        answer:
+          "Le prix d’une assurance cyber dépend surtout de votre profil de risque, pas d’un tarif universel. Les assureurs regardent la taille de l’entreprise, la dépendance aux outils numériques, la nature des données traitées, les garanties demandées, les plafonds et franchises, ainsi que votre niveau de sécurité de base. Deux structures proches en chiffre d’affaires peuvent donc avoir des montants différents. Pour obtenir un prix utile, il faut décrire votre activité, vos scénarios critiques et le niveau de protection attendu. Un devis bien cadré évite les contrats trop limités ou surdimensionnés.",
+      }}
     >
       <PageFeatureImage
         src="/seo-images/assurance-cyber-prix.png"

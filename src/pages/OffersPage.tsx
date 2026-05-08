@@ -10,7 +10,7 @@ export default function OffersPage() {
   usePageMeta({
     title: 'Offres cyber Basic Silver Gold | Le Cyberassureur',
     description:
-      "Comparez les offres cyber Basic, Silver et Gold, leurs garanties et options, puis obtenez un devis adapté à votre activité professionnelle.",
+      "Comparez les offres cyber Basic, Silver et Gold, leurs garanties, limites et niveaux de protection pour choisir la formule adaptée à votre risque.",
     path: '/offres',
     keywords:
       "offre assurance cyber, offres assurance cyber entreprise, formule assurance cyber, prix assurance cyber entreprise, niveau de couverture cyber",
@@ -46,6 +46,16 @@ export default function OffersPage() {
               système d&apos;information, du coût potentiel d&apos;un arrêt et de votre besoin
               de couverture sur les dommages subis ou la fraude.
             </p>
+          </div>
+        </section>
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <article className="site-card">
+              <h2 className="site-card__title">Quelle différence entre Basic, Silver et Gold ?</h2>
+              <p className="site-card__body">
+                Basic, Silver et Gold répondent à des niveaux d’exposition différents. Basic sert de socle pour les besoins essentiels. Silver ajoute un périmètre plus large pour des scénarios de pertes plus lourdes. Gold vise les structures qui veulent renforcer aussi les postes sensibles comme la fraude selon les conditions du contrat. Le bon choix dépend de votre dépendance au numérique, du coût d’un arrêt, de votre exposition aux données et de la capacité de votre trésorerie à absorber une crise. Avant de comparer le tarif, comparez d’abord les garanties, exclusions, plafonds et franchises, puis validez le tout via un devis personnalisé.
+              </p>
+            </article>
           </div>
         </section>
 

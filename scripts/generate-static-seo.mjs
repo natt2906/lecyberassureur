@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const projectRoot = process.cwd();
@@ -446,7 +446,7 @@ function createStaticRoutes(content) {
       path: '/',
     title: 'Assurance cyber TPE PME dès 29,99 € | Le Cyberassureur',
       description:
-        "Le Cyberassureur accompagne les TPE et PME avec une assurance cyber pensée pour absorber les pertes financières, l’arrêt d’activité et les frais de gestion de crise.",
+        "Assurance cyber TPE/PME : protégez activité, données et trésorerie avec des garanties lisibles, un accompagnement expert et un devis adapté à votre risque.",
       keywords:
         'assurance cyber entreprise, assurance cyber TPE, assurance cyber PME, devis assurance cyber, protection cyber entreprise, couverture cyber entreprise',
       structuredData: [
@@ -454,8 +454,17 @@ function createStaticRoutes(content) {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           name: siteName,
+          legalName: 'Le Cyberassureur - marque spécialisée de Prorisk Assurances',
           url: siteUrl,
           logo: toAbsoluteUrl(logoUrl),
+          sameAs: [],
+          contactPoint: {
+            '@type': 'ContactPoint',
+            telephone: '+33-1-88-83-08-60',
+            contactType: 'customer support',
+            areaServed: 'FR',
+            availableLanguage: ['fr'],
+          },
         },
         {
           '@context': 'https://schema.org',
@@ -494,7 +503,7 @@ function createStaticRoutes(content) {
       path: '/offres',
     title: 'Offres cyber Basic Silver Gold | Le Cyberassureur',
       description:
-        "Comparez nos offres d'assurance cyber Basic, Silver et Gold pour choisir une formule cohérente avec votre activité, votre exposition au risque et votre besoin de couverture.",
+        "Comparez les offres cyber Basic, Silver et Gold, leurs garanties, limites et niveaux de protection pour choisir la formule adaptée à votre risque.",
       keywords:
         "offre assurance cyber, offres assurance cyber entreprise, formule assurance cyber, prix assurance cyber entreprise, niveau de couverture cyber",
       structuredData: [toFaqStructuredData(content.offersFaqItems)],
@@ -503,7 +512,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber',
     title: 'Assurance cyber entreprise | Le Cyberassureur',
       description:
-        "Guide pratique pour comprendre le rôle d'une assurance cyber en entreprise, ce qu'elle couvre, ce qu'elle ne remplace pas et comment choisir le bon niveau de protection.",
+        "Assurance cyber entreprise : comprenez garanties, exclusions et critères de choix pour protéger activité, données sensibles et continuité financière.",
       keywords:
         "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
       structuredData: [toFaqStructuredData(content.assuranceCyberFaqItems)],
@@ -512,7 +521,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-prix',
     title: 'Prix assurance cyber PME | Le Cyberassureur',
       description:
-        "Prix assurance cyber PME : découvrez ce qui fait varier le tarif, comment lire un prix d'appel et comment demander un devis cohérent avec votre exposition réelle.",
+        "Prix assurance cyber : comprenez les critères de tarif, évitez les garanties inadaptées et demandez un devis cohérent avec votre exposition réelle.",
       keywords:
         'assurance cyber prix pme, prix assurance cyber, tarif assurance cyber entreprise, devis assurance cyber, budget assurance cyber',
       structuredData: [toFaqStructuredData(content.assuranceCyberPriceFaqItems)],
@@ -521,7 +530,7 @@ function createStaticRoutes(content) {
       path: '/devis-assurance-cyber',
     title: 'Devis assurance cyber rapide | Le Cyberassureur',
       description:
-        "Demandez un devis assurance cyber pour votre entreprise. Décrivez votre activité, votre exposition et votre besoin de couverture pour obtenir un cadrage rapide et cohérent.",
+        "Devis assurance cyber : décrivez votre activité et vos risques pour obtenir rapidement un cadrage clair, utile et cohérent avec votre niveau d’exposition.",
       keywords:
         'devis assurance cyber, demande devis assurance cyber, devis cyber entreprise, prix assurance cyber devis, formulaire assurance cyber',
       structuredData: [toFaqStructuredData(content.devisAssuranceCyberFaqItems)],
@@ -539,7 +548,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-que-couvre',
     title: "Que couvre l'assurance cyber ? | Le Cyberassureur",
       description:
-        "Découvrez ce que couvre une assurance cyber pour entreprise : interruption d'activité, frais d'experts, gestion de crise, responsabilités liées aux données, dommages subis et fraude selon les garanties.",
+        "Que couvre l’assurance cyber : interruption d’activité, experts, crise, données, limites et exclusions pour choisir un contrat adapté à votre entreprise.",
       keywords:
         'assurance cyber que couvre, que couvre assurance cyber, garanties assurance cyber, couverture assurance cyber entreprise, assurance cyber fraude',
       structuredData: [toFaqStructuredData(content.assuranceCyberCoverageFaqItems)],
@@ -548,7 +557,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-pme',
     title: 'Assurance cyber PME | Le Cyberassureur',
       description:
-        "Assurance cyber PME : identifiez les risques les plus coûteux pour une PME, les garanties réellement utiles et la meilleure façon d'obtenir un devis cohérent avec votre activité.",
+        "Assurance cyber PME : couvrez les risques les plus coûteux, clarifiez garanties et exclusions, puis obtenez un devis aligné avec votre activité réelle.",
       keywords:
         'assurance cyber pme, devis assurance cyber pme, couverture cyber pme, cyber risques pme, prix assurance cyber pme',
       structuredData: [toFaqStructuredData(content.assuranceCyberPmeFaqItems)],
@@ -557,7 +566,7 @@ function createStaticRoutes(content) {
       path: '/assurance-cyber-tpe',
     title: 'Assurance cyber TPE | Le Cyberassureur',
       description:
-        "Assurance cyber TPE : découvrez pourquoi une petite entreprise, une startup ou une structure agile reste exposée, quelles garanties regarder et comment demander un devis adapté.",
+        "Assurance cyber TPE : garanties utiles, limites à connaître et devis clair pour protéger trésorerie, activité et données de votre petite entreprise.",
       keywords:
         'assurance cyber tpe, assurance cyber petite entreprise, devis assurance cyber tpe, cyber risque tpe, assurance cyber startup',
       structuredData: [toFaqStructuredData(content.assuranceCyberTpeFaqItems)],
@@ -680,34 +689,32 @@ async function writeRouteHtml(baseHtml, route) {
 
 async function writeSitemap(routes) {
   const indexedRoutes = routes.filter((route) => route.path !== '/merci' && route.robots !== 'noindex,follow');
-  const routePriorityMap = new Map([
-    ['/', '1.0'],
-    ['/assurance-cyber', '0.9'],
-    ['/offres', '0.9'],
-    ['/devis-assurance-cyber', '0.9'],
-    ['/assurance-cyber-prix', '0.8'],
-    ['/assurance-cyber-obligatoire', '0.8'],
-    ['/assurance-cyber-que-couvre', '0.8'],
-    ['/assurance-cyber-pme', '0.8'],
-    ['/assurance-cyber-tpe', '0.8'],
-    ['/assurance-cyber-risques', '0.8'],
-    ['/articles', '0.8'],
-    ['/faq', '0.7'],
-    ['/temoignages', '0.7'],
-    ['/qui-sommes-nous', '0.7'],
-  ]);
+  const resolveRouteHtmlPath = (routePath) =>
+    routePath === '/'
+      ? path.join(distDir, 'index.html')
+      : path.join(distDir, routePath.replace(/^\/+/, ''), 'index.html');
+
+  const lastmodByPath = new Map();
+  await Promise.all(
+    indexedRoutes.map(async (route) => {
+      try {
+        const htmlPath = resolveRouteHtmlPath(route.path);
+        const routeStat = await stat(htmlPath);
+        lastmodByPath.set(route.path, routeStat.mtime.toISOString());
+      } catch (_error) {
+        lastmodByPath.set(route.path, buildTimestamp);
+      }
+    }),
+  );
+
   const lines = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ...indexedRoutes.map((route) => {
-      const priority = routePriorityMap.get(route.path) || (route.path.startsWith('/articles/') ? '0.7' : '0.6');
-      const changefreq = route.path === '/' ? 'weekly' : route.path.startsWith('/articles/') ? 'monthly' : 'weekly';
       return [
         '  <url>',
         `    <loc>${new URL(route.path, `${siteUrl}/`).toString()}</loc>`,
-        `    <lastmod>${buildTimestamp}</lastmod>`,
-        `    <changefreq>${changefreq}</changefreq>`,
-        `    <priority>${priority}</priority>`,
+        `    <lastmod>${lastmodByPath.get(route.path) || buildTimestamp}</lastmod>`,
         '  </url>',
       ].join('\n');
     }),

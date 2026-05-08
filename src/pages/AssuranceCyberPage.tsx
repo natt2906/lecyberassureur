@@ -11,7 +11,7 @@ export default function AssuranceCyberPage() {
   usePageMeta({
     title: 'Assurance cyber entreprise | Le Cyberassureur',
     description:
-      "Assurance cyber entreprise : garanties, exclusions, gestion de crise et conseils pour choisir une couverture adaptée à vos risques numériques.",
+      "Assurance cyber entreprise : comprenez garanties, exclusions et critères de choix pour protéger activité, données sensibles et continuité financière.",
     path: '/assurance-cyber',
     keywords:
       "fonctionnement assurance cyber, couverture assurance cyber, assurance cyber entreprise guide, que couvre assurance cyber, protection cyber entreprise",
@@ -47,6 +47,16 @@ export default function AssuranceCyberPage() {
               plus à éviter la perte : arrêt des outils, remise en état, frais d&apos;experts,
               responsabilités liées aux données ou besoin d&apos;accompagnement de crise.
             </p>
+          </div>
+        </section>
+        <section className="site-section site-section--muted">
+          <div className="site-section__container">
+            <article className="site-card">
+              <h2 className="site-card__title">Qu’est-ce qu’une assurance cyber pour PME ?</h2>
+              <p className="site-card__body">
+                Une assurance cyber pour PME couvre l’impact financier d’un incident numérique qui bloque les opérations, expose des données ou déclenche une crise. Elle peut prendre en charge l’interruption d’activité, des frais d’expertise, certains coûts juridiques, et d’autres postes selon le contrat. Elle ne remplace pas les outils de cybersécurité : elle protège l’entreprise quand l’incident est déjà là. Pour choisir correctement, il faut vérifier les garanties incluses, les exclusions, les plafonds et la rapidité de mobilisation des experts. Ensuite, comparez les offres et demandez un devis basé sur vos usages réels, pas sur un prix standard.
+              </p>
+            </article>
           </div>
         </section>
 
@@ -117,6 +127,9 @@ export default function AssuranceCyberPage() {
                   <li>Capacité financière à absorber un arrêt de plusieurs jours</li>
                   <li>Exposition potentielle à la fraude ou à des dommages subis</li>
                 </ul>
+                <p className="site-panel__body">
+                  Sources utiles : <a className="topic-page__inline-link" href="https://www.cybermalveillance.gouv.fr/" target="_blank" rel="noreferrer">Cybermalveillance.gouv.fr</a>, <a className="topic-page__inline-link" href="https://www.anssi.gouv.fr/" target="_blank" rel="noreferrer">ANSSI</a>, <a className="topic-page__inline-link" href="https://www.cnil.fr/" target="_blank" rel="noreferrer">CNIL</a>.
+                </p>
               </div>
             </div>
           </div>

@@ -6,6 +6,10 @@
   color: var(--color-ink);
 }
 
+html[data-cookie-banner='visible'] .chatbot {
+  bottom: 8.5rem;
+}
+
 .chatbot__launcher {
   display: inline-flex;
   align-items: center;
