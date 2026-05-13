@@ -337,12 +337,22 @@
   gap: 1rem;
   padding: 1rem 1.25rem;
   text-decoration: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.35s ease;
   width: 100%;
 
   &:hover {
     border-color: rgba(239, 68, 68, 0.5);
     box-shadow: 0 12px 32px rgba(239, 68, 68, 0.12);
+  }
+
+  html[data-theme='light'] & {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.06), rgba(255, 255, 255, 0.9), rgba(249, 115, 22, 0.05));
+    border-color: rgba(239, 68, 68, 0.2);
+
+    &:hover {
+      border-color: rgba(239, 68, 68, 0.4);
+      box-shadow: 0 12px 32px rgba(239, 68, 68, 0.08);
+    }
   }
 }
 
@@ -374,5 +384,9 @@
 
   .group:hover & {
     transform: scale(1.05);
+  }
+
+  html[data-theme='light'] & {
+    color: #fff !important;
   }
 }

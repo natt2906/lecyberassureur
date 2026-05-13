@@ -496,7 +496,7 @@ export default function RiskTestPage() {
                 </p>
                 <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                   <Link
-                    to="/devis-assurance-cyber"
+                    to="/devis-assurance-cyber#devis-cyber"
                     className="inline-flex items-center gap-2 rounded-xl px-8 py-4 text-lg font-bold text-white shadow-lg transition-all hover:scale-105"
                     style={{ background: risk === 'critical' ? '#ef4444' : risk === 'high' ? '#f97316' : 'var(--accent)' }}
                   >
