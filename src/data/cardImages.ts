@@ -15,7 +15,8 @@ export type CardIllustrationVariant =
   | 'support-247'
   | 'expert-network'
   | 'rapid-response'
-  | 'continuity-core';
+  | 'continuity-core'
+  | 'cyber-security';
 
 export type CardImageConfig = {
   alt: string;
@@ -127,5 +128,11 @@ export const cardImages: Record<CardIllustrationVariant, CardImageConfig> = {
     src: '/card-images/priorite-continuite-activite.jpg',
     filter: 'brightness(1.16) contrast(1.04) saturate(1.02)',
     overlayOpacity: 0.1,
+  },
+  'cyber-security': {
+    alt: 'Cybersécurité bonnes pratiques entreprise',
+    src: '/card-images/cybersecurite-bonnes-pratiques.jpg',
+    filter: 'brightness(1.18) contrast(1.05) saturate(1.06)',
+    overlayOpacity: 0.09,
   },
 };

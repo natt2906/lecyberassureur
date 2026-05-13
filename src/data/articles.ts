@@ -732,6 +732,82 @@ export const articles: Article[] = [
       "La couverture doit servir la reprise réelle de l'entreprise.",
     ],
   },
+  {
+    slug: 'cybersecurite-bonnes-pratiques-entreprise',
+    title: 'Cybersécurité : les bonnes pratiques',
+    category: 'Expertise',
+    variant: 'cyber-security',
+    readTime: '10 min',
+    excerpt:
+      "Ransomware, phishing, vol de données : les cybermenaces se multiplient. Découvrez les bonnes pratiques de cybersécurité indispensables pour protéger votre entreprise et renforcer votre posture face aux attaques.",
+    intro:
+      "La cybersécurité n'est plus un sujet réservé aux grandes entreprises ou aux DSI. Chaque organisation, quelle que soit sa taille, est une cible potentielle. Mettre en place des mesures concrètes de protection, former ses équipes et anticiper les incidents sont désormais des réflexes de survie économique.",
+    sections: [
+      {
+        title: 'Le paysage des cybermenaces en 2026',
+        body: [
+          "Les cyberattaques ne cessent de se sophistiquer. Les ransomwares ciblent désormais des PME et des collectivités, pas seulement les grands groupes. Le phishing reste le vecteur d'attaque numéro un, avec des campagnes de plus en plus personnalisées et difficiles à détecter.",
+          "Les attaques par supply chain (chaîne d'approvisionnement) se développent rapidement : un prestataire compromis peut ouvrir la porte à des dizaines d'entreprises clientes. La surface d'attaque s'élargit aussi avec le télétravail, les objets connectés et la multiplication des accès cloud.",
+          "Selon l'ANSSI, les incidents signalés augmentent chaque année. Les conséquences vont bien au-delà du technique : pertes financières, arrêt d'activité, atteinte à la réputation et obligations réglementaires (RGPD, NIS2) pèsent lourdement sur les entreprises touchées.",
+        ],
+      },
+      {
+        title: 'Les fondamentaux de la cybersécurité en entreprise',
+        body: [
+          "La première ligne de défense reste l'hygiène numérique. Cela commence par des mots de passe robustes et uniques pour chaque service, combinés à l'authentification multifacteur (MFA) sur tous les accès critiques : messagerie, VPN, applications métiers et comptes administrateurs.",
+          "La gestion des mises à jour est un autre pilier souvent négligé. Les failles connues non corrigées sont l'une des portes d'entrée les plus exploitées par les attaquants. Appliquer les correctifs de sécurité rapidement, sur les postes comme sur les serveurs, réduit considérablement la surface d'exposition.",
+          "Le cloisonnement des réseaux et des droits d'accès limite la propagation en cas de compromission. Un collaborateur ne devrait avoir accès qu'aux ressources strictement nécessaires à son activité. Le principe du moindre privilège est simple à énoncer, mais exige une discipline continue.",
+        ],
+      },
+      {
+        title: 'Sauvegardes et plan de reprise : votre filet de sécurité',
+        body: [
+          "Les sauvegardes sont votre ultime rempart contre le ransomware. Mais encore faut-il qu'elles soient fiables, testées régulièrement et stockées hors ligne ou dans un environnement isolé. Une sauvegarde corrompue ou inaccessible au moment critique ne vaut rien.",
+          "La règle 3-2-1 reste une référence : trois copies de vos données, sur deux supports différents, dont une hors site. Ce schéma protège contre les pannes matérielles, les erreurs humaines et les attaques ciblant votre infrastructure principale.",
+          "Au-delà de la sauvegarde, il faut un plan de reprise d'activité (PRA) documenté et testé. Qui fait quoi en cas d'incident ? Quels systèmes restaurer en priorité ? Combien de temps pouvez-vous tolérer un arrêt ? Ces questions doivent avoir des réponses avant la crise, pas pendant.",
+        ],
+      },
+      {
+        title: 'Former et sensibiliser les collaborateurs',
+        body: [
+          "Le facteur humain reste le maillon le plus vulnérable. Plus de 80 % des incidents impliquent une erreur humaine : clic sur un lien malveillant, pièce jointe ouverte sans précaution, mot de passe partagé ou réutilisé, transfert de données sensibles par email non sécurisé.",
+          "La sensibilisation ne peut pas se limiter à une formation annuelle. Elle doit être continue, concrète et adaptée aux métiers. Des exercices de simulation de phishing, des alertes internes régulières et des retours d'expérience après incidents réels renforcent la vigilance collective.",
+          "L'objectif n'est pas de transformer chaque collaborateur en expert sécurité, mais de créer un réflexe : douter, vérifier, signaler. Une culture de la prudence partagée réduit drastiquement le risque d'intrusion initiale.",
+        ],
+      },
+      {
+        title: 'Sécuriser les accès distants et le cloud',
+        body: [
+          "Le travail à distance et les outils cloud ont multiplié les points d'entrée potentiels. Chaque accès distant non sécurisé est une porte ouverte pour un attaquant. L'utilisation d'un VPN d'entreprise, la segmentation des accès et le contrôle des appareils connectés sont des mesures de base.",
+          "Pour les environnements cloud (Microsoft 365, Google Workspace, AWS, etc.), la configuration par défaut n'est jamais suffisante. Il faut activer les journaux d'audit, restreindre les partages externes, surveiller les connexions inhabituelles et appliquer des politiques de sécurité conditionnelles.",
+          "La gestion des identités est devenue centrale : savoir qui accède à quoi, depuis où et quand permet de détecter les comportements anormaux avant qu'ils ne deviennent des incidents majeurs.",
+        ],
+      },
+      {
+        title: "Anticiper l'incident : préparer sa réponse",
+        body: [
+          "Aucune entreprise n'est invulnérable. La question n'est pas de savoir si un incident arrivera, mais quand. Préparer sa réponse à l'avance change radicalement l'issue : temps de réaction, coût du sinistre, capacité de reprise et impact sur la confiance.",
+          "Un plan de réponse aux incidents doit identifier les contacts d'urgence (prestataire IT, assureur, conseil juridique), les procédures d'isolement des systèmes, les circuits de communication interne et externe, et les priorités de restauration.",
+          "L'assurance cyber vient compléter ce dispositif en apportant un accès immédiat à des experts (forensic, juridique, communication de crise) et en couvrant les pertes financières liées à l'interruption d'activité, aux frais de remédiation et aux responsabilités envers les tiers.",
+        ],
+      },
+      {
+        title: 'Le lien entre cybersécurité et cyberassurance',
+        body: [
+          "Cybersécurité et cyberassurance ne s'opposent pas : elles se complètent. La prévention réduit la probabilité d'un incident. L'assurance réduit la gravité de ses conséquences. Ensemble, elles forment un dispositif complet de gestion du risque cyber.",
+          "Les assureurs évaluent d'ailleurs la maturité de sécurité de l'entreprise lors de la souscription. Des mesures de base en place (MFA, sauvegardes, sensibilisation) facilitent l'accès à de meilleures garanties et à des tarifs plus compétitifs.",
+          "Investir dans la cybersécurité améliore donc directement la qualité et le coût de la couverture cyber. C'est un cercle vertueux qui protège l'activité, la trésorerie et la réputation de l'entreprise.",
+        ],
+      },
+    ],
+    takeaways: [
+      "La cybersécurité est un investissement de continuité, pas une dépense accessoire.",
+      "Les fondamentaux (MFA, sauvegardes, mises à jour) bloquent la majorité des attaques.",
+      "Former les équipes réduit le premier vecteur d'attaque : l'erreur humaine.",
+      "Préparer sa réponse avant l'incident change radicalement le coût du sinistre.",
+      "Cybersécurité et cyberassurance se renforcent mutuellement.",
+    ],
+  },
 ];
 
 export const articleRedirects: Record<string, string> = {};
