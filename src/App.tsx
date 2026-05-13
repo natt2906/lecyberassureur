@@ -23,6 +23,7 @@ const AssuranceCyberPmePage = lazy(() => import('./pages/AssuranceCyberPmePage')
 const AssuranceCyberTpePage = lazy(() => import('./pages/AssuranceCyberTpePage'));
 const CyberRisksPage = lazy(() => import('./pages/CyberRisksPage'));
 const DevisAssuranceCyberPage = lazy(() => import('./pages/DevisAssuranceCyberPage'));
+const RiskTestPage = lazy(() => import('./pages/RiskTestPage'));
 const ChatBot = lazy(() => import('./components/ChatBot'));
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
           <Route path="/conditions-utilisation" element={<TermsPage />} />
           <Route path="/mentions-legales" element={<LegalMentionsPage />} />
           <Route path="/temoignages" element={<TestimonialsPage />} />
+          <Route path="/test-risque-cyber" element={<RiskTestPage />} />
         </Routes>
       </Suspense>
       <StickyCTA />

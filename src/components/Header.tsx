@@ -82,6 +82,7 @@ export default function Header() {
     { href: '/#coverage', label: 'Garanties' },
     { href: '/#who-for', label: 'Pour qui' },
     { to: '/articles', label: 'Articles' },
+    { to: '/test-risque-cyber', label: 'Test risque cyber' },
     { to: '/temoignages', label: 'Temoignages' },
     { to: '/faq', label: 'FAQ' },
   ];
@@ -105,6 +106,7 @@ export default function Header() {
         { to: '/assurance-cyber-prix', label: 'Prix assurance cyber' },
         { to: '/assurance-cyber-obligatoire', label: 'Assurance cyber obligatoire' },
         { to: '/articles', label: 'Articles' },
+        { to: '/test-risque-cyber', label: 'Test risque cyber' },
         { to: '/temoignages', label: 'Temoignages' },
         { to: '/faq', label: 'FAQ' },
       ],

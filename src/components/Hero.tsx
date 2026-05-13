@@ -1,4 +1,4 @@
-import { ArrowRight, Phone, Volume2, VolumeX } from 'lucide-react';
+import { ArrowRight, Phone, ShieldAlert, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -131,6 +131,29 @@ export default function Hero() {
               </Link>
               <Link to="/assurance-cyber-risques" className="hero-section__topic-link">
                 Risques couverts
+              </Link>
+            </div>
+
+            <div className="hero-section__risk-wrapper">
+              <Link
+                to="/test-risque-cyber"
+                className="hero-section__risk-banner group"
+              >
+                <div className="hero-section__risk-banner-icon">
+                  <ShieldAlert className="h-5 w-5" style={{ color: '#f87171' }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-bold text-white">
+                    Êtes-vous vulnérable ?
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Test gratuit — 2 min
+                  </p>
+                </div>
+                <span className="hero-section__risk-banner-btn">
+                  Tester
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
               </Link>
             </div>
           </div>
