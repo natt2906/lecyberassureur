@@ -287,22 +287,31 @@ export default function ContactForm() {
     }
 
     let cancelled = false;
+    let retryCount = 0;
+    const MAX_RETRIES = 3;
+    let retryTimeout: ReturnType<typeof setTimeout> | null = null;
     let scriptElement = document.getElementById(TURNSTILE_SCRIPT_ID) as HTMLScriptElement | null;
 
     const renderTurnstile = () => {
       if (
         cancelled ||
         !window.turnstile ||
-        !turnstileContainerRef.current ||
-        turnstileWidgetIdRef.current
+        !turnstileContainerRef.current
       ) {
         return;
+      }
+
+      // Remove existing widget before re-rendering
+      if (turnstileWidgetIdRef.current) {
+        window.turnstile.remove?.(turnstileWidgetIdRef.current);
+        turnstileWidgetIdRef.current = null;
       }
 
       turnstileWidgetIdRef.current = window.turnstile.render(turnstileContainerRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
         theme: 'auto',
         callback: (token) => {
+          retryCount = 0;
           setTurnstileToken(token);
           setSubmitError((current) => (current === TURNSTILE_ERROR_MESSAGE ? '' : current));
         },
@@ -311,7 +320,16 @@ export default function ContactForm() {
         },
         'error-callback': () => {
           setTurnstileToken('');
-          setSubmitError('La vérification Cloudflare a échoué. Merci de réessayer.');
+          if (retryCount < MAX_RETRIES && !cancelled) {
+            retryCount++;
+            retryTimeout = setTimeout(() => {
+              if (!cancelled) {
+                renderTurnstile();
+              }
+            }, 2000);
+          } else {
+            setSubmitError('La vérification Cloudflare a échoué. Merci de réessayer.');
+          }
         },
       });
       setIsTurnstileReady(true);
@@ -338,6 +356,10 @@ export default function ContactForm() {
 
     return () => {
       cancelled = true;
+
+      if (retryTimeout) {
+        clearTimeout(retryTimeout);
+      }
 
       scriptElement?.removeEventListener('load', handleLoad);
 
