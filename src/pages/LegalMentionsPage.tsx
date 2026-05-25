@@ -18,12 +18,13 @@ export default function LegalMentionsPage() {
       <section>
         <h2 className="mb-3 text-2xl font-semibold text-white">Editeur du site</h2>
         <p>Nom commercial: Le Cyberassureur</p>
+        <p>Le Cyberassureur est une marque de Prorisk Assurances.</p>
+        <p>Raison sociale: Prorisk Assurances</p>
+        <p>Numero de SIREN: 952546612</p>
+        <p>RCS (Registre du Commerce et des Societes): 952 546 612 R.C.S. Creteil</p>
+        <p>Immatriculation ORIAS: 23006734</p>
         <p>Contact: contact@lecyberassureur.fr</p>
         <p>Ville: Paris, France</p>
-        <p className="mt-3">
-          Informations societaires a completer: raison sociale, forme juridique, adresse du siege, numero SIREN/SIRET, RCS, numero ORIAS et
-          autorite de supervision le cas echeant.
-        </p>
       </section>
 
       <section>
