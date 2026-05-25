@@ -29,8 +29,11 @@ export default function LegalMentionsPage() {
 
       <section>
         <h2 className="mb-3 text-2xl font-semibold text-white">Hebergement</h2>
-        <p>Hebergeur technique: a completer selon la plateforme de deploiement retenue.</p>
-        <p>Adresse de l'hebergeur: a completer.</p>
+        <p>Hebergeur technique: Vercel Inc.</p>
+        <p>Adresse de l'hebergeur: 340 S Lemon Ave #4133, Walnut, CA 91789, United States.</p>
+        <p>
+          Site web: <a href="https://vercel.com" target="_blank" rel="noreferrer">https://vercel.com</a>
+        </p>
       </section>
 
       <section>
