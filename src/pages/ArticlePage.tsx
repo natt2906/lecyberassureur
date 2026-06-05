@@ -2,8 +2,7 @@ import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2 } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { getArticleBySlug } from '../data/articles';
-import { cardImages } from '../data/cardImages';
+import { getArticleBySlug, getArticleImage } from '../data/articles';
 import { siteMeta, usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlePage() {
@@ -16,14 +15,14 @@ export default function ArticlePage() {
           title: `${article.title} | Le Cyberassureur`,
           description: article.excerpt,
           path: `/articles/${article.slug}`,
-          image: cardImages[article.variant].src,
+          image: getArticleImage(article).src,
           type: 'article',
           structuredData: {
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: article.title,
             description: article.excerpt,
-            image: [new URL(cardImages[article.variant].src, siteMeta.siteUrl).toString()],
+            image: [new URL(getArticleImage(article).src, siteMeta.siteUrl).toString()],
             mainEntityOfPage: new URL(`/articles/${article.slug}`, siteMeta.siteUrl).toString(),
             author: {
               '@type': 'Organization',
@@ -75,7 +74,7 @@ export default function ArticlePage() {
     );
   }
 
-  const image = cardImages[article.variant];
+  const image = getArticleImage(article);
   const isPmeGuide = article.slug === 'cyberassurance-pour-pme';
 
   return (
@@ -104,7 +103,7 @@ export default function ArticlePage() {
               {article.intro}
             </p>
             <p className="mt-4 text-sm text-gray-400">
-              Auteur: Équipe Le Cyberassureur · Relecture: expert assurance cyber · Dernière mise à jour: 8 mai 2026 · Le Cyberassureur, marque spécialisée de Prorisk Assurances
+              Auteur: Équipe Le Cyberassureur · Relecture: expert assurance cyber · Dernière mise à jour: {article.updatedAt ?? '8 mai 2026'} · Le Cyberassureur, marque spécialisée de Prorisk Assurances
             </p>
           </header>
 

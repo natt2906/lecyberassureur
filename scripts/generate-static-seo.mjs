@@ -922,7 +922,7 @@ function createStaticRoutes(content) {
 
 function createArticleRoutes(content) {
   return content.articles.map((article) => {
-      const image = content.cardImages[article.variant]?.src || defaultImage;
+      const image = article.image?.src || content.cardImages[article.variant]?.src || defaultImage;
       return {
         path: `/articles/${article.slug}`,
         title: `${article.title} | Le Cyberassureur`,

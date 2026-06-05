@@ -1,7 +1,16 @@
-import { cardImages, type CardIllustrationVariant } from '../data/cardImages';
+import { cardImages, type CardImageConfig, type CardIllustrationVariant } from '../data/cardImages';
 
-export default function CardIllustration({ variant }: { variant: CardIllustrationVariant }) {
-  const image = cardImages[variant];
+type CardIllustrationProps = {
+  image?: CardImageConfig;
+  variant?: CardIllustrationVariant;
+};
+
+export default function CardIllustration({ image: imageOverride, variant }: CardIllustrationProps) {
+  const image = imageOverride ?? (variant ? cardImages[variant] : null);
+
+  if (!image) {
+    return null;
+  }
 
   return (
     <div className="site-card__media">

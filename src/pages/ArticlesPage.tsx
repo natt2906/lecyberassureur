@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import CardIllustration from '../components/CardIllustration';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import { visibleArticles } from '../data/articles';
+import { getArticleImage, visibleArticles } from '../data/articles';
 import { usePageMeta } from '../lib/usePageMeta';
 
 export default function ArticlesPage() {
@@ -43,7 +43,7 @@ export default function ArticlesPage() {
                   aria-label={`Lire l'article complet : ${article.title}`}
                   className="site-card site-card--interactive group"
                 >
-                  <CardIllustration variant={article.variant} />
+                  <CardIllustration image={getArticleImage(article)} />
                   <h2 className="site-card__title">{article.title}</h2>
                   <p className="site-card__body">{article.excerpt}</p>
                   <span className="inline-flex items-center gap-2 font-semibold text-cyan-400 transition-colors group-hover:text-cyan-300">

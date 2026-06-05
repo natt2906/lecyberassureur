@@ -1,4 +1,4 @@
-import type { CardIllustrationVariant } from './cardImages';
+import { cardImages, type CardImageConfig, type CardIllustrationVariant } from './cardImages';
 
 export type ArticleSection = {
   title: string;
@@ -9,8 +9,10 @@ export type Article = {
   slug: string;
   title: string;
   category: 'Impact' | 'Couverture' | 'Cible' | 'Expertise';
-  variant: CardIllustrationVariant;
+  variant?: CardIllustrationVariant;
+  image?: CardImageConfig;
   readTime: string;
+  updatedAt?: string;
   excerpt: string;
   intro: string;
   sections: ArticleSection[];
@@ -813,6 +815,10 @@ export const articles: Article[] = [
 export const articleRedirects: Record<string, string> = {};
 
 export const visibleArticles = articles;
+
+export function getArticleImage(article: Article) {
+  return article.image ?? (article.variant ? cardImages[article.variant] : cardImages['cyber-security']);
+}
 
 export function getArticleBySlug(slug: string) {
   return articles.find((article) => article.slug === slug);

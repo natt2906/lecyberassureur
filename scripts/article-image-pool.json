@@ -1,0 +1,182 @@
+[
+  {
+    "id": "attaque-par-ransomware",
+    "image": "/article-image-pool/01-attaque-par-ransomware.png",
+    "alt": "Attaque par ransomware dans une entreprise",
+    "category": "Impact",
+    "theme": "attaque par ransomware en entreprise",
+    "angle": "cout d'arret d'activite, urgence de reponse, pertes financieres et role de l'assurance cyber",
+    "keywords": ["ransomware", "rancongiciel", "interruption activite", "assurance cyber"]
+  },
+  {
+    "id": "centre-operations-securite-soc",
+    "image": "/article-image-pool/02-centre-operations-securite-soc.png",
+    "alt": "Centre des operations de securite SOC surveillant les menaces cyber",
+    "category": "Expertise",
+    "theme": "centre des operations de securite SOC",
+    "angle": "surveillance, detection, reponse aux alertes et valeur d'un accompagnement expert",
+    "keywords": ["SOC", "surveillance cyber", "detection menaces", "assurance cyber"]
+  },
+  {
+    "id": "protection-donnees-systemes",
+    "image": "/article-image-pool/03-protection-donnees-systemes.png",
+    "alt": "Protection des donnees et des systemes informatiques",
+    "category": "Expertise",
+    "theme": "protection des donnees et des systemes",
+    "angle": "mesures de protection essentielles qui reduisent la probabilite et le cout d'un sinistre",
+    "keywords": ["protection donnees", "securite systemes", "cyberassurance"]
+  },
+  {
+    "id": "courtier-assurance-cyber",
+    "image": "/article-image-pool/04-courtier-assurance-cyber.png",
+    "alt": "Courtier en assurance cyber conseillant une entreprise",
+    "category": "Expertise",
+    "theme": "role du courtier en assurance cyber",
+    "angle": "analyse du besoin, comparaison des garanties, exclusions et accompagnement au devis",
+    "keywords": ["courtier assurance cyber", "devis cyber", "garanties cyber"]
+  },
+  {
+    "id": "securite-infrastructures-it",
+    "image": "/article-image-pool/05-securite-infrastructures-it.png",
+    "alt": "Securite des infrastructures IT en entreprise",
+    "category": "Expertise",
+    "theme": "securite des infrastructures IT",
+    "angle": "serveurs, reseau, sauvegardes et controles attendus avant souscription",
+    "keywords": ["infrastructure IT", "securite informatique", "assurance cyber"]
+  },
+  {
+    "id": "analyse-risques-cyber",
+    "image": "/article-image-pool/06-analyse-risques-cyber.png",
+    "alt": "Analyse des risques cyber en entreprise",
+    "category": "Expertise",
+    "theme": "analyse des risques cyber",
+    "angle": "identifier, evaluer, prioriser et transferer les risques avec une couverture adaptee",
+    "keywords": ["analyse risques cyber", "cartographie risques", "devis assurance cyber"]
+  },
+  {
+    "id": "campagne-phishing",
+    "image": "/article-image-pool/07-campagne-phishing.png",
+    "alt": "Campagne de phishing ciblee contre une entreprise",
+    "category": "Impact",
+    "theme": "campagne de phishing",
+    "angle": "fraude, compromission de messagerie, sensibilisation et garanties a verifier",
+    "keywords": ["phishing", "email suspect", "fraude cyber", "TPE PME"]
+  },
+  {
+    "id": "plan-reponse-incident",
+    "image": "/article-image-pool/08-plan-reponse-incident.png",
+    "alt": "Plan de reponse a incident cyber en salle de crise",
+    "category": "Expertise",
+    "theme": "plan de reponse a incident cyber",
+    "angle": "roles, contacts d'urgence, confinement, preuves et activation de l'assurance",
+    "keywords": ["plan reponse incident", "gestion crise cyber", "assurance cyber"]
+  },
+  {
+    "id": "sauvegarde-reprise-activite-pra",
+    "image": "/article-image-pool/09-sauvegarde-reprise-activite-pra.png",
+    "alt": "Sauvegarde et reprise d'activite PRA",
+    "category": "Expertise",
+    "theme": "sauvegarde et plan de reprise d'activite",
+    "angle": "sauvegardes testees, RTO, RPO, reprise de service et impact sur le sinistre",
+    "keywords": ["PRA", "sauvegarde", "reprise activite", "cyberattaque"]
+  },
+  {
+    "id": "continuite-activite-entreprise",
+    "image": "/article-image-pool/10-continuite-activite-entreprise.png",
+    "alt": "Continuite d'activite de l'entreprise apres incident cyber",
+    "category": "Couverture",
+    "theme": "continuite d'activite de l'entreprise",
+    "angle": "resilience operationnelle, pertes d'exploitation, reprise et garanties essentielles",
+    "keywords": ["continuite activite", "pertes exploitation", "assurance cyber"]
+  },
+  {
+    "id": "violation-donnees",
+    "image": "/article-image-pool/11-violation-donnees.png",
+    "alt": "Violation de donnees et plan de reponse",
+    "category": "Impact",
+    "theme": "violation de donnees",
+    "angle": "detecter, contenir, evaluer, notifier et financer l'accompagnement necessaire",
+    "keywords": ["violation donnees", "notification", "CNIL", "assurance cyber"]
+  },
+  {
+    "id": "sensibilisation-collaborateurs",
+    "image": "/article-image-pool/12-sensibilisation-collaborateurs.png",
+    "alt": "Sensibilisation des collaborateurs a la cybersecurite",
+    "category": "Expertise",
+    "theme": "sensibilisation des collaborateurs",
+    "angle": "reduire l'erreur humaine, renforcer les reflexes et ameliorer l'assurabilite",
+    "keywords": ["sensibilisation cyber", "collaborateurs", "phishing", "PME"]
+  },
+  {
+    "id": "menaces-acteurs-malveillants",
+    "image": "/article-image-pool/13-menaces-acteurs-malveillants.png",
+    "alt": "Menaces cyber et acteurs malveillants",
+    "category": "Impact",
+    "theme": "menaces et acteurs malveillants",
+    "angle": "comprendre les attaques courantes pour choisir les garanties pertinentes",
+    "keywords": ["menaces cyber", "acteurs malveillants", "malware", "ransomware"]
+  },
+  {
+    "id": "audit-conformite-cyber",
+    "image": "/article-image-pool/14-audit-conformite-cyber.png",
+    "alt": "Audit et conformite cyber",
+    "category": "Expertise",
+    "theme": "audit et conformite cyber",
+    "angle": "evaluer la maturite, corriger les ecarts et faciliter la souscription",
+    "keywords": ["audit cyber", "conformite cyber", "assurance cyber"]
+  },
+  {
+    "id": "gestion-identites-acces-iam",
+    "image": "/article-image-pool/15-gestion-identites-acces-iam.png",
+    "alt": "Gestion des identites et des acces IAM",
+    "category": "Expertise",
+    "theme": "gestion des identites et des acces IAM",
+    "angle": "bonne personne, bon acces, bon moment et impact sur le risque cyber",
+    "keywords": ["IAM", "gestion acces", "MFA", "identites"]
+  },
+  {
+    "id": "assurance-cyber-pme",
+    "image": "/article-image-pool/16-assurance-cyber-pme.png",
+    "alt": "Assurance cyber pour les PME",
+    "category": "Cible",
+    "theme": "assurance cyber pour les PME",
+    "angle": "garanties prioritaires, couts couverts, accompagnement et demande de devis",
+    "keywords": ["assurance cyber PME", "devis cyber PME", "garanties cyber"]
+  },
+  {
+    "id": "couverture-internationale-risques-cyber",
+    "image": "/article-image-pool/17-couverture-internationale-risques-cyber.png",
+    "alt": "Couverture internationale des risques cyber",
+    "category": "Couverture",
+    "theme": "couverture internationale des risques cyber",
+    "angle": "activites multi-pays, exigences locales, prestataires et limites territoriales",
+    "keywords": ["couverture internationale", "risques cyber", "entreprise multi pays"]
+  },
+  {
+    "id": "indemnisation-gestion-sinistres-cyber",
+    "image": "/article-image-pool/18-indemnisation-gestion-sinistres-cyber.png",
+    "alt": "Indemnisation et gestion des sinistres cyber",
+    "category": "Couverture",
+    "theme": "indemnisation et gestion des sinistres cyber",
+    "angle": "declaration, evaluation, frais couverts, accompagnement et conditions du contrat",
+    "keywords": ["indemnisation cyber", "sinistre cyber", "declaration incident"]
+  },
+  {
+    "id": "surveillance-veille-cyber-continue",
+    "image": "/article-image-pool/19-surveillance-veille-cyber-continue.png",
+    "alt": "Surveillance et veille cyber continue",
+    "category": "Expertise",
+    "theme": "surveillance et veille cyber continue",
+    "angle": "detecter, anticiper, proteger et limiter la duree d'un incident",
+    "keywords": ["veille cyber", "surveillance cyber", "detection", "SOC"]
+  },
+  {
+    "id": "partenaire-confiance-risques-cyber",
+    "image": "/article-image-pool/20-partenaire-confiance-risques-cyber.png",
+    "alt": "Partenaire de confiance face aux risques cyber",
+    "category": "Expertise",
+    "theme": "partenaire de confiance face aux risques cyber",
+    "angle": "expertise, engagement, accompagnement personnalise et relation de long terme",
+    "keywords": ["partenaire cyber", "courtier cyber", "confiance", "accompagnement"]
+  }
+]

@@ -40,8 +40,6 @@ export default function ChatBot() {
   const hasUserMessages = messages.some((message) => message.role === 'user');
   const showQuickPrompts = !hasUserMessages;
 
-  const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
   const renderTypingDots = () => (
     <span className="chatbot__typing-dots" aria-hidden="true">
       <span />

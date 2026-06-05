@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "generate:article": "node scripts/generate-weekly-article.mjs",
     "build": "vite build && node scripts/generate-static-seo.mjs && node scripts/generate-sitemap-robots.mjs",
     "seo:indexnow": "node scripts/submit-indexnow.mjs",
     "lint": "eslint .",
