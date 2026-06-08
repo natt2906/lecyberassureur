@@ -2,10 +2,6 @@
   "crons": [
     {
       "path": "/api/trigger-weekly-article",
-      "schedule": "50 11 8 6 *"
-    },
-    {
-      "path": "/api/trigger-weekly-article",
       "schedule": "17 6 * * 1"
     }
   ],
