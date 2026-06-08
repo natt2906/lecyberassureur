@@ -8,8 +8,9 @@ on:
         required: false
         type: string
   schedule:
-    # GitHub can delay or drop scheduled runs at the top of the hour.
-    - cron: '17 6 * * 1'
+    # Vercel Cron is the primary trigger at Tuesday 08:00 Paris during summer time.
+    # Keep the GitHub fallback away from the top of the hour.
+    - cron: '17 6 * * 2'
 
 permissions:
   contents: write
