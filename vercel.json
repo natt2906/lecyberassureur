@@ -1,4 +1,10 @@
 {
+  "crons": [
+    {
+      "path": "/api/trigger-weekly-article",
+      "schedule": "17 6 * * 1"
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!api/|signature/).*)",
