@@ -3,7 +3,8 @@ name: Generate weekly article
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 6 * * 1'
+    # GitHub can delay or drop scheduled runs at the top of the hour.
+    - cron: '17 6 * * 1'
 
 permissions:
   contents: write
