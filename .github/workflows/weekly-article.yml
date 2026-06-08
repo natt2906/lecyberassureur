@@ -3,8 +3,10 @@ name: Generate weekly article
 on:
   workflow_dispatch:
   schedule:
+    # Temporary scheduler test for June 8, 2026.
+    - cron: '*/5 9-10 8 6 *'
     # GitHub can delay or drop scheduled runs at the top of the hour.
-    - cron: '7 9 * * 1'
+    - cron: '17 6 * * 1'
 
 permissions:
   contents: write
@@ -12,6 +14,9 @@ permissions:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    concurrency:
+      group: weekly-article-generator-${{ github.ref }}
+      cancel-in-progress: false
     env:
       NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
       VITE_SITE_URL: https://lecyberassureur.fr
@@ -28,7 +33,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check scheduled article already generated today
+        id: scheduled_guard
+        if: github.event_name == 'schedule'
+        run: |
+          node -e "const fs=require('fs'); const used=JSON.parse(fs.readFileSync('scripts/used-article-images.json','utf8')); const today=new Date().toISOString().slice(0,10); const already=used.some((item)=>(item.usedAt||'').slice(0,10)===today); fs.appendFileSync(process.env.GITHUB_OUTPUT, 'already_generated=' + already + '\n'); console.log(already ? 'Article already generated today, skipping.' : 'No article generated today yet.');"
+
       - name: Generate article
+        if: github.event_name != 'schedule' || steps.scheduled_guard.outputs.already_generated != 'true'
         run: npm run generate:article
 
       - name: Detect generated article
